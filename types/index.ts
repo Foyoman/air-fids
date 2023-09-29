@@ -1,4 +1,5 @@
 export interface Flight {
+  arr_time: string;
   dep_time: string;
   airline_iata: string;
   flight_number: number;

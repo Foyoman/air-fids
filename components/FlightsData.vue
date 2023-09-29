@@ -6,17 +6,21 @@
       </option>
     </select>
     <div class="flex w-full">
-      <FlightsDisplay table="arrivals" :flights="arrivals" />
-      <FlightsDisplay table="departures" :flights="departures" />
+      <FlightsDisplay table="arrivals" :flights="arrivals" :loading="arrivalsLoading" />
+      <FlightsDisplay table="departures" :flights="departures" :loading="departuresLoading" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Flight } from '~/types';
+
 const arrivals = ref([]);
 const departures = ref([]);
+const arrivalsLoading = ref(false);
+const departuresLoading = ref(false);
 const airportCode = ref("SYD");
-const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"]
+const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 
 const fetchDepartures = async (airport: string, direction: "arr" | "dep") => {
   fetch(
@@ -31,11 +35,20 @@ const fetchDepartures = async (airport: string, direction: "arr" | "dep") => {
     })
     .then((data) => {
       console.log(data.response);
-      if (direction === "dep") {
-        departures.value = data.response;
-      }
+      data.response.sort((a: Flight, b: Flight) => {
+        const dateA = new Date(a.dep_time);
+        const dateB = new Date(b.dep_time);
+        return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
+      })
+      // console.log(new Date(data.response[0].dep_time))
+
       if (direction === "arr") {
         arrivals.value = data.response;
+        arrivalsLoading.value = false;
+      }
+      if (direction === "dep") {
+        departures.value = data.response;
+        departuresLoading.value = false;
       }
     })
     .catch((error) => {
@@ -45,6 +58,8 @@ const fetchDepartures = async (airport: string, direction: "arr" | "dep") => {
 
 watch(airportCode, (oldVal, newVal) => {
   console.log(airportCode.value);
+  departuresLoading.value = true;
+  arrivalsLoading.value = true;
   fetchDepartures(airportCode.value, "arr");
   fetchDepartures(airportCode.value, "dep");
 })

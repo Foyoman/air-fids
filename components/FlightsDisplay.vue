@@ -3,7 +3,7 @@
     <h1 v-if="table" class="text-4xl">
       {{ table }}
     </h1>
-    <table v-if="flights.length">
+    <table v-if="!loading && flights.length">
       <thead>
         <tr>
           <th>Time</th>
@@ -15,13 +15,13 @@
       </thead>
       <tbody>
         <tr v-for="(flight, index) in flights" :key="index">
-          <td>{{ flight.dep_time }}</td>
-          <td>{{ flight.airline_iata }}</td>
-          <td>{{ `${flight.airline_iata} ${flight.flight_number}` }}</td>
+          <td>{{ table === "arrivals" ? flight.arr_time : flight.dep_time }}</td>  <!-- time -->
+          <td>{{ flight.airline_iata }}</td> <!-- carrier -->
+          <td>{{ `${flight.airline_iata} ${flight.flight_number}` }}</td> <!-- flight -->
           <td>
-            {{ table === "arrivals" ? flight.dep_iata : flight.arr_iata }}
+            {{ table === "arrivals" ? flight.dep_iata : flight.arr_iata }} <!-- origin/destination -->
           </td>
-          <td>{{ flight.status }}</td>
+          <td>{{ flight.status }}</td> <!-- status -->
         </tr>
       </tbody>
     </table>
@@ -44,6 +44,11 @@ export default {
       required: false,
       default: null,
     },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
 };
 </script>
