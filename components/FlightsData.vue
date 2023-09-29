@@ -6,14 +6,22 @@
       </option>
     </select>
     <div class="flex w-full">
-      <FlightsDisplay table="arrivals" :flights="arrivals" :loading="arrivalsLoading" />
-      <FlightsDisplay table="departures" :flights="departures" :loading="departuresLoading" />
+      <FlightsDisplay
+        table="arrivals"
+        :flights="arrivals"
+        :loading="arrivalsLoading"
+      />
+      <FlightsDisplay
+        table="departures"
+        :flights="departures"
+        :loading="departuresLoading"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Flight } from '~/types';
+import { Flight } from "~/types";
 
 const arrivals = ref([]);
 const departures = ref([]);
@@ -34,18 +42,18 @@ const fetchDepartures = async (airport: string, direction: "arr" | "dep") => {
       return response.json();
     })
     .then((data) => {
-      console.log(data.response);
       data.response.sort((a: Flight, b: Flight) => {
         const dateA = new Date(a.dep_time);
         const dateB = new Date(b.dep_time);
         return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
-      })
+      });
       // console.log(new Date(data.response[0].dep_time))
 
       if (direction === "arr") {
         arrivals.value = data.response;
         arrivalsLoading.value = false;
       }
+
       if (direction === "dep") {
         departures.value = data.response;
         departuresLoading.value = false;
@@ -56,16 +64,49 @@ const fetchDepartures = async (airport: string, direction: "arr" | "dep") => {
     });
 };
 
+async function getData(city: string, direction: "arr" | "dep") {
+  let params = new URLSearchParams({
+    api_key: "47819a31-962d-49be-ad71-248d4005117c",
+  });
+
+  params.append(`${direction}_iata`, city);
+
+  await fetch(`https://airlabs.co/api/v9/schedules?${params}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+      data.response.sort((a: Flight, b: Flight) => {
+        const dateA = new Date(a.dep_time);
+        const dateB = new Date(b.dep_time);
+        return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
+      });
+
+      if (direction === "arr") {
+        arrivals.value = data.response;
+        arrivalsLoading.value = false;
+      }
+
+      if (direction === "dep") {
+        departures.value = data.response;
+        departuresLoading.value = false;
+      }
+    });
+}
+
 watch(airportCode, (oldVal, newVal) => {
-  console.log(airportCode.value);
   departuresLoading.value = true;
   arrivalsLoading.value = true;
-  fetchDepartures(airportCode.value, "arr");
-  fetchDepartures(airportCode.value, "dep");
-})
+  // fetchDepartures(airportCode.value, "arr");
+  // fetchDepartures(airportCode.value, "dep");
+  getData(airportCode.value, "arr");
+  getData(airportCode.value, "dep");
+});
 
 onMounted(() => {
-  fetchDepartures("SYD", "arr");
-  fetchDepartures("SYD", "dep");
+  // fetchDepartures(airportCode.value, "arr");
+  // fetchDepartures(airportCode.value, "dep");
+  getData(airportCode.value, "arr");
+  getData(airportCode.value, "dep");
 });
 </script>
