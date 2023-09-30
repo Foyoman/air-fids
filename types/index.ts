@@ -1,9 +1,34 @@
 export interface Flight {
-  arr_time: string;
-  dep_time: string;
+  aircraft_icao: string;
   airline_iata: string;
-  flight_number: number;
+  airline_icao: string;
+  arr_baggage: string;
+  arr_delayed: string;
+  arr_gate: string;
   arr_iata: string;
+  arr_icao: string;
+  arr_terminal: string;
+  arr_time: string;
+  arr_time_ts: number;
+  arr_time_utc: string;
+  cs_airline_iata: string;
+  cs_flight_iata: string;
+  cs_flight_number: string;
+  delayed: number;
+  dep_delayed: number;
+  dep_estimated: string;
+  dep_estimated_ts: number;
+  dep_estimated_utc: string;
+  dep_gate: string;
   dep_iata: string;
+  dep_icao: string;
+  dep_terminal: string;
+  dep_time: string;
+  dep_time_ts: number;
+  dep_time_utc: string;
+  duration: number;
+  flight_iata: string;
+  flight_icao: string;
+  flight_number: string;
   status: string;
 }
