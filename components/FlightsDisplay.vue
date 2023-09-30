@@ -1,15 +1,15 @@
 <template>
   <div
-    class="lg:w-1/2 lg:px-4 lg:py-8 items-center w-full px-0 py-4 flex-col overflow-scroll"
+    class="flex-col items-center w-full px-0 py-4 overflow-scroll lg:w-1/2 lg:px-4 lg:py-8"
   >
     <h1
-      class="text-center hidden lg:block text-2xl dark:text-white mb-4 mx-auto"
+      class="hidden mx-auto mb-4 text-2xl text-center lg:block dark:text-white"
     >
       {{ direction === "arr" ? "Arrivals" : "Departures" }}
     </h1>
     <template v-if="!loading && flights.length">
       <div
-        class="lg:block w-full relative overflow-x-auto shadow-md sm:rounded-lg"
+        class="relative w-full overflow-x-auto shadow-md lg:block sm:rounded-lg"
       >
         <table
           class="w-full overflow-x-scroll text-sm text-left text-gray-500 dark:text-gray-400"
@@ -35,7 +35,7 @@
               )"
               :key="index"
               @click="() => openModal(flight)"
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+              class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -69,7 +69,7 @@
           </tbody>
         </table>
       </div>
-      <div class="flex items-center flex-col w-full">
+      <div class="flex flex-col items-center w-full">
         <div class="mt-4">
           <p class="text-sm text-gray-700 dark:text-gray-400">
             Showing
@@ -85,46 +85,53 @@
           <ul class="inline-flex -space-x-px text-sm">
             <li>
               <p
-                class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >{{ `<` }}</p
+                class="flex items-center justify-center h-8 px-3 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
+                {{ `<` }}
+              </p>
             </li>
             <li>
               <p
-                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >1</p
+                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
+                1
+              </p>
             </li>
             <li>
               <p
-                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >2</p
+                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
+                2
+              </p>
             </li>
             <li>
               <p
-                class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                >3</p
+                class="flex items-center justify-center h-8 px-3 text-blue-600 border border-gray-300 cursor-pointer bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
               >
+                3
+              </p>
             </li>
             <li>
               <p
-                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >4</p
+                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
+                4
+              </p>
             </li>
             <li>
               <p
-                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >5</p
+                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
+                5
+              </p>
             </li>
             <li>
               <p
                 @click="incrementPage"
-                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >{{ `>` }}</p
+                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
+                {{ `>` }}
+              </p>
             </li>
           </ul>
         </nav>
@@ -161,9 +168,9 @@ const props = defineProps({
 });
 
 const incrementPage = () => {
-  currentPage.value++
-  console.log(currentPage.value)
-}
+  currentPage.value++;
+  console.log(currentPage.value);
+};
 
 const formatDate = (date: string) => {
   const newDate = new Date(date);
@@ -185,8 +192,11 @@ onMounted(() => {
   console.log(indexOfFirstFlight.value, indexOfLastFlight.value);
 });
 
-watch([currentPage, postsPerPage], ([newCPVal, newPPPVal], [oldCPVal, newPPPval]) => {
-  indexOfLastFlight.value = currentPage.value * postsPerPage.value;
-  indexOfFirstFlight.value = indexOfLastFlight.value - postsPerPage.value
-});
+watch(
+  [currentPage, postsPerPage],
+  ([newCPVal, newPPPVal], [oldCPVal, newPPPval]) => {
+    indexOfLastFlight.value = currentPage.value * postsPerPage.value;
+    indexOfFirstFlight.value = indexOfLastFlight.value - postsPerPage.value;
+  }
+);
 </script>

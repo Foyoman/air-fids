@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { Flight } from '~/types';
+import { Flight } from "~/types";
 
 export default {
   props: {
@@ -62,7 +62,7 @@ export default {
       type: Object as () => Flight | null,
       required: false,
       default: null,
-    }
+    },
   },
   methods: {
     closeButton(e: MouseEvent) {
