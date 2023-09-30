@@ -46,8 +46,8 @@
       <FlightsDisplay 
         class="flex lg:hidden"
         :direction="direction"
-        :flights="direction === 'arrivals' ? arrivals : departures"
-        :loading="direction === 'arrivals' ? arrivalsLoading : departuresLoading"
+        :flights="direction === 'arr' ? arrivals : departures"
+        :loading="direction === 'arr' ? arrivalsLoading : departuresLoading"
         :openModal="toggleModal"
         :formatDate="formatDate"
       />
@@ -85,7 +85,7 @@ const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 const showModal = ref(false);
 const selectedFlight = ref<Flight | null>(null);
 
-const direction = ref("arr");
+const direction = ref<"arr"| "dep">("arr");
 
 const selectedStyles = "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
 const unselectedStyles = "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"

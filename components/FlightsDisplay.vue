@@ -18,13 +18,12 @@
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
             <tr>
-              <th scope="col" class="px-6 py-3">Time</th>
-              <th scope="col" class="px-6 py-3">Carrier</th>
-              <th scope="col" class="px-6 py-3">Flight</th>
-              <th scope="col" class="px-6 py-3">
-                {{ direction === "arr" ? "Origin" : "Destination" }}
+              <th scope="col" class="px-4 py-3 lg:px-6">Time</th>
+              <th scope="col" class="px-4 py-3 lg:px-6">Flight</th>
+              <th scope="col" class="px-4 py-3 lg:px-6">
+                {{ direction === "arr" ? "Origin" : "Dest." }}
               </th>
-              <th scope="col" class="px-6 py-3">Status</th>
+              <th scope="col" class="px-4 py-3 lg:px-6">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -38,7 +37,7 @@
               class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
-                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                class="px-4 py-4 font-medium text-gray-900 lg:px-6 whitespace-nowrap dark:text-white"
               >
                 {{
                   direction === "arr"
@@ -46,25 +45,28 @@
                     : formatDate(flight.dep_time)
                 }}
               </td>
-              <!-- time -->
-              <td class="px-6 py-4">
+              <!-- <td class="px-4 py-4 lg:px-6">
                 {{ flight.airline_iata }}
-              </td>
-              <!-- carrier -->
-              <td class="px-6 py-4">
+              </td> -->
+              <td class="px-4 py-4 lg:px-6">
                 {{
-                  `${flight.airline_iata ? flight.airline_iata : ""}${
-                    flight.flight_number
-                  }`
+                  `${flight.airline_iata ? flight.airline_iata : ""}${flight.flight_number}`
                 }}
               </td>
-              <!-- flight -->
-              <td class="px-6 py-4">
+              <td class="px-4 py-4 lg:px-6">
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
-                <!-- origin/destination -->
               </td>
-              <td class="px-6 py-4">{{ flight.status }}</td>
-              <!-- status -->
+              <td
+                :class="`${
+                  flight.status === 'cancelled' ? 'text-red-500' : ''
+                } ${flight.status === 'scheduled' ? 'text-sky-500' : ''} ${
+                  flight.status === 'active' ? 'text-emerald-500' : ''
+                } ${
+                  flight.status === 'landed' ? 'text-green-500' : ''
+                } px-4 py-4 lg:px-6`"
+              >
+                {{ flight.status.toUpperCase() }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -114,9 +116,7 @@
             <li>
               <p
                 :class="`${currentPage === 1 ? 'ml-0 rounded-l-lg' : ''} ${
-                  currentPage === Math.ceil(flights.length / flightsPerPage)
-                    ? 'mr-0 rounded-r-lg'
-                    : ''
+                  currentPage === lastPage ? 'mr-0 rounded-r-lg' : ''
                 } flex items-center justify-center h-8 px-3 text-blue-600 border border-gray-300 cursor-pointer bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white`"
               >
                 {{ currentPage }}
@@ -124,11 +124,7 @@
             </li>
 
             <template v-for="i in 2">
-              <li
-                v-if="
-                  currentPage + i <= Math.ceil(flights.length / flightsPerPage)
-                "
-              >
+              <li v-if="currentPage + i <= lastPage">
                 <p
                   @click="() => goToPage(currentPage + i)"
                   class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -137,9 +133,7 @@
                 </p>
               </li>
             </template>
-            <li
-              v-if="currentPage !== Math.ceil(flights.length / flightsPerPage)"
-            >
+            <li v-if="currentPage !== lastPage">
               <p
                 @click="incrementPage"
                 class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -147,14 +141,9 @@
                 {{ `>` }}
               </p>
             </li>
-            <li
-              v-if="currentPage !== Math.ceil(flights.length / flightsPerPage)"
-            >
+            <li v-if="currentPage !== lastPage">
               <p
-                @click="
-                  () =>
-                    (currentPage = Math.ceil(flights.length / flightsPerPage))
-                "
+                @click="() => (currentPage = lastPage)"
                 class="flex items-center justify-center h-8 px-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 {{ `>>` }}
@@ -194,14 +183,24 @@ const props = defineProps({
   formatDate: {
     type: Function,
     required: true,
-  }
+  },
 });
 
 const currentPage = ref(1);
 const flightsPerPage = ref(10);
 const indexOfLastFlight = ref(currentPage.value * flightsPerPage.value);
 const indexOfFirstFlight = ref(indexOfLastFlight.value - flightsPerPage.value);
-const lastPage = Math.ceil(props.flights.length / flightsPerPage.value);
+const lastPage = ref(Math.ceil(props.flights.length / flightsPerPage.value));
+
+watch(
+  [() => props.flights, () => props.direction],
+  () => {
+    currentPage.value = 1;
+    indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
+    indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
+    lastPage.value = Math.ceil(props.flights.length / flightsPerPage.value);
+  }
+);
 
 const decrementPage = () => {
   if (currentPage.value > 1) {
@@ -213,32 +212,25 @@ const decrementPage = () => {
 
 const incrementPage = () => {
   if (
-    currentPage.value < Math.ceil(props.flights.length / flightsPerPage.value)
+    currentPage.value < lastPage.value
   ) {
     currentPage.value++;
   } else {
-    currentPage.value = Math.ceil(props.flights.length / flightsPerPage.value);
+    currentPage.value = lastPage.value;
   }
 };
 
 const goToPage = (page: number) => {
   if (
     page >= 1 &&
-    page <= Math.ceil(props.flights.length / flightsPerPage.value)
+    page <= lastPage.value
   ) {
     currentPage.value = page;
   }
 };
 
-onMounted(() => {
-  console.log(indexOfFirstFlight.value, indexOfLastFlight.value);
+watch([currentPage, flightsPerPage], () => {
+  indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
+  indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
 });
-
-watch(
-  [currentPage, flightsPerPage],
-  ([newCPVal, newPPPVal], [oldCPVal, newPPPval]) => {
-    indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
-    indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
-  }
-);
 </script>
