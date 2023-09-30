@@ -73,64 +73,91 @@
         <div class="mt-4">
           <p class="text-sm text-gray-700 dark:text-gray-400">
             Showing
-            <span class="font-medium">1</span>
+            <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
             to
-            <span class="font-medium">10</span>
+            <span class="font-medium">{{ indexOfLastFlight }}</span>
             of
-            <span class="font-medium">97</span>
+            <span class="font-medium">{{ flights.length }}</span>
             results
           </p>
         </div>
         <nav aria-label="Page navigation example" class="mt-1">
           <ul class="inline-flex -space-x-px text-sm">
-            <li>
+            <li v-if="currentPage > 1">
               <p
-                class="flex items-center justify-center h-8 px-3 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                @click="() => (currentPage = 1)"
+                class="flex items-center justify-center h-8 px-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
-                Previous
+                {{ `<<` }}
               </p>
             </li>
-            <li>
+            <li v-if="currentPage > 1">
               <p
+                @click="decrementPage"
                 class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
-                1
+                {{ `<` }}
               </p>
             </li>
+
+            <template v-for="i in [1, 2].reverse()">
+              <li v-if="currentPage - i >= 1">
+                <p
+                  @click="() => goToPage(currentPage - i)"
+                  class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                >
+                  {{ currentPage - i }}
+                </p>
+              </li>
+            </template>
+
             <li>
               <p
-                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                :class="`${currentPage === 1 ? 'ml-0 rounded-l-lg' : ''} ${
+                  currentPage === Math.ceil(flights.length / flightsPerPage)
+                    ? 'mr-0 rounded-r-lg'
+                    : ''
+                } flex items-center justify-center h-8 px-3 text-blue-600 border border-gray-300 cursor-pointer bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white`"
               >
-                2
+                {{ currentPage }}
               </p>
             </li>
-            <li>
-              <p
-                class="flex items-center justify-center h-8 px-3 text-blue-600 border border-gray-300 cursor-pointer bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+
+            <template v-for="i in 2">
+              <li
+                v-if="
+                  currentPage + i <= Math.ceil(flights.length / flightsPerPage)
+                "
               >
-                3
-              </p>
-            </li>
-            <li>
-              <p
-                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                4
-              </p>
-            </li>
-            <li>
-              <p
-                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                5
-              </p>
-            </li>
-            <li>
+                <p
+                  @click="() => goToPage(currentPage + i)"
+                  class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                >
+                  {{ currentPage + i }}
+                </p>
+              </li>
+            </template>
+            <li
+              v-if="currentPage !== Math.ceil(flights.length / flightsPerPage)"
+            >
               <p
                 @click="incrementPage"
-                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
-                Next
+                {{ `>` }}
+              </p>
+            </li>
+            <li
+              v-if="currentPage !== Math.ceil(flights.length / flightsPerPage)"
+            >
+              <p
+                @click="
+                  () =>
+                    (currentPage = Math.ceil(flights.length / flightsPerPage))
+                "
+                class="flex items-center justify-center h-8 px-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                {{ `>>` }}
               </p>
             </li>
           </ul>
@@ -167,11 +194,6 @@ const props = defineProps({
   },
 });
 
-const incrementPage = () => {
-  currentPage.value++;
-  console.log(currentPage.value);
-};
-
 const formatDate = (date: string) => {
   const newDate = new Date(date);
 
@@ -184,19 +206,47 @@ const formatDate = (date: string) => {
 };
 
 const currentPage = ref(1);
-const postsPerPage = ref(10);
-const indexOfLastFlight = ref(currentPage.value * postsPerPage.value);
-const indexOfFirstFlight = ref(indexOfLastFlight.value - postsPerPage.value);
+const flightsPerPage = ref(10);
+const indexOfLastFlight = ref(currentPage.value * flightsPerPage.value);
+const indexOfFirstFlight = ref(indexOfLastFlight.value - flightsPerPage.value);
+const lastPage = Math.ceil(props.flights.length / flightsPerPage.value);
+
+const decrementPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  } else {
+    currentPage.value = 1;
+  }
+};
+
+const incrementPage = () => {
+  if (
+    currentPage.value < Math.ceil(props.flights.length / flightsPerPage.value)
+  ) {
+    currentPage.value++;
+  } else {
+    currentPage.value = Math.ceil(props.flights.length / flightsPerPage.value);
+  }
+};
+
+const goToPage = (page: number) => {
+  if (
+    page >= 1 &&
+    page <= Math.ceil(props.flights.length / flightsPerPage.value)
+  ) {
+    currentPage.value = page;
+  }
+};
 
 onMounted(() => {
   console.log(indexOfFirstFlight.value, indexOfLastFlight.value);
 });
 
 watch(
-  [currentPage, postsPerPage],
+  [currentPage, flightsPerPage],
   ([newCPVal, newPPPVal], [oldCPVal, newPPPval]) => {
-    indexOfLastFlight.value = currentPage.value * postsPerPage.value;
-    indexOfFirstFlight.value = indexOfLastFlight.value - postsPerPage.value;
+    indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
+    indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
   }
 );
 </script>
