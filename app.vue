@@ -5,11 +5,6 @@
     :selectedFlight="selectedFlight"
   />
   <div class="container flex flex-col items-center px-4 py-8 mx-auto">
-    <label
-      for="cities"
-      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >Select a city</label
-    >
     <select
       id="cities"
       v-model="airportCode"
