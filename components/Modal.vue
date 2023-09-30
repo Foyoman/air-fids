@@ -1,16 +1,16 @@
 <template>
   <div
     @click="() => closeModal()"
-    class="w-full h-full fixed bg-black bg-opacity-60 z-50"
+    class="fixed z-50 w-full h-full bg-black bg-opacity-60"
   >
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+      class="fixed p-6 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700"
     >
       <button
         @click="(e) => closeButton(e)"
         type="button"
-        class="absolute right-1 top-1 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-6 h-6 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+        class="absolute inline-flex items-center justify-center w-6 h-6 ml-auto text-sm text-gray-400 bg-transparent rounded-lg right-1 top-1 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
       >
         <svg
           class="w-3 h-3"

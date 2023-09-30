@@ -5,7 +5,7 @@
       data-tooltip-target="table-hover-example-toggle-dark-mode-tooltip"
       type="button"
       :data-toggle-dark="isDarkMode ? 'light' : 'dark'"
-      class="flex items-center w-9 h-9 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+      class="flex items-center justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg w-9 h-9 toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
     >
       <svg
         data-toggle-icon="moon"

@@ -4,7 +4,7 @@
     :closeModal="toggleModal"
     :selectedFlight="selectedFlight"
   />
-  <div class="container mx-auto flex flex-col items-center px-4 py-8">
+  <div class="container flex flex-col items-center px-4 py-8 mx-auto">
     <label
       for="cities"
       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -20,9 +20,9 @@
       </option>
     </select>
     <DarkModeToggle class="absolute top-4 right-4" />
-    <div class="flex w-full flex-col lg:flex-row items-center lg:items-start">
+    <div class="flex flex-col items-center w-full lg:flex-row lg:items-start">
       <div
-        class="lg:hidden text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700"
+        class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 lg:hidden dark:text-gray-400 dark:border-gray-700"
       >
         <ul class="flex flex-wrap -mb-px">
           <li class="mr-2">
