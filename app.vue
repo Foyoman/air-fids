@@ -1,22 +1,70 @@
 <template>
-  <Modal v-if="showModal" :closeModal="toggleModal" />
+  <Modal
+    v-if="showModal"
+    :closeModal="toggleModal"
+    :selectedFlight="selectedFlight"
+  />
   <div class="container mx-auto flex flex-col items-center px-4 py-8">
-    <label for="cities" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a city</label>
-    <select id="cities" v-model="airportCode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <label
+      for="cities"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Select a city</label
+    >
+    <select
+      id="cities"
+      v-model="airportCode"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    >
       <option v-for="airport in airportCodes" :value="airport" :key="airport">
         {{ airport }}
       </option>
     </select>
     <DarkModeToggle class="absolute top-4 right-4" />
-    <div class="flex w-full">
+    <div class="flex w-full flex-col lg:flex-row items-center lg:items-start">
+      <div
+        class="lg:hidden text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700"
+      >
+        <ul class="flex flex-wrap -mb-px">
+          <li class="mr-2">
+            <p
+              @click="selectTable('arr')"
+              :class="
+                direction === 'arr' ? selectedStyles : unselectedStyles
+              "
+            >
+              Arrivals
+            </p>
+          </li>
+          <li class="mr-2">
+            <p
+              @click="selectTable('dep')"
+              :class="
+                direction === 'dep' ? selectedStyles : unselectedStyles
+              "
+            >
+              Departures
+            </p>
+          </li>
+        </ul>
+      </div>
+      <FlightsDisplay 
+        class="flex lg:hidden"
+        :direction="direction"
+        :flights="direction === 'arrivals' ? arrivals : departures"
+        :loading="direction === 'arrivals' ? arrivalsLoading : departuresLoading"
+        :openModal="toggleModal"
+      />
+
       <FlightsDisplay
-        table="arrivals"
+        class="hidden lg:flex"
+        direction="arr"
         :flights="arrivals"
         :loading="arrivalsLoading"
         :openModal="toggleModal"
       />
       <FlightsDisplay
-        table="departures"
+        class="hidden lg:flex"
+        direction="dep"
         :flights="departures"
         :loading="departuresLoading"
         :openModal="toggleModal"
@@ -36,22 +84,35 @@ const airportCode = ref("SYD");
 const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 
 const showModal = ref(false);
+const selectedFlight = ref<Flight | null>(null);
 
-const toggleModal = () => {
-  console.log('click')
+const direction = ref("arr");
+
+const selectedStyles = "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
+const unselectedStyles = "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+
+const toggleModal = (flight?: Flight) => {
+  if (!selectedFlight.value && flight) {
+    selectedFlight.value = flight;
+    console.log(flight);
+  } else {
+    selectedFlight.value = null;
+  }
   showModal.value = !showModal.value;
-}
+};
 
 watch(showModal, () => {
   const body = document.body;
   if (showModal.value) {
-    console.log('adding')
     body.classList.add("overflow-hidden");
   } else {
-    console.log('removing')
     body.classList.remove("overflow-hidden");
   }
 });
+
+const selectTable = (dir: "arr" | "dep") => {
+  direction.value = dir;
+}
 
 async function getData(city: string, direction: "arr" | "dep") {
   let params = new URLSearchParams({

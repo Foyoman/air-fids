@@ -1,11 +1,11 @@
 <template>
   <div
     @click="() => closeModal()"
-    class="w-screen h-screen fixed bg-black bg-opacity-60 z-50"
+    class="w-full h-full fixed bg-black bg-opacity-60 z-50"
   >
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
     >
       <button
         @click="(e) => closeButton(e)"
@@ -32,12 +32,12 @@
         <h5
           class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          SYD
+          {{ selectedFlight?.dep_iata }}
         </h5>
         <h5
           class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          MEL
+          {{ selectedFlight?.arr_iata }}
         </h5>
       </div>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
@@ -49,6 +49,8 @@
 </template>
 
 <script lang="ts">
+import { Flight } from '~/types';
+
 export default {
   props: {
     closeModal: {
@@ -56,6 +58,11 @@ export default {
       required: true,
       default: null,
     },
+    selectedFlight: {
+      type: Object as () => Flight | null,
+      required: false,
+      default: null,
+    }
   },
   methods: {
     closeButton(e: MouseEvent) {
