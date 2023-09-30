@@ -77,7 +77,7 @@
             Showing
             <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
             to
-            <span class="font-medium">{{ indexOfLastFlight }}</span>
+            <span class="font-medium">{{ indexOfLastFlight > flights.length ? flights.length : indexOfLastFlight }}</span>
             of
             <span class="font-medium">{{ flights.length }}</span>
             results

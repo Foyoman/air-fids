@@ -5,7 +5,7 @@
   >
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed w-11/12 p-6 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700"
+      class="fixed w-11/12 sm:max-w-xl p-6 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700"
     >
       <button
         @click="(e) => closeButton(e)"
