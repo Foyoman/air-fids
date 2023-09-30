@@ -5,7 +5,7 @@
   >
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed p-6 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700"
+      class="fixed w-11/12 p-6 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700"
     >
       <button
         @click="(e) => closeButton(e)"
@@ -28,47 +28,105 @@
           />
         </svg>
       </button>
-      <div class="flex justify-between">
+      <div class="flex items-center justify-between h-8 mb-2">
         <h5
-          class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ selectedFlight?.dep_iata }}
         </h5>
+        <div class="relative w-full h-full mx-4">
+          <span
+            class="absolute w-full h-px mb-px -translate-y-1/2 bg-slate-200 opacity-60 top-1/2"
+          />
+          <span
+            :style="{ left: `${flightProgress}%` }"
+            class="absolute text-green-600 -translate-x-1/2 -translate-y-1/2 top-1/2"
+          >
+            ✈
+          </span>
+        </div>
         <h5
-          class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ selectedFlight?.arr_iata }}
         </h5>
       </div>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-        Here are the biggest enterprise technology acquisitions of 2021 so far,
-        in reverse chronological order.
-      </p>
+      <div class="flex flex-col">
+        <div class="flex justify-between mt-3">
+          <div>
+            <p class="text-gray-500 dark:text-gray-400">Scheduled departure</p>
+            <p class="text-gray-900 dark:text-white">
+              {{ formatDate(selectedFlight?.dep_time) }}
+            </p>
+          </div>
+          <div class="flex gap-4">
+            <div>
+              <p class="text-gray-500 dark:text-gray-400">Terminal</p>
+              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.dep_terminal || '-' }}</p>
+            </div>
+            <div>
+              <p class="text-gray-500 dark:text-gray-400">Gate</p>
+              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.dep_gate || '-' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between mt-3">
+          <div>
+            <p class="text-gray-500 dark:text-gray-400">Scheduled arrival</p>
+            <p class="text-gray-900 dark:text-white">
+              {{ formatDate(selectedFlight?.arr_time) }}
+            </p>
+          </div>
+          <div class="flex gap-4">
+            <div>
+              <p class="text-gray-500 dark:text-gray-400">Terminal</p>
+              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.arr_terminal || '-' }}</p>
+            </div>
+            <div>
+              <p class="text-gray-500 dark:text-gray-400">Gate</p>
+              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.arr_gate || '-' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Flight } from "~/types";
 
-export default {
-  props: {
-    closeModal: {
-      type: Function,
-      required: true,
-      default: null,
-    },
-    selectedFlight: {
-      type: Object as () => Flight | null,
-      required: false,
-      default: null,
-    },
+const props = defineProps({
+  closeModal: {
+    type: Function,
+    required: true,
+    default: null,
   },
-  methods: {
-    closeButton(e: MouseEvent) {
-      e.stopPropagation();
-      this.closeModal();
-    },
+  selectedFlight: {
+    type: Object as () => Flight | null,
+    required: false,
   },
+  formatDate: {
+    type: Function,
+    required: true,
+  }
+});
+
+const flightProgress = ref(0);
+
+const getFlightStatus = () => {};
+
+onMounted(() => {
+  const status = props.selectedFlight?.status;
+  if (status === "landed") {
+    flightProgress.value = 100;
+  }
+  // if (props.selectedFlight.stat)
+});
+
+const closeButton = (e: MouseEvent) => {
+  e.stopPropagation();
+  props.closeModal();
 };
 </script>

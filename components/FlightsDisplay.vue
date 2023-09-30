@@ -189,21 +189,13 @@ const props = defineProps({
   },
   openModal: {
     type: Function,
-    required: false,
-    default: null,
+    required: true,
   },
+  formatDate: {
+    type: Function,
+    required: true,
+  }
 });
-
-const formatDate = (date: string) => {
-  const newDate = new Date(date);
-
-  // Get the hours and minutes from the Date object
-  const hours = newDate.getHours().toString().padStart(2, "0"); // Ensure two digits for hours
-  const minutes = newDate.getMinutes().toString().padStart(2, "0"); // Ensure two digits for minutes
-
-  // Concatenate the hours and minutes with a colon
-  return `${hours}:${minutes}`;
-};
 
 const currentPage = ref(1);
 const flightsPerPage = ref(10);

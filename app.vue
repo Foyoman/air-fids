@@ -3,6 +3,7 @@
     v-if="showModal"
     :closeModal="toggleModal"
     :selectedFlight="selectedFlight"
+    :formatDate="formatDate"
   />
   <div class="container flex flex-col items-center px-4 py-8 mx-auto">
     <select
@@ -48,6 +49,7 @@
         :flights="direction === 'arrivals' ? arrivals : departures"
         :loading="direction === 'arrivals' ? arrivalsLoading : departuresLoading"
         :openModal="toggleModal"
+        :formatDate="formatDate"
       />
 
       <FlightsDisplay
@@ -56,6 +58,7 @@
         :flights="arrivals"
         :loading="arrivalsLoading"
         :openModal="toggleModal"
+        :formatDate="formatDate"
       />
       <FlightsDisplay
         class="hidden lg:flex"
@@ -63,6 +66,7 @@
         :flights="departures"
         :loading="departuresLoading"
         :openModal="toggleModal"
+        :formatDate="formatDate"
       />
     </div>
   </div>
@@ -85,29 +89,6 @@ const direction = ref("arr");
 
 const selectedStyles = "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
 const unselectedStyles = "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-
-const toggleModal = (flight?: Flight) => {
-  if (!selectedFlight.value && flight) {
-    selectedFlight.value = flight;
-    console.log(flight);
-  } else {
-    selectedFlight.value = null;
-  }
-  showModal.value = !showModal.value;
-};
-
-watch(showModal, () => {
-  const body = document.body;
-  if (showModal.value) {
-    body.classList.add("overflow-hidden");
-  } else {
-    body.classList.remove("overflow-hidden");
-  }
-});
-
-const selectTable = (dir: "arr" | "dep") => {
-  direction.value = dir;
-}
 
 async function getData(city: string, direction: "arr" | "dep") {
   let params = new URLSearchParams({
@@ -150,4 +131,38 @@ onMounted(() => {
   getData(airportCode.value, "arr");
   getData(airportCode.value, "dep");
 });
+
+const formatDate = (date: string) => {
+  const newDate = new Date(date);
+
+  // Get the hours and minutes from the Date object
+  const hours = newDate.getHours().toString().padStart(2, "0"); // Ensure two digits for hours
+  const minutes = newDate.getMinutes().toString().padStart(2, "0"); // Ensure two digits for minutes
+
+  // Concatenate the hours and minutes with a colon
+  return `${hours}:${minutes}`;
+};
+
+const toggleModal = (flight?: Flight) => {
+  if (!selectedFlight.value && flight) {
+    selectedFlight.value = flight;
+    console.log(flight);
+  } else {
+    selectedFlight.value = null;
+  }
+  showModal.value = !showModal.value;
+};
+
+watch(showModal, () => {
+  const body = document.body;
+  if (showModal.value) {
+    body.classList.add("overflow-hidden");
+  } else {
+    body.classList.remove("overflow-hidden");
+  }
+});
+
+const selectTable = (dir: "arr" | "dep") => {
+  direction.value = dir;
+}
 </script>
