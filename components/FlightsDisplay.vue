@@ -20,25 +20,25 @@
             <tr>
               <th
                 scope="col"
-                class="px-2 sm:px-4 py-3 text-xs text-center sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
               >
                 Time
               </th>
               <th
                 scope="col"
-                class="px-2 sm:px-4 py-3 text-xs text-center sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
               >
                 Flight
               </th>
               <th
                 scope="col"
-                class="px-2 sm:px-4 py-3 text-xs text-center sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
               >
                 {{ direction === "arr" ? "Origin" : "Dest." }}
               </th>
               <th
                 scope="col"
-                class="px-2 sm:px-4 py-3 text-xs text-center sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
               >
                 Status
               </th>
@@ -55,7 +55,7 @@
               class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
-                class="px-2 sm:px-4 py-4 text-xs font-medium text-center text-gray-900 sm:text-sm lg:px-6 whitespace-nowrap dark:text-white"
+                class="px-2 py-4 text-xs font-medium text-center text-gray-900 sm:px-4 sm:text-sm lg:px-6 whitespace-nowrap dark:text-white"
               >
                 <span
                   :class="`${
@@ -87,12 +87,12 @@
                   }}
                 </span>
               </td>
-              <!-- <td class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6">
+              <!-- <td class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-6">
                 {{ flight.airline_iata }}
               </td> -->
               <td
                 id="flight-number"
-                class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6"
+                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
               >
                 {{
                   `${flight.airline_iata || flight.airline_icao || ""}${
@@ -102,7 +102,7 @@
               </td>
               <td
                 id="origin/destination"
-                class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6"
+                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
               >
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
               </td>
