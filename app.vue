@@ -17,7 +17,7 @@
     </select>
     <DarkModeToggle class="absolute top-4 right-4" />
     <div class="flex flex-col items-center w-full lg:flex-row lg:items-start">
-      <Tabs :selectTable="selectTable" :direction="direction" />
+      <Tabs :selectTable="selectTable" :direction="direction" class="mt-2" />
       <FlightsDisplay
         class="flex lg:hidden"
         :direction="direction"

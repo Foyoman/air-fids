@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col items-center w-full px-0 py-4 overflow-scroll lg:w-1/2 lg:py-8"
+    class="flex-col items-center w-full px-0 pt-2 pb-4 overflow-scroll lg:w-1/2 lg:py-8"
   >
     <h1
       class="hidden mx-auto mb-4 text-2xl text-center lg:block dark:text-white"
