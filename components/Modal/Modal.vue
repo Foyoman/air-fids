@@ -73,7 +73,9 @@
             class="absolute text-xs text-gray-500 -translate-x-1/2 dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
           >
             {{
-              `${selectedFlight.airline_iata || selectedFlight.airline_icao || ""}${selectedFlight.flight_number}`
+              `${
+                selectedFlight.airline_iata || selectedFlight.airline_icao || ""
+              }${selectedFlight.flight_number}`
             }}
           </p>
           <span
@@ -82,8 +84,11 @@
           />
           <span
             id="aeroplane"
-            :style="{ left: `${flightProgress}%` }"
-            :class="`absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
+            :style="{
+              left: `${flightProgress}%`,
+              textShadow: '-2px 2px 3px rgba(0, 0, 0, 0.8)',
+            }"
+            :class="`drop-shadow-sm absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
               selectedFlight.status === 'cancelled' || selectedFlight.delayed
                 ? 'text-red-600 dark:text-red-500'
