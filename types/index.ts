@@ -4,6 +4,9 @@ export interface Flight {
   airline_icao: string;
   arr_baggage: string;
   arr_delayed: string;
+  arr_estimated: string;
+	arr_estimated_ts: number;
+	arr_estimated_utc: string;
   arr_gate: string;
   arr_iata: string;
   arr_icao: string;
@@ -16,6 +19,9 @@ export interface Flight {
   cs_flight_number: string;
   delayed: number;
   dep_delayed: number;
+  dep_actual: string;
+	dep_actual_ts: number;
+	dep_actual_utc: string;
   dep_estimated: string;
   dep_estimated_ts: number;
   dep_estimated_utc: string;

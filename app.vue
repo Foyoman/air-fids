@@ -1,6 +1,6 @@
 <template>
   <Modal
-    v-if="showModal"
+    v-if="showModal && selectedFlight"
     :closeModal="toggleModal"
     :selectedFlight="selectedFlight"
     :formatDate="formatDate"
@@ -24,9 +24,7 @@
           <li class="mr-2">
             <p
               @click="selectTable('arr')"
-              :class="
-                direction === 'arr' ? selectedStyles : unselectedStyles
-              "
+              :class="direction === 'arr' ? selectedStyles : unselectedStyles"
             >
               Arrivals
             </p>
@@ -34,16 +32,14 @@
           <li class="mr-2">
             <p
               @click="selectTable('dep')"
-              :class="
-                direction === 'dep' ? selectedStyles : unselectedStyles
-              "
+              :class="direction === 'dep' ? selectedStyles : unselectedStyles"
             >
               Departures
             </p>
           </li>
         </ul>
       </div>
-      <FlightsDisplay 
+      <FlightsDisplay
         class="flex lg:hidden"
         :direction="direction"
         :flights="direction === 'arr' ? arrivals : departures"
@@ -75,8 +71,8 @@
 <script setup lang="ts">
 import { Flight } from "~/types";
 
-const arrivals = ref([]);
-const departures = ref([]);
+const arrivals = ref<Flight[]>([]);
+const departures = ref<Flight[]>([]);
 const arrivalsLoading = ref(false);
 const departuresLoading = ref(false);
 const airportCode = ref("SYD");
@@ -85,38 +81,44 @@ const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 const showModal = ref(false);
 const selectedFlight = ref<Flight | null>(null);
 
-const direction = ref<"arr"| "dep">("arr");
+const direction = ref<"arr" | "dep">("arr");
 
-const selectedStyles = "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
-const unselectedStyles = "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+const selectedStyles =
+  "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500";
+const unselectedStyles =
+  "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 
-async function getData(city: string, direction: "arr" | "dep") {
+async function getData(city: string, dir: "arr" | "dep") {
   let params = new URLSearchParams({
     api_key: "47819a31-962d-49be-ad71-248d4005117c",
   });
 
-  params.append(`${direction}_iata`, city);
+  params.append(`${dir}_iata`, city);
 
   await fetch(`https://airlabs.co/api/v9/schedules?${params}`)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
 
-      data.response.sort((a: Flight, b: Flight) => {
-        const dateA = new Date(direction === "arr" ? a.arr_time : a.dep_time);
-        const dateB = new Date(direction === "arr" ? b.arr_time : b.dep_time);
-        return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
-      });
+      const sortedData: Flight[] = data.response.sort(
+        (a: Flight, b: Flight) => {
+          const dateA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
+          const dateB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
+          return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
+        }
+      );
 
-      if (direction === "arr") {
-        arrivals.value = data.response;
+      if (dir === "arr") {
+        arrivals.value = sortedData;
         arrivalsLoading.value = false;
       }
 
-      if (direction === "dep") {
-        departures.value = data.response;
+      if (dir === "dep") {
+        departures.value = sortedData;
         departuresLoading.value = false;
       }
+
+      console.log(sortedData.find((flight) => Number(flight.flight_number) === 5004))
     });
 }
 
@@ -132,21 +134,24 @@ onMounted(() => {
   getData(airportCode.value, "dep");
 });
 
-const formatDate = (date: string) => {
-  const newDate = new Date(date);
+const formatDate = (date: string, key: "date" | "time") => {
+  const dateObject = new Date(date);
 
-  // Get the hours and minutes from the Date object
-  const hours = newDate.getHours().toString().padStart(2, "0"); // Ensure two digits for hours
-  const minutes = newDate.getMinutes().toString().padStart(2, "0"); // Ensure two digits for minutes
+  const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+	const day = String(dateObject.getDate()).padStart(2, "0");
+  const hours = String(dateObject.getHours()).padStart(2, "0"); // Ensure two digits for hours
+  const minutes = String(dateObject.getMinutes()).padStart(2, "0"); // Ensure two digits for minutes
 
-  // Concatenate the hours and minutes with a colon
-  return `${hours}:${minutes}`;
+  if (key === "date") {
+    return `${month}/${day}`
+  } else {
+    return `${hours}:${minutes}`;
+  }
 };
 
 const toggleModal = (flight?: Flight) => {
   if (!selectedFlight.value && flight) {
     selectedFlight.value = flight;
-    console.log(flight);
   } else {
     selectedFlight.value = null;
   }
@@ -164,5 +169,5 @@ watch(showModal, () => {
 
 const selectTable = (dir: "arr" | "dep") => {
   direction.value = dir;
-}
+};
 </script>

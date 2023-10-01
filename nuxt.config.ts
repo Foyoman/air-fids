@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/color-mode"],
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
   app: {
     head: {
       title: 'fids',

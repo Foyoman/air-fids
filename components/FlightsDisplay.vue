@@ -18,12 +18,12 @@
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
             <tr>
-              <th scope="col" class="px-4 py-3 lg:px-6">Time</th>
-              <th scope="col" class="px-4 py-3 lg:px-6">Flight</th>
-              <th scope="col" class="px-4 py-3 lg:px-6">
+              <th scope="col" class="px-3 py-3 text-xs text-center sm:text-sm lg:px-6">Time</th>
+              <th scope="col" class="px-3 py-3 text-xs text-center sm:text-sm lg:px-6">Flight</th>
+              <th scope="col" class="px-3 py-3 text-xs text-center sm:text-sm lg:px-6">
                 {{ direction === "arr" ? "Origin" : "Dest." }}
               </th>
-              <th scope="col" class="px-4 py-3 lg:px-6">Status</th>
+              <th scope="col" class="px-3 py-3 text-xs text-center sm:text-sm lg:px-6">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -37,23 +37,26 @@
               class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
-                class="px-4 py-4 font-medium text-gray-900 lg:px-6 whitespace-nowrap dark:text-white"
+                :title="direction === 'arr' ? flight.arr_time : flight.dep_time"
+                class="px-3 py-4 text-xs font-medium text-center text-gray-900 sm:text-sm lg:px-6 whitespace-nowrap dark:text-white"
               >
                 {{
                   direction === "arr"
-                    ? formatDate(flight.arr_time)
-                    : formatDate(flight.dep_time)
+                    ? formatDate(flight.arr_time, "time")
+                    : formatDate(flight.dep_time, "time")
                 }}
               </td>
-              <!-- <td class="px-4 py-4 lg:px-6">
+              <!-- <td class="px-3 py-4 text-xs text-center sm:text-sm lg:px-6">
                 {{ flight.airline_iata }}
               </td> -->
-              <td class="px-4 py-4 lg:px-6">
+              <td class="px-3 py-4 text-xs text-center sm:text-sm lg:px-6">
                 {{
-                  `${flight.airline_iata ? flight.airline_iata : ""}${flight.flight_number}`
+                  `${flight.airline_iata ? flight.airline_iata : ""}${
+                    flight.flight_number
+                  }`
                 }}
               </td>
-              <td class="px-4 py-4 lg:px-6">
+              <td class="px-3 py-4 text-xs text-center sm:text-sm lg:px-6">
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
               </td>
               <td
@@ -63,7 +66,7 @@
                   flight.status === 'active' ? 'text-emerald-500' : ''
                 } ${
                   flight.status === 'landed' ? 'text-green-500' : ''
-                } px-4 py-4 lg:px-6`"
+                } text-center text-xs sm:text-sm px-3 py-4 lg:px-6`"
               >
                 {{ flight.status.toUpperCase() }}
               </td>
@@ -77,7 +80,11 @@
             Showing
             <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
             to
-            <span class="font-medium">{{ indexOfLastFlight > flights.length ? flights.length : indexOfLastFlight }}</span>
+            <span class="font-medium">{{
+              indexOfLastFlight > flights.length
+                ? flights.length
+                : indexOfLastFlight
+            }}</span>
             of
             <span class="font-medium">{{ flights.length }}</span>
             results
@@ -162,7 +169,7 @@ import { Flight } from "~/types";
 
 const props = defineProps({
   direction: {
-    type: String,
+    type: String as () => "arr" | "dep",
     required: true,
     default: null,
   },
@@ -177,11 +184,11 @@ const props = defineProps({
     default: false,
   },
   openModal: {
-    type: Function,
+    type: Function as PropType<(flight?: Flight) => void>,
     required: true,
   },
   formatDate: {
-    type: Function,
+    type: Function as PropType<(date: string, key: "date" | "time") => string>,
     required: true,
   },
 });
@@ -192,15 +199,12 @@ const indexOfLastFlight = ref(currentPage.value * flightsPerPage.value);
 const indexOfFirstFlight = ref(indexOfLastFlight.value - flightsPerPage.value);
 const lastPage = ref(Math.ceil(props.flights.length / flightsPerPage.value));
 
-watch(
-  [() => props.flights, () => props.direction],
-  () => {
-    currentPage.value = 1;
-    indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
-    indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
-    lastPage.value = Math.ceil(props.flights.length / flightsPerPage.value);
-  }
-);
+watch([() => props.flights, () => props.direction], () => {
+  currentPage.value = 1;
+  indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
+  indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
+  lastPage.value = Math.ceil(props.flights.length / flightsPerPage.value);
+});
 
 const decrementPage = () => {
   if (currentPage.value > 1) {
@@ -211,9 +215,7 @@ const decrementPage = () => {
 };
 
 const incrementPage = () => {
-  if (
-    currentPage.value < lastPage.value
-  ) {
+  if (currentPage.value < lastPage.value) {
     currentPage.value++;
   } else {
     currentPage.value = lastPage.value;
@@ -221,10 +223,7 @@ const incrementPage = () => {
 };
 
 const goToPage = (page: number) => {
-  if (
-    page >= 1 &&
-    page <= lastPage.value
-  ) {
+  if (page >= 1 && page <= lastPage.value) {
     currentPage.value = page;
   }
 };

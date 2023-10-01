@@ -32,7 +32,7 @@
         <h5
           class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          {{ selectedFlight?.dep_iata }}
+          {{ selectedFlight.dep_iata }}
         </h5>
         <div class="relative w-full h-full mx-4">
           <span
@@ -40,7 +40,13 @@
           />
           <span
             :style="{ left: `${flightProgress}%` }"
-            class="absolute text-green-600 -translate-x-1/2 -translate-y-1/2 top-1/2"
+            :class="`absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
+            ${
+              selectedFlight.status === 'cancelled' || selectedFlight.delayed
+                ? 'text-red-500 dark:text-red-500'
+                : 'text-emerald-600 dark:text-emerald-500'
+            }
+            `"
           >
             ✈
           </span>
@@ -48,82 +54,80 @@
         <h5
           class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          {{ selectedFlight?.arr_iata }}
+          {{ selectedFlight.arr_iata }}
         </h5>
       </div>
       <div class="flex flex-col">
-        <div class="flex justify-between mt-3">
-          <div>
-            <p class="text-gray-500 dark:text-gray-400">Scheduled departure</p>
-            <p class="text-gray-900 dark:text-white">
-              {{ formatDate(selectedFlight?.dep_time) }}
-            </p>
-          </div>
-          <div class="flex gap-4">
-            <div>
-              <p class="text-gray-500 dark:text-gray-400">Terminal</p>
-              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.dep_terminal || '-' }}</p>
-            </div>
-            <div>
-              <p class="text-gray-500 dark:text-gray-400">Gate</p>
-              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.dep_gate || '-' }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex justify-between mt-3">
-          <div>
-            <p class="text-gray-500 dark:text-gray-400">Scheduled arrival</p>
-            <p class="text-gray-900 dark:text-white">
-              {{ formatDate(selectedFlight?.arr_time) }}
-            </p>
-          </div>
-          <div class="flex gap-4">
-            <div>
-              <p class="text-gray-500 dark:text-gray-400">Terminal</p>
-              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.arr_terminal || '-' }}</p>
-            </div>
-            <div>
-              <p class="text-gray-500 dark:text-gray-400">Gate</p>
-              <p class="text-gray-900 dark:text-white">{{ selectedFlight?.arr_gate || '-' }}</p>
-            </div>
-          </div>
-        </div>
+        <FlightInfo
+          :selectedFlight="selectedFlight"
+          direction="dep"
+          :formatDate="formatDate"
+        />
+        <FlightInfo
+          :selectedFlight="selectedFlight"
+          direction="arr"
+          :formatDate="formatDate"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { PropType } from "nuxt/dist/app/compat/capi";
 import { Flight } from "~/types";
 
 const props = defineProps({
   closeModal: {
-    type: Function,
+    type: Function as PropType<(flight?: Flight) => void>,
     required: true,
     default: null,
   },
   selectedFlight: {
-    type: Object as () => Flight | null,
-    required: false,
+    type: Object as () => Flight,
+    required: true,
   },
   formatDate: {
-    type: Function,
+    type: Function as PropType<(date: string, key: "date" | "time") => string>,
     required: true,
-  }
+  },
 });
 
 const flightProgress = ref(0);
 
-const getFlightStatus = () => {};
+const calculateFlightProgress = () => {
+  const now = new Date();
+  const depTime = new Date(props.selectedFlight.dep_actual);
+  const arrTime = new Date(props.selectedFlight.arr_estimated);
+
+  if (!depTime || !arrTime || now < depTime) {
+    flightProgress.value = 0
+  } else if (props.selectedFlight.status === "landed" || now >= arrTime) {
+    flightProgress.value = 100;
+  } else if (now > depTime && now < arrTime) {
+    const timeElapsed = Math.abs(Number(now) - Number(arrTime));
+    const duration = Math.abs(Number(arrTime) - Number(depTime));
+    const percentage = Math.round((duration - timeElapsed) / duration * 100);
+    console.log('percentage: ', percentage)
+    flightProgress.value = percentage;
+  } else {
+    flightProgress.value = 0;
+  }
+
+  console.log(flightProgress.value);
+}
 
 onMounted(() => {
-  const status = props.selectedFlight?.status;
-  if (status === "landed") {
-    flightProgress.value = 100;
+  calculateFlightProgress()
+})
+
+watch(
+  () => props.selectedFlight,
+  () => {
+    calculateFlightProgress();
+    // if (props.selectedFlight.stat)
   }
-  // if (props.selectedFlight.stat)
-});
+);
 
 const closeButton = (e: MouseEvent) => {
   e.stopPropagation();
