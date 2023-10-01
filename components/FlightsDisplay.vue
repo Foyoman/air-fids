@@ -55,7 +55,6 @@
               class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
-                :title="direction === 'arr' ? flight.arr_time : flight.dep_time"
                 class="px-2 sm:px-4 py-4 text-xs font-medium text-center text-gray-900 sm:text-sm lg:px-6 whitespace-nowrap dark:text-white"
               >
                 <span

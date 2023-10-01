@@ -1,48 +1,116 @@
 <template>
-  <div class="flex justify-between mt-3 sm:mt-0 sm:w-1/2">
-    <div>
-      <p class="text-gray-500 dark:text-gray-400">{{ direction === 'arr' ? "Arrival" : "Departure" }}</p>
-      <div class="flex sm:flex-col-reverse">
-        <p
-          :class="`${
-            selectedFlight.status === 'cancelled' || selectedFlight.arr_estimated && selectedFlight.dep_estimated &&
-            new Date(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time) !==
-            new Date(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated)
-              ? 'line-through text-gray-500 dark:text-gray-400'
-              : 'text-gray-900 dark:text-white sm:text-2xl'
-          }`"
-        >
-          {{ formatDate(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time, "time") }}
-        </p>
-        <p
-          v-if="
-            selectedFlight.status === 'cancelled' || selectedFlight.arr_estimated && selectedFlight.dep_estimated &&
-            new Date(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time) !==
-            new Date(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated)
-          "
-          :class="`ml-2 sm:ml-0 ${
-            new Date(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated) <
-            new Date(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time)
-              ? 'text-emerald-600 dark:text-emerald-500'
-              : 'text-red-500 dark:text-red-500'
-          } sm:text-2xl`"
-        >
-          {{ selectedFlight.status === 'cancelled' ? 'Cancelled' : formatDate(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated, "time") }}
-        </p>
-      </div>
-    </div>
-    <div class="flex gap-4">
+  <div class="flex flex-col justify-between mt-3 sm:mt-0 sm:w-1/2">
+    <p class="text-gray-800 dark:text-gray-100 text-lg">
+      {{
+        formatDate(
+          direction === "arr"
+            ? selectedFlight.arr_estimated || selectedFlight.arr_time
+            : selectedFlight.dep_estimated || selectedFlight.dep_time,
+          "date"
+        )
+      }}
+    </p>
+    <div class="flex justify-between mt-3 sm:mt-0">
       <div>
-        <p class="text-gray-500 dark:text-gray-400">Terminal</p>
-        <p class="text-gray-900 dark:text-white sm:text-2xl">
-          {{ direction === 'arr' ? selectedFlight.arr_terminal || "-" : selectedFlight.dep_terminal || "-" }}
+        <p class="text-gray-500 dark:text-gray-400">
+          {{ direction === "arr" ? "Arrival" : "Departure" }}
         </p>
+
+        <div class="flex sm:flex-col-reverse">
+          <p
+            :class="`${
+              selectedFlight.status === 'cancelled' ||
+              (selectedFlight.arr_estimated &&
+                selectedFlight.dep_estimated &&
+                new Date(
+                  direction === 'arr'
+                    ? selectedFlight.arr_time
+                    : selectedFlight.dep_time
+                ) !==
+                  new Date(
+                    direction === 'arr'
+                      ? selectedFlight.arr_estimated
+                      : selectedFlight.dep_estimated
+                  ))
+                ? 'line-through text-gray-500 dark:text-gray-400'
+                : 'text-gray-900 dark:text-white sm:text-2xl'
+            }`"
+          >
+            {{
+              formatDate(
+                direction === "arr"
+                  ? selectedFlight.arr_time
+                  : selectedFlight.dep_time,
+                "time"
+              )
+            }}
+          </p>
+
+          <p
+            v-if="
+              selectedFlight.status === 'cancelled' ||
+              (selectedFlight.arr_estimated &&
+                selectedFlight.dep_estimated &&
+                new Date(
+                  direction === 'arr'
+                    ? selectedFlight.arr_time
+                    : selectedFlight.dep_time
+                ) !==
+                  new Date(
+                    direction === 'arr'
+                      ? selectedFlight.arr_estimated
+                      : selectedFlight.dep_estimated
+                  ))
+            "
+            :class="`ml-2 sm:ml-0 ${
+              new Date(
+                direction === 'arr'
+                  ? selectedFlight.arr_estimated
+                  : selectedFlight.dep_estimated
+              ) <
+              new Date(
+                direction === 'arr'
+                  ? selectedFlight.arr_time
+                  : selectedFlight.dep_time
+              )
+                ? 'text-emerald-600 dark:text-emerald-500'
+                : 'text-red-500 dark:text-red-500'
+            } sm:text-2xl`"
+          >
+            {{
+              selectedFlight.status === "cancelled"
+                ? "Cancelled"
+                : formatDate(
+                    direction === "arr"
+                      ? selectedFlight.arr_estimated
+                      : selectedFlight.dep_estimated,
+                    "time"
+                  )
+            }}
+          </p>
+        </div>
       </div>
-      <div>
-        <p class="text-gray-500 dark:text-gray-400">Gate</p>
-        <p class="text-gray-900 dark:text-white sm:text-2xl">
-          {{ direction === 'arr' ? selectedFlight.arr_gate || "-" : selectedFlight.dep_gate || "-" }}
-        </p>
+      <div class="flex gap-4">
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Terminal</p>
+          <p class="text-gray-900 dark:text-white sm:text-2xl">
+            {{
+              direction === "arr"
+                ? selectedFlight.arr_terminal || "-"
+                : selectedFlight.dep_terminal || "-"
+            }}
+          </p>
+        </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Gate</p>
+          <p class="text-gray-900 dark:text-white sm:text-2xl">
+            {{
+              direction === "arr"
+                ? selectedFlight.arr_gate || "-"
+                : selectedFlight.dep_gate || "-"
+            }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +125,7 @@ const props = defineProps({
     required: true,
   },
   direction: {
-    type: String as () => 'arr' | 'dep',
+    type: String as () => "arr" | "dep",
     required: true,
   },
   formatDate: {

@@ -138,13 +138,18 @@ onMounted(() => {
 const formatDate = (date: string, key: "date" | "time") => {
   const dateObject = new Date(date);
 
-  const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Month is zero-based
-	const day = String(dateObject.getDate()).padStart(2, "0");
+  const dateArr = String(dateObject).split(" ").slice(0, 3).map((val) => val.replace(/^0+/, '')); // .map((val) => val.replace(/^0+/, '')).join(" ");
+  const [day, month, dayDate] = dateArr;
+  const formattedDate = `${day}, ${dayDate} ${month}`
+  console.log(formattedDate)
+
+  // const month = String(dateObject.getMonth() + 1) // .padStart(2, "0"); // Month is zero-based
+	// const day = String(dateObject.getDate()) // .padStart(2, "0");
   const hours = String(dateObject.getHours()).padStart(2, "0"); // Ensure two digits for hours
   const minutes = String(dateObject.getMinutes()).padStart(2, "0"); // Ensure two digits for minutes
 
   if (key === "date") {
-    return `${month}/${day}`
+    return formattedDate;
   } else {
     return `${hours}:${minutes}`;
   }
