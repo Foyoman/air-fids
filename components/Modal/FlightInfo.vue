@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-between mt-3 lg:mt-0 lg:w-1/2">
+  <div class="flex justify-between mt-3 sm:mt-0 sm:w-1/2">
     <div>
       <p class="text-gray-500 dark:text-gray-400">{{ direction === 'arr' ? "Arrival" : "Departure" }}</p>
-      <div class="flex lg:flex-col-reverse">
+      <div class="flex sm:flex-col-reverse">
         <p
           :class="`${
             selectedFlight.status === 'cancelled' || selectedFlight.arr_estimated && selectedFlight.dep_estimated &&
@@ -20,12 +20,12 @@
             new Date(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time) !==
             new Date(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated)
           "
-          :class="`ml-2 lg:ml-0 ${
+          :class="`ml-2 sm:ml-0 ${
             new Date(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated) <
             new Date(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time)
               ? 'text-emerald-600 dark:text-emerald-500'
               : 'text-red-500 dark:text-red-500'
-          } lg:text-2xl`"
+          } sm:text-2xl`"
         >
           {{ selectedFlight.status === 'cancelled' ? 'Cancelled' : formatDate(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated, "time") }}
         </p>
@@ -34,13 +34,13 @@
     <div class="flex gap-4">
       <div>
         <p class="text-gray-500 dark:text-gray-400">Terminal</p>
-        <p class="text-gray-900 dark:text-white lg:text-2xl">
+        <p class="text-gray-900 dark:text-white sm:text-2xl">
           {{ direction === 'arr' ? selectedFlight.arr_terminal || "-" : selectedFlight.dep_terminal || "-" }}
         </p>
       </div>
       <div>
         <p class="text-gray-500 dark:text-gray-400">Gate</p>
-        <p class="text-gray-900 dark:text-white lg:text-2xl">
+        <p class="text-gray-900 dark:text-white sm:text-2xl">
           {{ direction === 'arr' ? selectedFlight.arr_gate || "-" : selectedFlight.dep_gate || "-" }}
         </p>
       </div>

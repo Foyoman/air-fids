@@ -100,22 +100,22 @@
           {{ selectedFlight.arr_iata }}
         </h3>
       </div>
-      <div class="flex flex-col mt-2 lg:flex-row lg:mt-4">
-        <!-- flex-col items-center lg:flex-row -->
+      <div class="flex flex-col mt-2 sm:flex-row sm:mt-4">
+        <!-- flex-col items-center sm:flex-row -->
         <FlightInfo
           :selectedFlight="selectedFlight"
           direction="dep"
           :formatDate="formatDate"
-          class="mb-3 lg:mb-0 lg:pr-4"
+          class="mb-3 sm:mb-0 sm:pr-4"
         />
         <div
-          class="h-px lg:my-1 lg:h-auto lg:w-px bg-slate-200 dark:bg-slate-600"
+          class="h-px sm:my-1 sm:h-auto sm:w-px bg-slate-200 dark:bg-slate-600"
         />
         <FlightInfo
           :selectedFlight="selectedFlight"
           direction="arr"
           :formatDate="formatDate"
-          class="lg:pl-4"
+          class="sm:pl-4"
         />
       </div>
     </div>
