@@ -70,6 +70,7 @@
 
 <script setup lang="ts">
 import { Flight } from "~/types";
+import { dummyArrivals, dummyDepartures } from '~/lib/flights' // 
 
 const arrivals = ref<Flight[]>([]);
 const departures = ref<Flight[]>([]);
@@ -82,14 +83,16 @@ const showModal = ref(false);
 const selectedFlight = ref<Flight | null>(null);
 
 const direction = ref<"arr" | "dep">("arr");
+const sort = ref<"time" | "flight" | "origin" | "destination" | "status">("time")
+const reverse = ref(false);
 
 const selectedStyles =
   "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500";
 const unselectedStyles =
   "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 
-const runtimeConfig = useRuntimeConfig()
-async function getData(city: string, dir: "arr" | "dep") {
+const runtimeConfig = useRuntimeConfig();
+async function getFlights(city: string, dir: "arr" | "dep") {
   let params = new URLSearchParams({
     api_key: runtimeConfig.public.API_KEY,
   });
@@ -101,50 +104,72 @@ async function getData(city: string, dir: "arr" | "dep") {
     .then((data) => {
       console.log(data);
 
-      const sortedData: Flight[] = data.response.sort(
-        (a: Flight, b: Flight) => {
-          const dateA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
-          const dateB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
-          return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
-        }
-      );
-
       if (dir === "arr") {
-        arrivals.value = sortedData;
+        arrivals.value = sortFlights(data.response, "arr", sort.value, reverse.value);
         arrivalsLoading.value = false;
       }
 
       if (dir === "dep") {
-        departures.value = sortedData;
+        departures.value = sortFlights(data.response, "dep", sort.value, reverse.value);
         departuresLoading.value = false;
       }
-
-      console.log(sortedData.find((flight) => Number(flight.flight_number) === 5004))
     });
 }
+
+const sortFlights = (
+  flights: Flight[],
+  dir: "arr" | "dep",
+  key: "time" | "flight" | "origin" | "destination" | "status",
+  reverse: boolean
+) => {
+  const timeSorted: Flight[] = flights.sort((a: Flight, b: Flight) => {
+    const dateA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
+    const dateB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
+    return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
+  });
+
+  // TODO: implement other sorts
+  if (key === "time") {
+    return reverse ? timeSorted.reverse() : timeSorted;
+  } else {
+    return flights;
+  }
+};
 
 watch(airportCode, () => {
   departuresLoading.value = true;
   arrivalsLoading.value = true;
-  getData(airportCode.value, "arr");
-  getData(airportCode.value, "dep");
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
 });
 
 onMounted(() => {
-  getData(airportCode.value, "arr");
-  getData(airportCode.value, "dep");
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
+
+  // reset all this 
+  const sortedArrivals = sortFlights(dummyArrivals, "arr", sort.value, reverse.value);
+  const sortedDepartures = sortFlights(dummyDepartures, "dep", sort.value, reverse.value);
+
+  console.log(sortedArrivals);
+  arrivals.value = sortedArrivals;
+  departures.value = sortedDepartures;
+
 });
 
 const formatDate = (date: string, key: "date" | "time") => {
   const dateObject = new Date(date);
 
-  const dateArr = String(dateObject).split(" ").slice(0, 3).map((val) => val.replace(/^0+/, '')); // .map((val) => val.replace(/^0+/, '')).join(" ");
+  const dateArr = String(dateObject)
+    .split(" ")
+    .slice(0, 3)
+    .map((val) => val.replace(/^0+/, ""));
   const [day, month, dayDate] = dateArr;
-  const formattedDate = `${day}, ${dayDate} ${month}`
-  console.log(formattedDate)
+  const formattedDate = `${day}, ${dayDate} ${month}`;
+  console.log(formattedDate);
 
   // const month = String(dateObject.getMonth() + 1) // .padStart(2, "0"); // Month is zero-based
-	// const day = String(dateObject.getDate()) // .padStart(2, "0");
+  // const day = String(dateObject.getDate()) // .padStart(2, "0");
   const hours = String(dateObject.getHours()).padStart(2, "0"); // Ensure two digits for hours
   const minutes = String(dateObject.getMinutes()).padStart(2, "0"); // Ensure two digits for minutes
 
@@ -177,3 +202,4 @@ const selectTable = (dir: "arr" | "dep") => {
   direction.value = dir;
 };
 </script>
+./lib/arrivals

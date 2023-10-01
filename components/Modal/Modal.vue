@@ -146,8 +146,8 @@ const flightProgress = ref(0);
 
 const calculateFlightProgress = () => {
   const now = new Date();
-  const depTime = new Date(props.selectedFlight.dep_actual);
-  const arrTime = new Date(props.selectedFlight.arr_estimated);
+  const depTime = new Date(props.selectedFlight.dep_actual!);
+  const arrTime = new Date(props.selectedFlight.arr_estimated!);
 
   if (!depTime || !arrTime || now < depTime) {
     flightProgress.value = 0;
