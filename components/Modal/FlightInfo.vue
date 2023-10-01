@@ -9,7 +9,7 @@
             new Date(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time) !==
             new Date(direction === 'arr' ? selectedFlight.arr_estimated : selectedFlight.dep_estimated)
               ? 'line-through text-gray-500 dark:text-gray-400'
-              : 'text-gray-900 dark:text-white'
+              : 'text-gray-900 dark:text-white sm:text-2xl'
           }`"
         >
           {{ formatDate(direction === 'arr' ? selectedFlight.arr_time : selectedFlight.dep_time, "time") }}

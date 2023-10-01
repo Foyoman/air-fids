@@ -133,7 +133,7 @@
           </tbody>
         </table>
       </div>
-      <div class="flex flex-col items-center w-full">
+      <div id="pagination" class="flex flex-col items-center w-full">
         <div class="mt-4">
           <p class="text-sm text-gray-700 dark:text-gray-400">
             Showing
@@ -149,7 +149,7 @@
             results
           </p>
         </div>
-        <nav aria-label="Page navigation example" class="mt-1">
+        <nav class="mt-1">
           <ul class="inline-flex -space-x-px text-sm">
             <li v-if="currentPage > 1">
               <p
