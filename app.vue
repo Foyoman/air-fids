@@ -88,9 +88,10 @@ const selectedStyles =
 const unselectedStyles =
   "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 
+const runtimeConfig = useRuntimeConfig()
 async function getData(city: string, dir: "arr" | "dep") {
   let params = new URLSearchParams({
-    api_key: process.env.API_KEY!,
+    api_key: runtimeConfig.public.API_KEY,
   });
 
   params.append(`${dir}_iata`, city);

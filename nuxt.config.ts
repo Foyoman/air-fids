@@ -2,16 +2,21 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/color-mode"],
+  runtimeConfig: {
+    public: {
+      API_KEY: process.env.API_KEY,
+    },
+  },
   components: [
     {
-      path: '~/components',
+      path: "~/components",
       pathPrefix: false,
     },
   ],
   app: {
     head: {
-      title: 'fids',
-    }
+      title: "fids",
+    },
   },
   css: ["~/assets/main.scss"],
   postcss: {
@@ -21,6 +26,6 @@ export default defineNuxtConfig({
     },
   },
   colorMode: {
-    classSuffix: ''
+    classSuffix: "",
   },
 });
