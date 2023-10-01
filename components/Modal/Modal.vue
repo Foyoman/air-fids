@@ -5,7 +5,7 @@
   >
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed w-11/12 sm:max-w-xl p-6 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700"
+      class="fixed flex flex-col w-11/12 p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow sm:max-w-xl top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
       <button
         @click="(e) => closeButton(e)"
@@ -28,22 +28,61 @@
           />
         </svg>
       </button>
-      <div class="flex items-center justify-between h-8 mb-2">
-        <h5
+      <div class="flex justify-center mb-2">
+        <p
+          :class="`${
+            selectedFlight.status === 'cancelled'
+              ? 'text-red-600 dark:text-red-500 border-red-600 dark:border-red-500'
+              : ''
+          } ${
+            selectedFlight.status === 'scheduled'
+              ? 'text-sky-600 dark:text-sky-500 border-sky-600 dark:border-sky-500'
+              : ''
+          } ${
+            selectedFlight.status === 'active'
+              ? 'text-emerald-600 dark:text-emerald-500 border-emerald-600 dark:border-emerald-500'
+              : ''
+          } ${
+            selectedFlight.status === 'landed'
+              ? 'text-green-600 dark:text-green-500 border-green-600 dark:border-green-600'
+              : ''
+          } inline-block px-[6px] py-[2px] text-xs font-semibold border-2 rounded-md`"
+        >
+          {{ selectedFlight.status.toUpperCase() }}
+        </p>
+      </div>
+      <div class="flex items-center justify-between h-8">
+        <h3
           class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ selectedFlight.dep_iata }}
-        </h5>
+        </h3>
         <div class="relative w-full h-full mx-4">
+          <p
+            class="absolute text-xs text-gray-500 -translate-x-1/2 -translate-y-full dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
+          >
+            {{
+              `${Math.floor(selectedFlight.duration / 60)}h ${
+                selectedFlight.duration % 60
+              }m`
+            }}
+          </p>
+          <p
+            class="absolute text-xs text-gray-500 -translate-x-1/2 dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
+          >
+            {{
+              `${selectedFlight.airline_iata}${selectedFlight.flight_number}`
+            }}
+          </p>
           <span
-            class="absolute w-full h-px mb-px -translate-y-1/2 bg-slate-200 opacity-60 top-1/2"
+            class="absolute w-full h-px mb-px -translate-y-1/2 bg-slate-400 dark:bg-slate-200 opacity-60 top-1/2"
           />
           <span
             :style="{ left: `${flightProgress}%` }"
             :class="`absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
               selectedFlight.status === 'cancelled' || selectedFlight.delayed
-                ? 'text-red-500 dark:text-red-500'
+                ? 'text-red-600 dark:text-red-500'
                 : 'text-emerald-600 dark:text-emerald-500'
             }
             `"
@@ -51,22 +90,28 @@
             ✈
           </span>
         </div>
-        <h5
+        <h3
           class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ selectedFlight.arr_iata }}
-        </h5>
+        </h3>
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col mt-2 lg:flex-row lg:mt-4">
+        <!-- flex-col items-center lg:flex-row -->
         <FlightInfo
           :selectedFlight="selectedFlight"
           direction="dep"
           :formatDate="formatDate"
+          class="mb-3 lg:mb-0 lg:pr-4"
+        />
+        <div
+          class="h-px lg:my-1 lg:h-auto lg:w-px bg-slate-200 dark:bg-slate-600"
         />
         <FlightInfo
           :selectedFlight="selectedFlight"
           direction="arr"
           :formatDate="formatDate"
+          class="lg:pl-4"
         />
       </div>
     </div>
@@ -101,25 +146,25 @@ const calculateFlightProgress = () => {
   const arrTime = new Date(props.selectedFlight.arr_estimated);
 
   if (!depTime || !arrTime || now < depTime) {
-    flightProgress.value = 0
+    flightProgress.value = 0;
   } else if (props.selectedFlight.status === "landed" || now >= arrTime) {
     flightProgress.value = 100;
   } else if (now > depTime && now < arrTime) {
     const timeElapsed = Math.abs(Number(now) - Number(arrTime));
     const duration = Math.abs(Number(arrTime) - Number(depTime));
-    const percentage = Math.round((duration - timeElapsed) / duration * 100);
-    console.log('percentage: ', percentage)
+    const percentage = Math.round(((duration - timeElapsed) / duration) * 100);
+    console.log("percentage: ", percentage);
     flightProgress.value = percentage;
   } else {
     flightProgress.value = 0;
   }
 
   console.log(flightProgress.value);
-}
+};
 
 onMounted(() => {
-  calculateFlightProgress()
-})
+  calculateFlightProgress();
+});
 
 watch(
   () => props.selectedFlight,

@@ -5,7 +5,7 @@
     :selectedFlight="selectedFlight"
     :formatDate="formatDate"
   />
-  <div class="container flex flex-col items-center px-4 py-8 mx-auto">
+  <div class="container flex flex-col items-center px-2 sm:px-4 py-8 mx-auto">
     <select
       id="cities"
       v-model="airportCode"
@@ -90,7 +90,7 @@ const unselectedStyles =
 
 async function getData(city: string, dir: "arr" | "dep") {
   let params = new URLSearchParams({
-    api_key: "47819a31-962d-49be-ad71-248d4005117c",
+    api_key: process.env.API_KEY!,
   });
 
   params.append(`${dir}_iata`, city);
