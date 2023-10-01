@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col items-center w-full px-0 py-4 overflow-scroll lg:w-1/2 lg:px-4 lg:py-8"
+    class="flex-col items-center w-full px-0 py-4 overflow-scroll lg:w-1/2 lg:py-8"
   >
     <h1
       class="hidden mx-auto mb-4 text-2xl text-center lg:block dark:text-white"
@@ -20,27 +20,39 @@
             <tr>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
-                Time
+                <span class="flex items-center justify-center">
+                  <p>Time</p>
+                  <SortIcon />
+                </span>
               </th>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
-                Flight
+                <span class="flex items-center justify-center">
+                  <p>Flight</p>
+                  <SortIcon />
+                </span>
               </th>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
-                {{ direction === "arr" ? "Origin" : "Dest." }}
+                <span class="flex items-center justify-center">
+                  <p>{{ direction === "arr" ? "Origin" : "Dest." }}</p>
+                  <SortIcon />
+                </span>
               </th>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
+                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
-                Status
+                <span class="flex items-center justify-center">
+                  <p>Status</p>
+                  <SortIcon />
+                </span>
               </th>
             </tr>
           </thead>
@@ -55,7 +67,7 @@
               class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
-                class="px-2 py-4 text-xs font-medium text-center text-gray-900 sm:px-4 sm:text-sm lg:px-6 whitespace-nowrap dark:text-white"
+                class="px-2 py-4 text-xs font-medium text-center text-gray-900 sm:px-4 sm:text-sm lg:px-4 whitespace-nowrap dark:text-white"
               >
                 <span
                   :class="`${
@@ -87,12 +99,12 @@
                   }}
                 </span>
               </td>
-              <!-- <td class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-6">
+              <!-- <td class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4">
                 {{ flight.airline_iata }}
               </td> -->
               <td
                 id="flight-number"
-                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
+                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
                 {{
                   `${flight.airline_iata || flight.airline_icao || ""}${
@@ -102,7 +114,7 @@
               </td>
               <td
                 id="origin/destination"
-                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-6"
+                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
               </td>
@@ -124,7 +136,7 @@
                   flight.status === 'landed'
                     ? 'text-green-600 dark:text-green-500'
                     : ''
-                } text-center text-xs sm:text-sm px-2 sm:px-4 py-4 lg:px-6`"
+                } text-center text-xs sm:text-sm px-2 sm:px-4 py-4 lg:px-4`"
               >
                 {{ flight.status.toUpperCase() }}
               </td>

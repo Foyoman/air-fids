@@ -17,28 +17,7 @@
     </select>
     <DarkModeToggle class="absolute top-4 right-4" />
     <div class="flex flex-col items-center w-full lg:flex-row lg:items-start">
-      <div
-        class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 lg:hidden dark:text-gray-400 dark:border-gray-700"
-      >
-        <ul class="flex flex-wrap -mb-px">
-          <li class="mr-2">
-            <p
-              @click="selectTable('arr')"
-              :class="direction === 'arr' ? selectedStyles : unselectedStyles"
-            >
-              Arrivals
-            </p>
-          </li>
-          <li class="mr-2">
-            <p
-              @click="selectTable('dep')"
-              :class="direction === 'dep' ? selectedStyles : unselectedStyles"
-            >
-              Departures
-            </p>
-          </li>
-        </ul>
-      </div>
+      <Tabs :selectTable="selectTable" :direction="direction" />
       <FlightsDisplay
         class="flex lg:hidden"
         :direction="direction"
@@ -49,7 +28,7 @@
       />
 
       <FlightsDisplay
-        class="hidden lg:flex"
+        class="hidden lg:flex lg:pl-0 lg:pr-4"
         direction="arr"
         :flights="arrivals"
         :loading="arrivalsLoading"
@@ -57,7 +36,7 @@
         :formatDate="formatDate"
       />
       <FlightsDisplay
-        class="hidden lg:flex"
+        class="hidden lg:flex lg:pr-0 lg:pl-4"
         direction="dep"
         :flights="departures"
         :loading="departuresLoading"
@@ -85,11 +64,6 @@ const selectedFlight = ref<Flight | null>(null);
 const direction = ref<"arr" | "dep">("arr");
 const sort = ref<"time" | "flight" | "origin" | "destination" | "status">("time")
 const reverse = ref(false);
-
-const selectedStyles =
-  "text-lg inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500";
-const unselectedStyles =
-  "text-lg inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 
 const runtimeConfig = useRuntimeConfig();
 async function getFlights(city: string, dir: "arr" | "dep") {
@@ -202,4 +176,3 @@ const selectTable = (dir: "arr" | "dep") => {
   direction.value = dir;
 };
 </script>
-./lib/arrivals
