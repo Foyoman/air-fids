@@ -59,6 +59,7 @@
         </h3>
         <div class="relative w-full h-full mx-4">
           <p
+            id="flight-duration"
             class="absolute text-xs text-gray-500 -translate-x-1/2 -translate-y-full dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
           >
             {{
@@ -68,16 +69,19 @@
             }}
           </p>
           <p
+            id="flight-number"
             class="absolute text-xs text-gray-500 -translate-x-1/2 dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
           >
             {{
-              `${selectedFlight.airline_iata}${selectedFlight.flight_number}`
+              `${selectedFlight.airline_iata || selectedFlight.airline_icao || ""}${selectedFlight.flight_number}`
             }}
           </p>
           <span
+            id="aeroplane-path"
             class="absolute w-full h-px mb-px -translate-y-1/2 bg-slate-400 dark:bg-slate-200 opacity-60 top-1/2"
           />
           <span
+            id="aeroplane"
             :style="{ left: `${flightProgress}%` }"
             :class="`absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${

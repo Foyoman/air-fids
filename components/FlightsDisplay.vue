@@ -60,13 +60,13 @@
               >
                 <span
                   :class="`${
-                    direction === 'arr' 
+                    direction === 'arr'
                       ? flight.delayed && flight.arr_estimated
                         ? 'text-gray-500 dark:text-gray-400 line-through font-normal`'
                         : ''
                       : flight.delayed && flight.dep_estimated
-                        ? 'text-gray-500 dark:text-gray-400 line-through font-normal`'
-                        : ''
+                      ? 'text-gray-500 dark:text-gray-400 line-through font-normal`'
+                      : ''
                   }`"
                 >
                   {{
@@ -83,25 +83,32 @@
                         ? formatDate(flight.arr_estimated, "time")
                         : ""
                       : flight.delayed && flight.dep_estimated
-                        ? formatDate(flight.dep_estimated, "time")
-                        : ""
+                      ? formatDate(flight.dep_estimated, "time")
+                      : ""
                   }}
                 </span>
               </td>
               <!-- <td class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6">
                 {{ flight.airline_iata }}
               </td> -->
-              <td class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6">
+              <td
+                id="flight-number"
+                class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6"
+              >
                 {{
-                  `${flight.airline_iata ? flight.airline_iata : ""}${
+                  `${flight.airline_iata || flight.airline_icao || ""}${
                     flight.flight_number
                   }`
                 }}
               </td>
-              <td class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6">
+              <td
+                id="origin/destination"
+                class="px-2 sm:px-4 py-4 text-xs text-center sm:text-sm lg:px-6"
+              >
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
               </td>
               <td
+                id="flight-status"
                 :class="`${
                   flight.status === 'cancelled'
                     ? 'text-red-600 dark:text-red-500'
