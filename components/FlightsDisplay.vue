@@ -134,7 +134,7 @@
         </table>
       </div>
       <div id="pagination" class="flex flex-col items-center w-full">
-        <div class="mt-4">
+        <div class="mt-2 mb-2">
           <p class="text-sm text-gray-700 dark:text-gray-400">
             Showing
             <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
