@@ -2,9 +2,6 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/color-mode"],
-  env: {
-    apiKey: process.env.API_KEY
-  },
   components: [
     {
       path: '~/components',
