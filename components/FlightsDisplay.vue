@@ -199,7 +199,7 @@
               </p>
             </li>
 
-            <template v-for="i in [1, 2].reverse()">
+            <template v-if="currentPage < 98" v-for="i in [1, 2].reverse()">
               <li v-if="currentPage - i >= 1">
                 <p
                   @click="() => goToPage(currentPage - i)"
@@ -220,7 +220,7 @@
               </p>
             </li>
 
-            <template v-for="i in 2">
+            <template v-if="currentPage < 98" v-for="i in 2">
               <li v-if="currentPage + i <= lastPage">
                 <p
                   @click="() => goToPage(currentPage + i)"
@@ -296,7 +296,6 @@ const updateFlightsPerPage = (e: InputEvent) => {
 }
 
 const currentPage = ref(1);
-// const flightsPerPage = ref(10);
 const indexOfLastFlight = ref(currentPage.value * props.flightsPerPage);
 const indexOfFirstFlight = ref(indexOfLastFlight.value - props.flightsPerPage);
 const lastPage = ref(Math.ceil(props.flights.length / props.flightsPerPage));
