@@ -8,6 +8,12 @@
       {{ direction === "arr" ? "Arrivals" : "Departures" }}
     </h2>
     <template v-if="!loading && flights.length">
+      <Search
+        :direction="direction"
+        :updateSearchTerm="updateSearchTerm"
+        :updateSearchField="updateSearchField"
+        class="mb-3"
+      />
       <div
         class="relative w-full overflow-x-auto shadow-md lg:block sm:rounded-lg"
       >
@@ -86,12 +92,12 @@
           </thead>
           <tbody>
             <tr
-              v-for="(flight, index) in flights.slice(
+              v-for="(flight, index) in filteredFlights().slice(
                 indexOfFirstFlight,
                 indexOfLastFlight
               )"
               :key="index"
-              @click="() => openModal(flight)"
+              @click="openModal(flight)"
               class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td
@@ -162,125 +168,27 @@
           </tbody>
         </table>
       </div>
-      <div id="pagination" class="flex flex-col items-center w-full">
-        <div class="flex items-center justify-between w-full px-2 mt-2 mb-2">
-          <p class="text-xs text-gray-700 sm:text-sm dark:text-gray-400">
-            Showing
-            <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
-            to
-            <span class="font-medium">{{
-              indexOfLastFlight > flights.length
-                ? flights.length
-                : indexOfLastFlight
-            }}</span>
-            of
-            <span class="font-medium">{{ flights.length }}</span>
-            results
-          </p>
-
-          <div class="flex items-center gap-1">
-            <label
-              for="per-page"
-              class="text-xs text-gray-700 sm:text-sm dark:text-gray-400"
-            >
-              Per page:
-            </label>
-            <select
-              id="per-page"
-              :value="flightsPerPage"
-              @input="(e) => updateFlightsPerPage(e as InputEvent)"
-              class="block px-0 py-1 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 lg:px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option
-                v-for="option in [5, 10, 25, 50, 100]"
-                :value="option"
-                :key="option"
-              >
-                {{ option }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <nav class="mt-1">
-          <ul class="inline-flex -space-x-px text-sm">
-            <li v-if="currentPage > 1">
-              <p
-                @click="() => (currentPage = 1)"
-                class="flex items-center justify-center h-8 px-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {{ `<<` }}
-              </p>
-            </li>
-            <li v-if="currentPage > 1">
-              <p
-                @click="decrementPage"
-                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {{ `<` }}
-              </p>
-            </li>
-
-            <template v-if="currentPage < 98" v-for="i in [1, 2].reverse()">
-              <li v-if="currentPage - i >= 1">
-                <p
-                  @click="() => goToPage(currentPage - i)"
-                  class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  {{ currentPage - i }}
-                </p>
-              </li>
-            </template>
-
-            <li>
-              <p
-                :class="`${currentPage === 1 ? 'ml-0 rounded-l-lg' : ''} ${
-                  currentPage === lastPage ? 'mr-0 rounded-r-lg' : ''
-                } flex items-center justify-center h-8 px-3 text-blue-600 border border-gray-300 cursor-pointer bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white`"
-              >
-                {{ currentPage }}
-              </p>
-            </li>
-
-            <template v-if="currentPage < 98" v-for="i in 2">
-              <li v-if="currentPage + i <= lastPage">
-                <p
-                  @click="() => goToPage(currentPage + i)"
-                  class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  {{ currentPage + i }}
-                </p>
-              </li>
-            </template>
-            <li v-if="currentPage !== lastPage">
-              <p
-                @click="incrementPage"
-                class="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {{ `>` }}
-              </p>
-            </li>
-            <li v-if="currentPage !== lastPage">
-              <p
-                @click="() => (currentPage = lastPage)"
-                class="flex items-center justify-center h-8 px-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                {{ `>>` }}
-              </p>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <Pagination
+        :flights="filteredFlights()"
+        v-model:currentPage="currentPage"
+        :indexOfFirstFlight="indexOfFirstFlight"
+        :indexOfLastFlight="indexOfLastFlight"
+        :lastPage="lastPage"
+        :flightsPerPage="flightsPerPage"
+        :updateFlightsPerPage="updateFlightsPerPage"
+        :resetValues="resetValues"
+      />
     </template>
     <Loading v-else class="mt-8" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Flight } from "~/types";
+import { Flight, Direction, TableField, SearchOption } from "~/types";
 
 const props = defineProps({
   direction: {
-    type: String as () => "arr" | "dep",
+    type: String as () => Direction,
     required: true,
     default: null,
   },
@@ -311,8 +219,8 @@ const props = defineProps({
     type: Function as PropType<
       (
         flights: Flight[],
-        dir: "arr" | "dep",
-        key: "time" | "flight" | "origin" | "destination" | "status",
+        dir: Direction,
+        key: TableField,
         reverse: boolean
       ) => Flight[]
     >,
@@ -321,17 +229,12 @@ const props = defineProps({
 });
 
 // for sort
-const sortState = ref<"time" | "flight" | "origin" | "destination" | "status">(
-  "time"
-);
+const sortState = ref<TableField>("time");
 const reverseState = ref(false);
 
 const emit = defineEmits();
 
-const setSort = (
-  sortKey: "time" | "flight" | "origin" | "destination" | "status",
-  fromWatch?: boolean
-) => {
+const setSort = (sortKey: TableField, fromWatch?: boolean) => {
   const isSameSortKey = sortKey === sortState.value;
 
   if (!fromWatch) {
@@ -351,51 +254,63 @@ const setSort = (
   );
 };
 
-const updateFlightsPerPage = (e: InputEvent) => {
-  const selectElement = e.target as HTMLSelectElement;
-  emit("update:flightsPerPage", selectElement.value);
+// for search
+const search = ref<string>("");
+const field = ref<keyof Flight | "all">("all");
+
+const filteredFlights = () => {
+  if (!search.value) return props.flights;
+
+  return props.flights.filter((flight) => {
+    if (field.value === "all") {
+      return Object.values(flight).some((value) =>
+        String(value).toLowerCase().includes(search.value.toLowerCase())
+      );
+    } else {
+      return String(flight[field.value])
+        .toLowerCase()
+        .includes(search.value.toLowerCase());
+    }
+  });
 };
 
+const updateSearchTerm = (searchTerm: string) => {
+  search.value = searchTerm;
+};
+
+const updateSearchField = (searchOption: SearchOption) => {
+  field.value = searchOption.value;
+};
+
+// for pagination
 const currentPage = ref(1);
 const indexOfLastFlight = ref(currentPage.value * props.flightsPerPage);
 const indexOfFirstFlight = ref(indexOfLastFlight.value - props.flightsPerPage);
 const lastPage = ref(Math.ceil(props.flights.length / props.flightsPerPage));
 
+const updateFlightsPerPage = (e: InputEvent) => {
+  const selectElement = e.target as HTMLSelectElement;
+  console.log(selectElement.value);
+  emit("update:flightsPerPage", Number(selectElement.value));
+};
+
 const resetValues = () => {
+  const displayedFlights = search ? filteredFlights() : props.flights;
   indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
   indexOfFirstFlight.value = indexOfLastFlight.value - props.flightsPerPage;
-  lastPage.value = Math.ceil(props.flights.length / props.flightsPerPage);
+  lastPage.value = Math.ceil(displayedFlights.length / props.flightsPerPage);
   setSort(sortState.value, true);
 };
 
-watch([() => props.flights, () => props.direction], () => {
-  currentPage.value = 1;
-  resetValues();
-});
-
-watch([currentPage, () => props.flightsPerPage], () => {
-  resetValues();
-});
-
-const decrementPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
-  } else {
+watch(
+  [() => props.flights, () => props.direction, () => props.flightsPerPage],
+  () => {
     currentPage.value = 1;
+    resetValues();
   }
-};
+);
 
-const incrementPage = () => {
-  if (currentPage.value < lastPage.value) {
-    currentPage.value++;
-  } else {
-    currentPage.value = lastPage.value;
-  }
-};
-
-const goToPage = (page: number) => {
-  if (page >= 1 && page <= lastPage.value) {
-    currentPage.value = page;
-  }
-};
+watch([currentPage], () => {
+  resetValues();
+});
 </script>

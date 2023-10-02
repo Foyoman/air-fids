@@ -1,3 +1,36 @@
+export type Direction = "arr" | "dep";
+
+export type TableField =
+  | "time"
+  | "flight"
+  | "origin"
+  | "destination"
+  | "status";
+
+export type AirportCode =
+  | "SYD"
+  | "MEL"
+  | "BNE"
+  | "ADL"
+  | "PER"
+  | "HBA"
+  | "DRW"
+  | "CBR";
+
+export type SearchField =
+  | "All"
+  | "Time"
+  | "Airline"
+  | "Flight"
+  | "Origin"
+  | "Destination"
+  | "Status";
+
+export interface SearchOption {
+  label: SearchField;
+  value: keyof Flight | "all";
+}
+
 export interface Flight {
   aircraft_icao: string | null;
   airline_iata: string | null;

@@ -9,21 +9,7 @@
         type="button"
         class="absolute inline-flex items-center justify-center w-6 h-6 ml-auto text-sm text-gray-400 bg-transparent rounded-lg right-1 top-1 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
       >
-        <svg
-          class="w-3 h-3"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 14 14"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-          />
-        </svg>
+        <CloseButton />
       </button>
       <div class="flex justify-center mb-2">
         <p
@@ -109,6 +95,7 @@
           :selectedFlight="selectedFlight"
           direction="dep"
           :formatDate="formatDate"
+          :findName="findName"
           class="mb-3 sm:mb-0 sm:pr-4"
         />
         <div
@@ -118,6 +105,7 @@
           :selectedFlight="selectedFlight"
           direction="arr"
           :formatDate="formatDate"
+          :findName="findName"
           class="sm:pl-4"
         />
       </div>
@@ -143,25 +131,28 @@ const props = defineProps({
     type: Function as PropType<(date: string, key: "date" | "time") => string>,
     required: true,
   },
+  findName: {
+    type: Function as PropType<(iata: string) => string>,
+    required: true,
+  },
 });
 
 const flightProgress = ref(0);
 
 const calculateFlightProgress = () => {
-  const now = new Date();
-  const depTime = new Date(props.selectedFlight.dep_actual!);
-  const arrTime = new Date(props.selectedFlight.arr_estimated!);
+  const now = new Date().getTime(); 
+  const depTime = new Date(props.selectedFlight.dep_actual!).getTime();
+  const arrTime = new Date(props.selectedFlight.arr_estimated!).getTime();
 
-  if (!depTime || !arrTime || now < depTime) {
+  if (isNaN(depTime) || isNaN(arrTime) || now < depTime) {
     flightProgress.value = 0;
   } else if (props.selectedFlight.status === "landed" || now >= arrTime) {
     flightProgress.value = 100;
-  } else if (now > depTime && now < arrTime) {
-    const timeElapsed = Math.abs(Number(now) - Number(arrTime));
-    const duration = Math.abs(Number(arrTime) - Number(depTime));
-    const percentage = Math.round(((duration - timeElapsed) / duration) * 100);
-    console.log("percentage: ", percentage);
-    flightProgress.value = percentage;
+  } else if (now > depTime) {  
+    const timeElapsed = arrTime - now;
+    const duration = arrTime - depTime;
+    flightProgress.value = Math.round(((duration - timeElapsed) / duration) * 100);
+    console.log("percentage: ", flightProgress.value);
   } else {
     flightProgress.value = 0;
   }

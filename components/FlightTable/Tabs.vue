@@ -24,13 +24,15 @@
 </template>
 
 <script setup lang="ts">
+import { Direction } from '~/types';
+
 const props = defineProps({
   selectTable: {
-    type: Function as PropType<(dir: "arr" | "dep") => void>,
+    type: Function as PropType<(dir: Direction) => void>,
     required: true,
   },
   direction: {
-    type: String as () => "arr" | "dep",
+    type: String as () => Direction,
     required: true,
   }
 });

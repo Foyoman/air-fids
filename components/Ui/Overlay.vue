@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="() => closeModal && closeModal()"
+    @click="closeModal && closeModal()"
     class="fixed z-50 w-full h-full bg-black bg-opacity-60"
   >
     <slot />

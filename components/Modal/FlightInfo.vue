@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-between mt-3 sm:mt-0 sm:w-1/2">
-    <p class="text-xs text-gray-500 dark:text-gray-400">
-      {{ 
+    <p class="text-xs tracking-tight text-gray-500 dark:text-gray-400">
+      {{
         direction === "arr"
           ? findName(selectedFlight.arr_iata)
           : findName(selectedFlight.dep_iata)
@@ -130,8 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { Flight } from "~/types";
-import { airports } from "~/lib/airports";
+import { Direction, Flight } from "~/types";
 
 const props = defineProps({
   selectedFlight: {
@@ -139,19 +138,16 @@ const props = defineProps({
     required: true,
   },
   direction: {
-    type: String as () => "arr" | "dep",
+    type: String as () => Direction,
     required: true,
   },
   formatDate: {
     type: Function as PropType<(date: string, key: "date" | "time") => string>,
     required: true,
   },
+  findName: {
+    type: Function as PropType<(iata: string) => string>,
+    required: true,
+  },
 });
-
-const findName = (iata: string) => {
-  const airport = airports.find((airport) => airport.iata === iata);
-  const name = airport?.name;
-
-  return name || iata;
-}
 </script>

@@ -4,19 +4,23 @@
     :closeModal="toggleModal"
     :selectedFlight="selectedFlight"
     :formatDate="formatDate"
+    :findName="findName"
   />
   <Error v-if="error" :message="error" :refresh="refresh" />
-  <div class="container flex flex-col items-center px-2 sm:px-4 py-8 mx-auto">
+  <div class="container flex flex-col items-center px-2 py-8 mx-auto sm:px-4">
+    <DarkModeToggle class="absolute top-4 right-4" />
     <select
       id="cities"
       v-model="airportCode"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="bg-gray-50 tracking-tight font-bold border border-gray-300 text-gray-900 text-2xl rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
     >
       <option v-for="airport in airportCodes" :value="airport" :key="airport">
         {{ airport }}
       </option>
     </select>
-    <DarkModeToggle class="absolute top-4 right-4" />
+    <h4 class="mt-2 text-lg font-light tracking-tight text-center text-gray-900 dark:text-gray-300">
+      {{ findName(airportCode) }}
+    </h4>
     <div
       v-if="!error"
       class="flex flex-col items-center w-full lg:flex-row lg:items-start"
@@ -58,16 +62,17 @@
 </template>
 
 <script setup lang="ts">
-import { Flight } from "~/types";
-import { dummyArrivals, dummyDepartures } from "~/lib/flights"; //
+import { Flight, Direction, TableField, AirportCode } from "~/types";
+import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // remove after
+import { airports } from "~/lib/airports";
 
 // api request
 const arrivals = ref<Flight[]>([]);
 const departures = ref<Flight[]>([]);
 const arrivalsLoading = ref(false);
 const departuresLoading = ref(false);
-const airportCode = ref("SYD");
-const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
+const airportCode = ref<AirportCode>("SYD");
+const airportCodes: AirportCode[] = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 
 // modal, selected flight info
 const showModal = ref(false);
@@ -76,14 +81,14 @@ const selectedFlight = ref<Flight | null>(null);
 const flightsPerPage = ref(10);
 
 // for sort
-const direction = ref<"arr" | "dep">("arr");
+const direction = ref<Direction>("arr");
 
 // error
 const error = ref<string | null>("");
 
 const runtimeConfig = useRuntimeConfig();
 
-async function getFlights(city: string, dir: "arr" | "dep") {
+async function getFlights(city: string, dir: Direction) {
   let params = new URLSearchParams({
     api_key: runtimeConfig.public.API_KEY,
   });
@@ -154,8 +159,8 @@ const refresh = () => {
 
 const sortFlights = (
   flights: Flight[],
-  dir: "arr" | "dep",
-  key: "time" | "flight" | "origin" | "destination" | "status",
+  dir: Direction,
+  key: TableField,
   reverse: boolean
 ) => {
   const sorted = flights.sort((a: Flight, b: Flight) => {
@@ -217,6 +222,13 @@ const formatDate = (date: string, key: "date" | "time") => {
   }
 };
 
+const findName = (iata: string) => {
+  const airport = airports.find((airport) => airport.iata === iata);
+  const name = airport?.name;
+
+  return name || iata;
+};
+
 const toggleModal = (flight?: Flight) => {
   if (!selectedFlight.value && flight) {
     selectedFlight.value = flight;
@@ -235,7 +247,7 @@ watch(showModal, () => {
   }
 });
 
-const selectTable = (dir: "arr" | "dep") => {
+const selectTable = (dir: Direction) => {
   direction.value = dir;
 };
 </script>
