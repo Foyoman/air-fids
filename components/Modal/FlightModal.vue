@@ -83,7 +83,7 @@
             id="aeroplane"
             :style="{
               left: `${flightProgress}%`,
-              textShadow: '-2px 2px 3px rgba(0, 0, 0, 0.8)',
+              textShadow: 'rgba(0, 0, 0, 0.6) -2px 2px 1px',
             }"
             :class="`drop-shadow-sm absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
