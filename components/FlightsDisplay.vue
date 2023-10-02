@@ -289,6 +289,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits();
+
 const updateFlightsPerPage = (e: InputEvent) => {
   const selectElement = e.target as HTMLSelectElement;
   emit('update:flightsPerPage', selectElement.value);
@@ -300,11 +301,19 @@ const indexOfLastFlight = ref(currentPage.value * props.flightsPerPage);
 const indexOfFirstFlight = ref(indexOfLastFlight.value - props.flightsPerPage);
 const lastPage = ref(Math.ceil(props.flights.length / props.flightsPerPage));
 
-watch([() => props.flights, () => props.direction], () => {
-  currentPage.value = 1;
+const resetValues = () => {
   indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
   indexOfFirstFlight.value = indexOfLastFlight.value - props.flightsPerPage;
   lastPage.value = Math.ceil(props.flights.length / props.flightsPerPage);
+}
+
+watch([() => props.flights, () => props.direction], () => {
+  currentPage.value = 1;
+  resetValues()
+});
+
+watch([currentPage, () => props.flightsPerPage], () => {
+  resetValues();
 });
 
 const decrementPage = () => {
@@ -328,10 +337,4 @@ const goToPage = (page: number) => {
     currentPage.value = page;
   }
 };
-
-watch([currentPage, () => props.flightsPerPage], () => {
-  console.log('page change')
-  indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
-  indexOfFirstFlight.value = indexOfLastFlight.value - props.flightsPerPage;
-});
 </script>

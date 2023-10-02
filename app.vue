@@ -196,7 +196,6 @@ const formatDate = (date: string, key: "date" | "time") => {
     .map((val) => val.replace(/^0+/, ""));
   const [day, month, dayDate] = dateArr;
   const formattedDate = `${day}, ${dayDate} ${month}`;
-  console.log(formattedDate);
 
   // const month = String(dateObject.getMonth() + 1) // .padStart(2, "0"); // Month is zero-based
   // const day = String(dateObject.getDate()) // .padStart(2, "0");
