@@ -2,11 +2,11 @@
   <div
     class="flex-col items-center w-full px-0 pt-2 pb-4 overflow-scroll lg:w-1/2 lg:py-8"
   >
-    <h1
-      class="hidden mx-auto mb-4 text-2xl text-center lg:block dark:text-white"
+    <h2
+      class="hidden mx-auto mb-4 text-4xl font-bold text-center lg:block dark:text-white"
     >
       {{ direction === "arr" ? "Arrivals" : "Departures" }}
-    </h1>
+    </h2>
     <template v-if="!loading && flights.length">
       <div
         class="relative w-full overflow-x-auto shadow-md lg:block sm:rounded-lg"
@@ -230,7 +230,7 @@
         </nav>
       </div>
     </template>
-    <Spinner v-else class="mt-8" />
+    <Loading v-else class="mt-8" />
   </div>
 </template>
 

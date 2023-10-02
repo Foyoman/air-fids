@@ -1,10 +1,11 @@
 <template>
-  <Modal
+  <FlightModal
     v-if="showModal && selectedFlight"
     :closeModal="toggleModal"
     :selectedFlight="selectedFlight"
     :formatDate="formatDate"
   />
+  <Error v-if="error" :message="error" :refresh="refresh" />
   <div class="container flex flex-col items-center px-2 sm:px-4 py-8 mx-auto">
     <select
       id="cities"
@@ -16,7 +17,10 @@
       </option>
     </select>
     <DarkModeToggle class="absolute top-4 right-4" />
-    <div class="flex flex-col items-center w-full lg:flex-row lg:items-start">
+    <div
+      v-if="!error"
+      class="flex flex-col items-center w-full lg:flex-row lg:items-start"
+    >
       <Tabs :selectTable="selectTable" :direction="direction" class="mt-2" />
       <FlightsDisplay
         class="flex lg:hidden"
@@ -49,8 +53,10 @@
 
 <script setup lang="ts">
 import { Flight } from "~/types";
-import { dummyArrivals, dummyDepartures } from '~/lib/flights' // 
+import { dummyArrivals, dummyDepartures } from "~/lib/flights"; //
+import { NuxtLoadingIndicator } from "#build/components";
 
+// api request
 const arrivals = ref<Flight[]>([]);
 const departures = ref<Flight[]>([]);
 const arrivalsLoading = ref(false);
@@ -58,14 +64,22 @@ const departuresLoading = ref(false);
 const airportCode = ref("SYD");
 const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 
+// modal, selected flight info
 const showModal = ref(false);
 const selectedFlight = ref<Flight | null>(null);
 
+// for sort
 const direction = ref<"arr" | "dep">("arr");
-const sort = ref<"time" | "flight" | "origin" | "destination" | "status">("time")
+const sort = ref<"time" | "flight" | "origin" | "destination" | "status">(
+  "time"
+);
 const reverse = ref(false);
 
+// error
+const error = ref<string | null>("");
+
 const runtimeConfig = useRuntimeConfig();
+
 async function getFlights(city: string, dir: "arr" | "dep") {
   let params = new URLSearchParams({
     api_key: runtimeConfig.public.API_KEY,
@@ -73,21 +87,77 @@ async function getFlights(city: string, dir: "arr" | "dep") {
 
   params.append(`${dir}_iata`, city);
 
-  await fetch(`https://airlabs.co/api/v9/schedules?${params}`)
-    .then((res) => res.json())
+  // `https://airlabs.co/api/v9/schedules?${params}`
+
+  await fetch(
+    `https://airlabs.co/api/v9/schedules?${params}badkey`
+  )
+    .then((res) => {
+      if (res.status === 200) {
+        console.log(res);
+        return res.json();
+      } else {
+        console.error(res);
+        error.value = `Response status: ${res.status}`
+      }
+    })
     .then((data) => {
       console.log(data);
 
-      if (dir === "arr") {
-        arrivals.value = sortFlights(data.response, "arr", sort.value, reverse.value);
-        arrivalsLoading.value = false;
-      }
+      if (data.response) {
+        if (dir === "arr") {
+          arrivals.value = sortFlights(
+            data.response,
+            "arr",
+            sort.value,
+            reverse.value
+          );
+          arrivalsLoading.value = false;
+        }
 
-      if (dir === "dep") {
-        departures.value = sortFlights(data.response, "dep", sort.value, reverse.value);
-        departuresLoading.value = false;
+        if (dir === "dep") {
+          departures.value = sortFlights(
+            data.response,
+            "dep",
+            sort.value,
+            reverse.value
+          );
+          departuresLoading.value = false;
+        }
+      } else {
+        error.value = data.error.message;
       }
+    })
+    .catch((error) => {
+      error.value = "Invalid endpoint url"
+      console.error(error);
     });
+}
+
+onMounted(() => {
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
+
+  // reset all this
+  const sortedArrivals = sortFlights(dummyArrivals, "arr", sort.value, reverse.value);
+  const sortedDepartures = sortFlights(dummyDepartures, "dep", sort.value, reverse.value);
+
+  console.log(sortedArrivals);
+  arrivals.value = sortedArrivals;
+  departures.value = sortedDepartures;
+});
+
+watch(airportCode, () => {
+  departuresLoading.value = true;
+  arrivalsLoading.value = true;
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
+});
+
+const refresh = () => {
+  error.value = null;
+  getFlights(airportCode.value, "arr");
+  getFlights(airportCode.value, "dep");
 }
 
 const sortFlights = (
@@ -109,27 +179,6 @@ const sortFlights = (
     return flights;
   }
 };
-
-watch(airportCode, () => {
-  departuresLoading.value = true;
-  arrivalsLoading.value = true;
-  // getFlights(airportCode.value, "arr");
-  // getFlights(airportCode.value, "dep");
-});
-
-onMounted(() => {
-  // getFlights(airportCode.value, "arr");
-  // getFlights(airportCode.value, "dep");
-
-  // reset all this 
-  const sortedArrivals = sortFlights(dummyArrivals, "arr", sort.value, reverse.value);
-  const sortedDepartures = sortFlights(dummyDepartures, "dep", sort.value, reverse.value);
-
-  console.log(sortedArrivals);
-  arrivals.value = sortedArrivals;
-  departures.value = sortedDepartures;
-
-});
 
 const formatDate = (date: string, key: "date" | "time") => {
   const dateObject = new Date(date);

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loaded" class="flex justify-end col-span-1">
+  <div v-if="loaded"  class="flex justify-end col-span-1">
     <button
       @click="toggle"
       data-tooltip-target="table-hover-example-toggle-dark-mode-tooltip"
@@ -46,6 +46,12 @@ const loaded = ref(false);
 const isDarkMode = ref(false);
 
 onMounted(() => {
+  isDarkMode.value = colorMode.value === "dark";
+  loaded.value = true;
+  console.log(colorMode)
+})
+
+watch(() => colorMode.value, () => {
   isDarkMode.value = colorMode.value === "dark";
   loaded.value = true;
 })

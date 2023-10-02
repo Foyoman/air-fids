@@ -1,3 +1,5 @@
+// I imported these responses to be able to develop the app without exhausting api requests
+
 import { Flight } from "../types/index";
 
 export const dummyArrivals: Flight[] = [

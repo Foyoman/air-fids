@@ -1,11 +1,8 @@
 <template>
-  <div
-    @click="() => closeModal()"
-    class="fixed z-50 w-full h-full bg-black bg-opacity-60"
-  >
+  <Overlay :closeModal="closeModal">
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed flex flex-col w-11/12 p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow sm:max-w-xl top-1/2 left-1/2 max-w-xxl dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+      class="fixed flex flex-col w-11/12 p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
       <button
         @click="(e) => closeButton(e)"
@@ -124,7 +121,7 @@
         />
       </div>
     </div>
-  </div>
+  </Overlay>
 </template>
 
 <script setup lang="ts">
@@ -179,7 +176,6 @@ watch(
   () => props.selectedFlight,
   () => {
     calculateFlightProgress();
-    // if (props.selectedFlight.stat)
   }
 );
 
