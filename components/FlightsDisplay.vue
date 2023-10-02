@@ -122,19 +122,19 @@
                 id="flight-status"
                 :class="`${
                   flight.status === 'cancelled'
-                    ? 'text-red-600 dark:text-red-500'
+                    ? 'text-red-500'
                     : ''
                 } ${
                   flight.status === 'scheduled'
-                    ? 'text-sky-600 dark:text-sky-500'
+                    ? 'text-sky-500'
                     : ''
                 } ${
                   flight.status === 'active'
-                    ? 'text-emerald-600 dark:text-emerald-500'
+                    ? 'text-emerald-500'
                     : ''
                 } ${
                   flight.status === 'landed'
-                    ? 'text-green-600 dark:text-green-500'
+                    ? 'text-green-500'
                     : ''
                 } text-center text-xs sm:text-sm px-2 sm:px-4 py-4 lg:px-4`"
               >

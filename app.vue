@@ -59,7 +59,6 @@
 <script setup lang="ts">
 import { Flight } from "~/types";
 import { dummyArrivals, dummyDepartures } from "~/lib/flights"; //
-import { NuxtLoadingIndicator } from "#build/components";
 
 // api request
 const arrivals = ref<Flight[]>([]);

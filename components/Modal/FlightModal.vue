@@ -2,7 +2,7 @@
   <Overlay :closeModal="closeModal">
     <div
       @click="(e) => e.stopPropagation()"
-      class="fixed flex flex-col w-11/12 p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+      class="fixed flex flex-col w-11/12 p-3 sm:p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-2xl dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
       <button
         @click="(e) => closeButton(e)"
@@ -29,19 +29,19 @@
         <p
           :class="`${
             selectedFlight.status === 'cancelled'
-              ? 'text-red-600 dark:text-red-500 border-red-600 dark:border-red-500'
+              ? 'text-red-500 border-red-500'
               : ''
           } ${
             selectedFlight.status === 'scheduled'
-              ? 'text-sky-600 dark:text-sky-500 border-sky-600 dark:border-sky-500'
+              ? 'text-sky-500 border-sky-500'
               : ''
           } ${
             selectedFlight.status === 'active'
-              ? 'text-emerald-600 dark:text-emerald-500 border-emerald-600 dark:border-emerald-500'
+              ? 'text-emerald-500 border-emerald-500'
               : ''
           } ${
             selectedFlight.status === 'landed'
-              ? 'text-green-600 dark:text-green-500 border-green-600 dark:border-green-600'
+              ? 'text-green-500 border-green-500'
               : ''
           } inline-block px-[6px] py-[2px] text-xs font-semibold border-2 rounded-md`"
         >
@@ -85,11 +85,11 @@
               left: `${flightProgress}%`,
               textShadow: 'rgba(0, 0, 0, 0.7) -1px 2px 2px',
             }"
-            :class="`pb-px absolute text-emerald-600 dark:text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
+            :class="`pb-px absolute text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
               selectedFlight.status === 'cancelled' || selectedFlight.delayed
-                ? 'text-red-600 dark:text-red-500'
-                : 'text-emerald-600 dark:text-emerald-500'
+                ? 'text-red-500'
+                : 'text-emerald-500'
             }
             `"
           >
