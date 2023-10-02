@@ -29,6 +29,7 @@
         :loading="direction === 'arr' ? arrivalsLoading : departuresLoading"
         :openModal="toggleModal"
         :formatDate="formatDate"
+        v-model:flightsPerPage="flightsPerPage"
       />
 
       <FlightsDisplay
@@ -38,6 +39,8 @@
         :loading="arrivalsLoading"
         :openModal="toggleModal"
         :formatDate="formatDate"
+        v-model:flightsPerPage="flightsPerPage"
+
       />
       <FlightsDisplay
         class="hidden lg:flex lg:pr-0 lg:pl-4"
@@ -46,6 +49,8 @@
         :loading="departuresLoading"
         :openModal="toggleModal"
         :formatDate="formatDate"
+        v-model:flightsPerPage="flightsPerPage"
+
       />
     </div>
   </div>
@@ -67,6 +72,8 @@ const airportCodes = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
 // modal, selected flight info
 const showModal = ref(false);
 const selectedFlight = ref<Flight | null>(null);
+
+const flightsPerPage = ref(10);
 
 // for sort
 const direction = ref<"arr" | "dep">("arr");

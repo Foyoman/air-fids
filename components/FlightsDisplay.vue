@@ -145,8 +145,8 @@
         </table>
       </div>
       <div id="pagination" class="flex flex-col items-center w-full">
-        <div class="mt-2 mb-2">
-          <p class="text-sm text-gray-700 dark:text-gray-400">
+        <div class="mt-2 mb-2 flex items-center justify-between w-full px-2">
+          <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-400">
             Showing
             <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
             to
@@ -159,6 +159,26 @@
             <span class="font-medium">{{ flights.length }}</span>
             results
           </p>
+
+          <div class="flex items-center gap-1">
+            <label for="per-page" class="text-xs sm:text-sm text-gray-700 dark:text-gray-400">
+              Per page:
+            </label>
+            <select
+              id="per-page"
+              :value="flightsPerPage"
+              @input="(e) => updateFlightsPerPage(e as InputEvent)"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-0 py-1 lg:px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option
+                v-for="option in [5, 10, 25, 50, 100]"
+                :value="option"
+                :key="option"
+              >
+                {{ option }}
+              </option>
+            </select>
+          </div>
         </div>
         <nav class="mt-1">
           <ul class="inline-flex -space-x-px text-sm">
@@ -261,19 +281,30 @@ const props = defineProps({
     type: Function as PropType<(date: string, key: "date" | "time") => string>,
     required: true,
   },
+  flightsPerPage: {
+    type: Number,
+    required: false,
+    default: 10,
+  }
 });
 
+const emit = defineEmits();
+const updateFlightsPerPage = (e: InputEvent) => {
+  const selectElement = e.target as HTMLSelectElement;
+  emit('update:flightsPerPage', selectElement.value);
+}
+
 const currentPage = ref(1);
-const flightsPerPage = ref(10);
-const indexOfLastFlight = ref(currentPage.value * flightsPerPage.value);
-const indexOfFirstFlight = ref(indexOfLastFlight.value - flightsPerPage.value);
-const lastPage = ref(Math.ceil(props.flights.length / flightsPerPage.value));
+// const flightsPerPage = ref(10);
+const indexOfLastFlight = ref(currentPage.value * props.flightsPerPage);
+const indexOfFirstFlight = ref(indexOfLastFlight.value - props.flightsPerPage);
+const lastPage = ref(Math.ceil(props.flights.length / props.flightsPerPage));
 
 watch([() => props.flights, () => props.direction], () => {
   currentPage.value = 1;
-  indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
-  indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
-  lastPage.value = Math.ceil(props.flights.length / flightsPerPage.value);
+  indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
+  indexOfFirstFlight.value = indexOfLastFlight.value - props.flightsPerPage;
+  lastPage.value = Math.ceil(props.flights.length / props.flightsPerPage);
 });
 
 const decrementPage = () => {
@@ -298,8 +329,9 @@ const goToPage = (page: number) => {
   }
 };
 
-watch([currentPage, flightsPerPage], () => {
-  indexOfLastFlight.value = currentPage.value * flightsPerPage.value;
-  indexOfFirstFlight.value = indexOfLastFlight.value - flightsPerPage.value;
+watch([currentPage, () => props.flightsPerPage], () => {
+  console.log('page change')
+  indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
+  indexOfFirstFlight.value = indexOfLastFlight.value - props.flightsPerPage;
 });
 </script>
