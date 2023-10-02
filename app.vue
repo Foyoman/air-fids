@@ -30,6 +30,7 @@
         :openModal="toggleModal"
         :formatDate="formatDate"
         v-model:flightsPerPage="flightsPerPage"
+        :sortFlights="sortFlights"
       />
 
       <FlightsDisplay
@@ -40,7 +41,7 @@
         :openModal="toggleModal"
         :formatDate="formatDate"
         v-model:flightsPerPage="flightsPerPage"
-
+        :sortFlights="sortFlights"
       />
       <FlightsDisplay
         class="hidden lg:flex lg:pr-0 lg:pl-4"
@@ -50,7 +51,7 @@
         :openModal="toggleModal"
         :formatDate="formatDate"
         v-model:flightsPerPage="flightsPerPage"
-
+        :sortFlights="sortFlights"
       />
     </div>
   </div>
@@ -76,10 +77,6 @@ const flightsPerPage = ref(10);
 
 // for sort
 const direction = ref<"arr" | "dep">("arr");
-const sort = ref<"time" | "flight" | "origin" | "destination" | "status">(
-  "time"
-);
-const reverse = ref(false);
 
 // error
 const error = ref<string | null>("");
@@ -95,16 +92,14 @@ async function getFlights(city: string, dir: "arr" | "dep") {
 
   // `https://airlabs.co/api/v9/schedules?${params}`
 
-  await fetch(
-    `https://airlabs.co/api/v9/schedules?${params}badkey`
-  )
+  await fetch(`https://airlabs.co/api/v9/schedules?${params}badkey`)
     .then((res) => {
       if (res.status === 200) {
         console.log(res);
         return res.json();
       } else {
         console.error(res);
-        error.value = `Response status: ${res.status}`
+        error.value = `Response status: ${res.status}`;
       }
     })
     .then((data) => {
@@ -112,22 +107,12 @@ async function getFlights(city: string, dir: "arr" | "dep") {
 
       if (data.response) {
         if (dir === "arr") {
-          arrivals.value = sortFlights(
-            data.response,
-            "arr",
-            sort.value,
-            reverse.value
-          );
+          arrivals.value = sortFlights(data.response, "arr", "time", false);
           arrivalsLoading.value = false;
         }
 
         if (dir === "dep") {
-          departures.value = sortFlights(
-            data.response,
-            "dep",
-            sort.value,
-            reverse.value
-          );
+          departures.value = sortFlights(data.response, "dep", "time", false);
           departuresLoading.value = false;
         }
       } else {
@@ -135,7 +120,7 @@ async function getFlights(city: string, dir: "arr" | "dep") {
       }
     })
     .catch((error) => {
-      error.value = "Invalid endpoint url"
+      error.value = "Invalid endpoint url";
       console.error(error);
     });
 }
@@ -145,12 +130,13 @@ onMounted(() => {
   // getFlights(airportCode.value, "dep");
 
   // reset all this
-  const sortedArrivals = sortFlights(dummyArrivals, "arr", sort.value, reverse.value);
-  const sortedDepartures = sortFlights(dummyDepartures, "dep", sort.value, reverse.value);
+  const sortedArrivals = sortFlights(dummyArrivals, "arr", "time", false);
+  const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
 
   console.log(sortedArrivals);
   arrivals.value = sortedArrivals;
   departures.value = sortedDepartures;
+  // down to here
 });
 
 watch(airportCode, () => {
@@ -164,7 +150,7 @@ const refresh = () => {
   error.value = null;
   getFlights(airportCode.value, "arr");
   getFlights(airportCode.value, "dep");
-}
+};
 
 const sortFlights = (
   flights: Flight[],
@@ -172,18 +158,41 @@ const sortFlights = (
   key: "time" | "flight" | "origin" | "destination" | "status",
   reverse: boolean
 ) => {
-  const timeSorted: Flight[] = flights.sort((a: Flight, b: Flight) => {
-    const dateA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
-    const dateB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
-    return dateA === dateB ? 0 : dateA < dateB ? -1 : 1;
+  const sorted = flights.sort((a: Flight, b: Flight) => {
+    let sortA: Flight | Date | string = a;
+    let sortB: Flight | Date | string = b;
+
+    if (key === "time") {
+      sortA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
+      sortB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
+    } else if (key === "flight") {
+      sortA = a.airline_iata || a.airline_icao || "";
+      sortB = b.airline_iata || b.airline_icao || "";
+    } else if (key === "origin") {
+      sortA = a.dep_iata || "";
+      sortB = b.dep_iata || "";
+    } else if (key === "destination") {
+      sortA = a.arr_iata || "";
+      sortB = b.arr_iata || "";
+    } else if (key === "status") {
+      sortA = a.status || "";
+      sortB = b.status || "";
+    }
+
+    if (sortA === sortB && key !== "time") {
+      const timeA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
+      const timeB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
+      return timeA.getTime() - timeB.getTime();
+    }
+
+    if (reverse) {
+      return sortA === sortB ? 0 : sortA > sortB ? -1 : 1;
+    } else {
+      return sortA === sortB ? 0 : sortA < sortB ? -1 : 1;
+    }
   });
 
-  // TODO: implement other sorts
-  if (key === "time") {
-    return reverse ? timeSorted.reverse() : timeSorted;
-  } else {
-    return flights;
-  }
+  return sorted;
 };
 
 const formatDate = (date: string, key: "date" | "time") => {

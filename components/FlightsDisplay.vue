@@ -20,38 +20,66 @@
             <tr>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
+                @click="setSort('time')"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
               >
                 <span class="flex items-center justify-center">
                   <p>Time</p>
-                  <SortIcon />
+                  <SortArrow
+                    v-if="sortState === 'time'"
+                    :class="reverseState ? 'rotate-180' : ''"
+                  />
+                  <SortIcon v-else />
                 </span>
               </th>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
+                @click="setSort('flight')"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
               >
                 <span class="flex items-center justify-center">
                   <p>Flight</p>
-                  <SortIcon />
+                  <SortArrow
+                    v-if="sortState === 'flight'"
+                    :class="reverseState ? 'rotate-180' : ''"
+                  />
+                  <SortIcon v-else />
                 </span>
               </th>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
+                @click="
+                  direction === 'arr'
+                    ? setSort('origin')
+                    : setSort('destination')
+                "
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
               >
                 <span class="flex items-center justify-center">
                   <p>{{ direction === "arr" ? "Origin" : "Dest." }}</p>
-                  <SortIcon />
+                  <SortArrow
+                    v-if="
+                      direction === 'arr'
+                        ? sortState === 'origin'
+                        : sortState === 'destination'
+                    "
+                    :class="reverseState ? 'rotate-180' : ''"
+                  />
+                  <SortIcon v-else />
                 </span>
               </th>
               <th
                 scope="col"
-                class="px-2 py-3 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
+                @click="setSort('status')"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
               >
                 <span class="flex items-center justify-center">
                   <p>Status</p>
-                  <SortIcon />
+                  <SortArrow
+                    v-if="sortState === 'status'"
+                    :class="reverseState ? 'rotate-180' : ''"
+                  />
+                  <SortIcon v-else />
                 </span>
               </th>
             </tr>
@@ -121,21 +149,11 @@
               <td
                 id="flight-status"
                 :class="`${
-                  flight.status === 'cancelled'
-                    ? 'text-red-500'
-                    : ''
+                  flight.status === 'cancelled' ? 'text-red-500' : ''
+                } ${flight.status === 'scheduled' ? 'text-sky-500' : ''} ${
+                  flight.status === 'active' ? 'text-emerald-500' : ''
                 } ${
-                  flight.status === 'scheduled'
-                    ? 'text-sky-500'
-                    : ''
-                } ${
-                  flight.status === 'active'
-                    ? 'text-emerald-500'
-                    : ''
-                } ${
-                  flight.status === 'landed'
-                    ? 'text-green-500'
-                    : ''
+                  flight.status === 'landed' ? 'text-green-500' : ''
                 } text-center text-xs sm:text-sm px-2 sm:px-4 py-4 lg:px-4`"
               >
                 {{ flight.status.toUpperCase() }}
@@ -145,8 +163,8 @@
         </table>
       </div>
       <div id="pagination" class="flex flex-col items-center w-full">
-        <div class="mt-2 mb-2 flex items-center justify-between w-full px-2">
-          <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-400">
+        <div class="flex items-center justify-between w-full px-2 mt-2 mb-2">
+          <p class="text-xs text-gray-700 sm:text-sm dark:text-gray-400">
             Showing
             <span class="font-medium">{{ indexOfFirstFlight + 1 }}</span>
             to
@@ -161,14 +179,17 @@
           </p>
 
           <div class="flex items-center gap-1">
-            <label for="per-page" class="text-xs sm:text-sm text-gray-700 dark:text-gray-400">
+            <label
+              for="per-page"
+              class="text-xs text-gray-700 sm:text-sm dark:text-gray-400"
+            >
               Per page:
             </label>
             <select
               id="per-page"
               :value="flightsPerPage"
               @input="(e) => updateFlightsPerPage(e as InputEvent)"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-0 py-1 lg:px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block px-0 py-1 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 lg:px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option
                 v-for="option in [5, 10, 25, 50, 100]"
@@ -285,15 +306,55 @@ const props = defineProps({
     type: Number,
     required: false,
     default: 10,
-  }
+  },
+  sortFlights: {
+    type: Function as PropType<
+      (
+        flights: Flight[],
+        dir: "arr" | "dep",
+        key: "time" | "flight" | "origin" | "destination" | "status",
+        reverse: boolean
+      ) => Flight[]
+    >,
+    required: true,
+  },
 });
+
+// for sort
+const sortState = ref<"time" | "flight" | "origin" | "destination" | "status">(
+  "time"
+);
+const reverseState = ref(false);
 
 const emit = defineEmits();
 
+const setSort = (
+  sortKey: "time" | "flight" | "origin" | "destination" | "status",
+  fromWatch?: boolean
+) => {
+  const isSameSortKey = sortKey === sortState.value;
+
+  if (!fromWatch) {
+    if (!isSameSortKey) {
+      sortState.value = sortKey;
+      reverseState.value = false;
+    } else {
+      reverseState.value = !reverseState.value;
+    }
+  }
+
+  props.sortFlights(
+    props.flights,
+    props.direction,
+    sortKey,
+    reverseState.value
+  );
+};
+
 const updateFlightsPerPage = (e: InputEvent) => {
   const selectElement = e.target as HTMLSelectElement;
-  emit('update:flightsPerPage', selectElement.value);
-}
+  emit("update:flightsPerPage", selectElement.value);
+};
 
 const currentPage = ref(1);
 const indexOfLastFlight = ref(currentPage.value * props.flightsPerPage);
@@ -304,11 +365,12 @@ const resetValues = () => {
   indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
   indexOfFirstFlight.value = indexOfLastFlight.value - props.flightsPerPage;
   lastPage.value = Math.ceil(props.flights.length / props.flightsPerPage);
-}
+  setSort(sortState.value, true);
+};
 
 watch([() => props.flights, () => props.direction], () => {
   currentPage.value = 1;
-  resetValues()
+  resetValues();
 });
 
 watch([currentPage, () => props.flightsPerPage], () => {

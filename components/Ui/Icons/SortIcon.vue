@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="w-3 h-3 ml-1 hidden sm:inline my-auto"
+    class="w-3 h-3 ml-0 sm:ml-1 inline my-auto"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
