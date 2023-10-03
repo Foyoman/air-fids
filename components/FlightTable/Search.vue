@@ -99,7 +99,7 @@ const searchOptions: SearchOption[] = [
   },
   {
     label: props.direction === "arr" ? "Origin" : "Destination",
-    value: props.direction === "arr" ? "dep_iata" : "arr_iata",
+    value: props.direction === "arr" ? "dep_city" : "arr_city",
   },
   {
     label: "Status",

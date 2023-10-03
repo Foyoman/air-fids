@@ -269,8 +269,8 @@ const filteredFlights = () => {
     "dep_time",
     "airline_name",
     "flight_iata",
-    "dep_iata",
-    "arr_iata",
+    "dep_city",
+    "arr_city",
     "status",
   ];
 

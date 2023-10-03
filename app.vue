@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { Flight, Direction, TableField, AirportCode } from "~/types";
-// import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
+import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
 import { airports } from "~/lib/airports";
 import { airlines } from "~/lib/airlines";
 
@@ -127,7 +127,7 @@ async function getFlights(city: string, dir: Direction) {
 
         // append airline name and country of airline to each flight
         flights.map((flight) => {
-          appendAirlineAndCountry(flight);
+          appendAirlineCountryCitiesAirports(flight);
         });
 
         console.log(flights);
@@ -162,46 +162,22 @@ onMounted(() => {
   const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
 
   sortedArrivals.map((flight) => {
-    appendAirlineAndCountry(flight);
+    appendAirlineCountryCitiesAirports(flight);
   });
 
   sortedDepartures.map((flight) => {
-    appendAirlineAndCountry(flight);
+    appendAirlineCountryCitiesAirports(flight);
   });
+
+  const test = sortedArrivals[0];
+  // const flightCities = getFlightCitiesAndAirports(test);
+  console.log(test);
 
   console.log(sortedArrivals);
   arrivals.value = sortedArrivals;
   departures.value = sortedDepartures;
   */
 });
-
-// finds airline name and country from flight airline code
-const findAirline = (flight: Flight) => {
-  return airlines.find((airline) => {
-    return (
-      airline.iata === flight.airline_iata ||
-      airline.icao === flight.airline_icao
-    );
-  });
-};
-
-// appends name and country to flight from airline data
-const appendAirlineAndCountry = (flight: Flight) => {
-  const airline = findAirline(flight);
-  const toAssign = {
-    airline_name: airline?.name,
-    airline_country: airline?.country,
-  };
-  Object.assign(flight, toAssign);
-};
-
-// finds airport name from iata
-const findName = (iata: string) => {
-  const airport = airports.find((airport) => airport.iata === iata);
-  const name = airport?.name;
-
-  return name || iata;
-};
 
 // watch each change of airportCode to re-fetch data
 watch(airportCode, () => {
@@ -214,8 +190,53 @@ watch(airportCode, () => {
 // refresh button for error modal
 const refresh = () => {
   error.value = null;
-  getFlights(airportCode.value, "arr");
-  getFlights(airportCode.value, "dep");
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
+};
+
+// finds airline name and country from flight airline code
+const findAirline = (flight: Flight) => {
+  return airlines.find((airline) => {
+    return (
+      airline.iata === flight.airline_iata ||
+      airline.icao === flight.airline_icao
+    );
+  });
+};
+
+const getFlightCitiesAndAirports = (flight: Flight) => {
+  const arrAirport = airports.find((airport) => {
+    return airport.iata === flight.arr_iata;
+  });
+  const depAirport = airports.find((airport) => {
+    return airport.iata === flight.dep_iata;
+  })
+
+  return {
+    arr_city: arrAirport?.city,
+    arr_name: arrAirport?.name,
+    dep_city: depAirport?.city,
+    dep_name: depAirport?.name,
+  }
+}
+
+// appends name and country to flight from airline data
+const appendAirlineCountryCitiesAirports = (flight: Flight) => {
+  const airline = findAirline(flight);
+  const citiesAndAirports = getFlightCitiesAndAirports(flight);
+  const airlineNameAndCountry = {
+    airline_name: airline?.name,
+    airline_country: airline?.country,
+  };
+  Object.assign(flight, airlineNameAndCountry, citiesAndAirports);
+};
+
+// finds airport name from iata
+const findName = (iata: string) => {
+  const airport = airports.find((airport) => airport.iata === iata);
+  const name = airport?.name;
+
+  return name || iata;
 };
 
 // sort flights by table head with option to reverse

@@ -32,11 +32,17 @@ export interface SearchOption {
 }
 
 export interface Flight {
-  aircraft_icao: string | null;
+  // appended
   airline_country?: string | null;
+  airline_name?: string;
+  arr_name?: string;
+  arr_city?: string;
+  dep_name?: string;
+  dep_city?: string;
+
+  aircraft_icao: string | null;
   airline_iata: string | null;
   airline_icao: string | null;
-  airline_name?: string;
   arr_actual?: string;
   arr_actual_ts?: number;
   arr_actual_utc?: string;

@@ -5,12 +5,18 @@
     >
       {{
         direction === "arr"
-          ? findName(selectedFlight.arr_iata)
-          : findName(selectedFlight.dep_iata)
+          ? selectedFlight.arr_name
+          : selectedFlight.dep_name
       }}
     </p>
     <div>
       <p class="text-lg text-gray-800 dark:text-gray-100">
+        <span v-if="direction === 'arr' && selectedFlight.arr_city">
+          {{ selectedFlight.arr_city }} ·
+        </span>
+        <span v-if="direction === 'dep' && selectedFlight.dep_city">
+          {{ selectedFlight.dep_city }} ·
+        </span>
         {{
           formatDate(
             direction === "arr"
