@@ -143,7 +143,7 @@ async function getFlights(city: string, dir: Direction) {
           departuresLoading.value = false;
         }
       } else {
-        // potential errors - invalid api key, exhausted monthly requests, etc. response from airlabs 
+        // potential errors - invalid api key, exhausted monthly requests, etc. response from airlabs
         error.value = data.error.message;
       }
     })
@@ -273,8 +273,8 @@ const formatDate = (date: string, key: "date" | "time") => {
   const [day, month, dayDate] = dateArr;
   const formattedDate = `${day}, ${dayDate} ${month}`;
 
-  const hours = String(dateObject.getHours()).padStart(2, "0"); 
-  const minutes = String(dateObject.getMinutes()).padStart(2, "0"); 
+  const hours = String(dateObject.getHours()).padStart(2, "0");
+  const minutes = String(dateObject.getMinutes()).padStart(2, "0");
 
   if (key === "date") {
     return formattedDate;
@@ -288,7 +288,7 @@ const selectTable = (dir: Direction) => {
   direction.value = dir;
 };
 
-// toggles flight modal 
+// toggles flight modal
 const toggleModal = (flight?: Flight) => {
   console.log(flight);
   if (!selectedFlight.value && flight) {

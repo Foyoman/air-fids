@@ -91,7 +91,10 @@
           {{ selectedFlight.arr_iata }}
         </h3>
       </div>
-      <h4 id="airline-name-and-country" class="sm:text-center mt-2 text-md sm:text-lg">
+      <h4
+        id="airline-name-and-country"
+        class="sm:text-center mt-2 text-md sm:text-lg"
+      >
         {{ selectedFlight.airline_name }}
         ·
         {{ selectedFlight.airline_country }}

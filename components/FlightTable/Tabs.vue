@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { Direction } from '~/types';
+import { Direction } from "~/types";
 
 const props = defineProps({
   selectTable: {
@@ -34,7 +34,7 @@ const props = defineProps({
   direction: {
     type: String as () => Direction,
     required: true,
-  }
+  },
 });
 
 const selectedStyles =

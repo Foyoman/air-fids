@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col justify-between sm:w-1/2">
-    <p class="text-xs sm:text-sm tracking-tight text-gray-500 dark:text-gray-400">
+    <p
+      class="text-xs sm:text-sm tracking-tight text-gray-500 dark:text-gray-400"
+    >
       {{
         direction === "arr"
           ? findName(selectedFlight.arr_iata)

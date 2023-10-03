@@ -273,8 +273,8 @@ const filteredFlights = () => {
     "arr_iata",
     "status",
   ];
-  
-  const lowerSearch = search.value.toLowerCase()
+
+  const lowerSearch = search.value.toLowerCase();
 
   // if any part of the search string is found within the search fields
   return props.flights.filter((flight) => {

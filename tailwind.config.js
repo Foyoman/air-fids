@@ -10,11 +10,10 @@ export default {
   ],
   theme: {
     screens: {
-      'xs': '425px',
+      xs: "425px",
       ...defaultTheme.screens,
     },
   },
   plugins: [],
-  darkMode: 'class',
-}
-
+  darkMode: "class",
+};

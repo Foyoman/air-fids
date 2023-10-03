@@ -17,7 +17,7 @@
         >
           {{ selectedOption.label }}
           <ExpandIcon />
-        </button>     
+        </button>
 
         <div
           id="dropdown"
@@ -76,7 +76,7 @@ const props = defineProps({
   updateSearchField: {
     type: Function as PropType<(searchOption: SearchOption) => void>,
     required: true,
-  }
+  },
 });
 
 // search options with labels for ui and values as keys of Flight type
