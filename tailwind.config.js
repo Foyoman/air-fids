@@ -9,10 +9,7 @@ export default {
     "./app.vue",
   ],
   theme: {
-    screens: {
-      xs: "425px",
-      ...defaultTheme.screens,
-    },
+    extend: {}
   },
   plugins: [],
   darkMode: "class",
