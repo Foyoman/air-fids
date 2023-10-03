@@ -11,7 +11,7 @@
     <select
       id="cities"
       v-model="airportCode"
-      class="bg-gray-50 tracking-tight font-bold border border-gray-300 text-gray-900 text-2xl rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+      class="bg-gray-50 focus:outline-none hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer tracking-tight font-bold border border-gray-300 text-gray-900 text-2xl rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
     >
       <option v-for="airport in airportCodes" :value="airport" :key="airport">
         {{ airport }}

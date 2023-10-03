@@ -28,7 +28,7 @@
           id="per-page"
           :value="flightsPerPage"
           @input="(e) => updateFlightsPerPage(e as InputEvent)"
-          class="block px-0 py-1 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 lg:px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          class="block px-0 py-1 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer dark:hover:bg-gray-600 focus:outline-none hover:bg-gray-200 bg-gray-50 lg:px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         >
           <option
             v-for="option in [5, 10, 25, 50, 100]"
