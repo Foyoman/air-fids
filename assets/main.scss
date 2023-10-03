@@ -4,6 +4,11 @@
 
 @layer base {
   body {
-    @apply dark:bg-gray-900 bg-slate-100 w-screen;
+    @apply dark:bg-gray-900 bg-slate-100 w-screen transition-all duration-200;
+
+  }
+  
+  * {
+    @apply transition-all duration-200;
   }
 }
