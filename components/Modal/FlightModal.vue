@@ -72,7 +72,6 @@
             :style="{
               left: `${flightProgress}%`,
               textShadow: 'rgba(0, 0, 0, 0.7) -1px 2px 2px',
-              WebkitTextStroke: '1px rgba(0, 0, 0, 0.4)',
             }"
             :class="`pb-px absolute text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
