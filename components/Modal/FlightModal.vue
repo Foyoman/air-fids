@@ -37,7 +37,7 @@
       </div>
       <div class="flex items-center justify-between h-8">
         <h3
-          class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ selectedFlight.dep_iata }}
         </h3>
@@ -86,12 +86,12 @@
           </span>
         </div>
         <h3
-          class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
           {{ selectedFlight.arr_iata }}
         </h3>
       </div>
-      <h4 class="text-center mt-2">
+      <h4 id="airline-name-and-country" class="sm:text-center mt-2 text-md sm:text-lg">
         {{ selectedFlight.airline_name }}
         ·
         {{ selectedFlight.airline_country }}

@@ -286,6 +286,7 @@ const filteredFlights = () => {
 };
 
 const updateSearchTerm = (searchTerm: string) => {
+  currentPage.value = 1;
   search.value = searchTerm;
 };
 

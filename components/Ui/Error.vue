@@ -10,7 +10,10 @@
         </h3>
       </div>
       <div class="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">
-        <p>There was an error and the flight data could not be loaded. Please try again.</p>
+        <p>
+          There was an error and the flight data could not be loaded. Please try
+          again.
+        </p>
         <p class="mt-2">Error message: {{ message }}</p>
       </div>
       <div class="flex">
@@ -39,7 +42,7 @@ const props = defineProps({
   },
   refresh: {
     type: Function as PropType<() => void>,
-    required: true
-  }
+    required: true,
+  },
 });
 </script>

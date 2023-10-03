@@ -152,8 +152,11 @@ async function getFlights(city: string, dir: Direction) {
 
 const findAirline = (flight: Flight) => {
   return airlines.find((airline) => {
-    return airline.iata === flight.airline_iata || airline.icao === flight.airline_icao;
-  })
+    return (
+      airline.iata === flight.airline_iata ||
+      airline.icao === flight.airline_icao
+    );
+  });
 };
 
 const appendAirlineAndCountry = (flight: Flight) => {
@@ -161,9 +164,9 @@ const appendAirlineAndCountry = (flight: Flight) => {
   const toAssign = {
     airline_name: airline?.name,
     airline_country: airline?.country,
-  }
+  };
   Object.assign(flight, toAssign);
-}
+};
 
 onMounted(() => {
   // getFlights(airportCode.value, "arr");
@@ -175,11 +178,11 @@ onMounted(() => {
 
   sortedArrivals.map((flight) => {
     appendAirlineAndCountry(flight);
-  })
+  });
 
   sortedDepartures.map((flight) => {
     appendAirlineAndCountry(flight);
-  })
+  });
 
   console.log(sortedArrivals);
   arrivals.value = sortedArrivals;
