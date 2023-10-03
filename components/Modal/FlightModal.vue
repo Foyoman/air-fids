@@ -71,9 +71,9 @@
             id="aeroplane"
             :style="{
               left: `${flightProgress}%`,
-              textShadow: 'rgba(0, 0, 0, 0.7) -1px 2px 2px',
+              textShadow: 'rgba(0, 0, 0, 0.8) -2px 4px 4px',
             }"
-            :class="`text-lg sm:text-2xl pb-px absolute text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
+            :class="`text-2xl sm:text-4xl pb-px absolute text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
               selectedFlight.status === 'cancelled' || selectedFlight.delayed
                 ? 'text-red-500 dark:text-red-600'
