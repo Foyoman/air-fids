@@ -4,7 +4,6 @@
     :closeModal="toggleModal"
     :selectedFlight="selectedFlight"
     :formatDate="formatDate"
-    :findName="findName"
   />
   <Error v-if="error" :message="error" :refresh="refresh" />
   <div class="container flex flex-col items-center px-2 py-8 mx-auto sm:px-4">
@@ -65,7 +64,7 @@
 
 <script setup lang="ts">
 import { Flight, Direction, TableField, AirportCode } from "~/types";
-import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
+// import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
 import { airports } from "~/lib/airports";
 import { airlines } from "~/lib/airlines";
 
@@ -321,7 +320,7 @@ const toggleModal = (flight?: Flight) => {
 };
 
 // prevents user from scrolling if modal is open
-watch(showModal, () => {
+watch(() => showModal.value, () => {
   const body = document.body;
   if (showModal.value) {
     body.classList.add("overflow-hidden");

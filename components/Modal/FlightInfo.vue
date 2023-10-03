@@ -153,9 +153,5 @@ const props = defineProps({
     type: Function as PropType<(date: string, key: "date" | "time") => string>,
     required: true,
   },
-  findName: {
-    type: Function as PropType<(iata: string) => string>,
-    required: true,
-  },
 });
 </script>

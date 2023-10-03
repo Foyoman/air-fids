@@ -106,7 +106,6 @@
           :selectedFlight="selectedFlight"
           direction="dep"
           :formatDate="formatDate"
-          :findName="findName"
           class="mb-3 sm:mb-0 sm:pr-4"
         />
         <div
@@ -116,7 +115,6 @@
           :selectedFlight="selectedFlight"
           direction="arr"
           :formatDate="formatDate"
-          :findName="findName"
           class="mt-2 sm:mt-0 sm:pl-4"
         />
       </div>
@@ -140,10 +138,6 @@ const props = defineProps({
   },
   formatDate: {
     type: Function as PropType<(date: string, key: "date" | "time") => string>,
-    required: true,
-  },
-  findName: {
-    type: Function as PropType<(iata: string) => string>,
     required: true,
   },
 });
