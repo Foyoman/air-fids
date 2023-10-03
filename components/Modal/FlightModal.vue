@@ -1,6 +1,7 @@
 <template>
   <Overlay :closeModal="closeModal">
     <div
+      id="flight-modal"
       @click="(e) => e.stopPropagation()"
       class="fixed flex flex-col w-11/12 p-3 sm:p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-2xl dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
@@ -56,9 +57,10 @@
             class="absolute text-xs text-gray-500 -translate-x-1/2 dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
           >
             {{
-              `${
-                selectedFlight.airline_iata || selectedFlight.airline_icao || ""
-              }${selectedFlight.flight_number}`
+              selectedFlight.flight_iata ||
+              selectedFlight.flight_icao ||
+              selectedFlight.flight_number ||
+              ""
             }}
           </p>
           <span
@@ -89,7 +91,12 @@
           {{ selectedFlight.arr_iata }}
         </h3>
       </div>
-      <div class="flex flex-col mt-2 sm:flex-row sm:mt-4">
+      <h4 class="text-center mt-2">
+        {{ selectedFlight.airline_name }}
+        ·
+        {{ selectedFlight.airline_country }}
+      </h4>
+      <div class="flex flex-col sm:flex-row mt-2">
         <!-- flex-col items-center sm:flex-row -->
         <FlightInfo
           :selectedFlight="selectedFlight"
@@ -106,7 +113,7 @@
           direction="arr"
           :formatDate="formatDate"
           :findName="findName"
-          class="sm:pl-4"
+          class="mt-2 sm:mt-0 sm:pl-4"
         />
       </div>
     </div>
@@ -140,7 +147,7 @@ const props = defineProps({
 const flightProgress = ref(0);
 
 const calculateFlightProgress = () => {
-  const now = new Date().getTime(); 
+  const now = new Date().getTime();
   const depTime = new Date(props.selectedFlight.dep_actual!).getTime();
   const arrTime = new Date(props.selectedFlight.arr_estimated!).getTime();
 
@@ -148,10 +155,12 @@ const calculateFlightProgress = () => {
     flightProgress.value = 0;
   } else if (props.selectedFlight.status === "landed" || now >= arrTime) {
     flightProgress.value = 100;
-  } else if (now > depTime) {  
+  } else if (now > depTime) {
     const timeElapsed = arrTime - now;
     const duration = arrTime - depTime;
-    flightProgress.value = Math.round(((duration - timeElapsed) / duration) * 100);
+    flightProgress.value = Math.round(
+      ((duration - timeElapsed) / duration) * 100
+    );
     console.log("percentage: ", flightProgress.value);
   } else {
     flightProgress.value = 0;

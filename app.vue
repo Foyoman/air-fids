@@ -18,7 +18,9 @@
         {{ airport }}
       </option>
     </select>
-    <h4 class="mt-2 text-lg font-light tracking-tight text-center text-gray-900 dark:text-gray-300">
+    <h4
+      class="mt-2 text-lg font-light tracking-tight text-center text-gray-900 dark:text-gray-300"
+    >
       {{ findName(airportCode) }}
     </h4>
     <div
@@ -65,6 +67,7 @@
 import { Flight, Direction, TableField, AirportCode } from "~/types";
 import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // remove after
 import { airports } from "~/lib/airports";
+import { airlines } from "~/lib/airlines";
 
 // api request
 const arrivals = ref<Flight[]>([]);
@@ -72,7 +75,16 @@ const departures = ref<Flight[]>([]);
 const arrivalsLoading = ref(false);
 const departuresLoading = ref(false);
 const airportCode = ref<AirportCode>("SYD");
-const airportCodes: AirportCode[] = ["SYD", "MEL", "BNE", "ADL", "PER", "HBA", "DRW", "CBR"];
+const airportCodes: AirportCode[] = [
+  "SYD",
+  "MEL",
+  "BNE",
+  "ADL",
+  "PER",
+  "HBA",
+  "DRW",
+  "CBR",
+];
 
 // modal, selected flight info
 const showModal = ref(false);
@@ -97,7 +109,7 @@ async function getFlights(city: string, dir: Direction) {
 
   // `https://airlabs.co/api/v9/schedules?${params}`
 
-  await fetch(`https://airlabs.co/api/v9/schedules?${params}badkey`)
+  await fetch(`https://airlabs.co/api/v9/schedules?${params}`)
     .then((res) => {
       if (res.status === 200) {
         console.log(res);
@@ -111,13 +123,21 @@ async function getFlights(city: string, dir: Direction) {
       console.log(data);
 
       if (data.response) {
+        const flights: Flight[] = data.response;
+
+        flights.map((flight) => {
+          appendAirlineAndCountry(flight);
+        });
+
+        console.log(flights);
+
         if (dir === "arr") {
-          arrivals.value = sortFlights(data.response, "arr", "time", false);
+          arrivals.value = sortFlights(flights, "arr", "time", false);
           arrivalsLoading.value = false;
         }
 
         if (dir === "dep") {
-          departures.value = sortFlights(data.response, "dep", "time", false);
+          departures.value = sortFlights(flights, "dep", "time", false);
           departuresLoading.value = false;
         }
       } else {
@@ -130,6 +150,21 @@ async function getFlights(city: string, dir: Direction) {
     });
 }
 
+const findAirline = (flight: Flight) => {
+  return airlines.find((airline) => {
+    return airline.iata === flight.airline_iata || airline.icao === flight.airline_icao;
+  })
+};
+
+const appendAirlineAndCountry = (flight: Flight) => {
+  const airline = findAirline(flight);
+  const toAssign = {
+    airline_name: airline?.name,
+    airline_country: airline?.country,
+  }
+  Object.assign(flight, toAssign);
+}
+
 onMounted(() => {
   // getFlights(airportCode.value, "arr");
   // getFlights(airportCode.value, "dep");
@@ -137,6 +172,14 @@ onMounted(() => {
   // reset all this
   const sortedArrivals = sortFlights(dummyArrivals, "arr", "time", false);
   const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
+
+  sortedArrivals.map((flight) => {
+    appendAirlineAndCountry(flight);
+  })
+
+  sortedDepartures.map((flight) => {
+    appendAirlineAndCountry(flight);
+  })
 
   console.log(sortedArrivals);
   arrivals.value = sortedArrivals;
@@ -230,6 +273,7 @@ const findName = (iata: string) => {
 };
 
 const toggleModal = (flight?: Flight) => {
+  console.log(flight);
   if (!selectedFlight.value && flight) {
     selectedFlight.value = flight;
   } else {

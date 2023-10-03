@@ -94,6 +94,7 @@ const props = defineProps({
 });
 
 const searchOptions: SearchOption[] = [
+  // 'arr_time' 'dep_time' 'airline_iata' 'flight_iata' 'dep_iata' 'arr_iata' 'status'
   {
     label: "All",
     value: "all",
@@ -108,7 +109,7 @@ const searchOptions: SearchOption[] = [
   },
   {
     label: "Flight",
-    value: "flight_number",
+    value: "flight_iata",
   },
   {
     label: props.direction === "arr" ? "Origin" : "Destination",

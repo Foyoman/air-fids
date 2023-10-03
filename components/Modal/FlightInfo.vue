@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-between mt-3 sm:mt-0 sm:w-1/2">
+  <div class="flex flex-col justify-between sm:w-1/2">
     <p class="text-xs tracking-tight text-gray-500 dark:text-gray-400">
       {{
         direction === "arr"

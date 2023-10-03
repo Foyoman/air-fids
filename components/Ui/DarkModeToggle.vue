@@ -48,7 +48,6 @@ const isDarkMode = ref(false);
 onMounted(() => {
   isDarkMode.value = colorMode.value === "dark";
   loaded.value = true;
-  console.log(colorMode)
 })
 
 watch(() => colorMode.value, () => {

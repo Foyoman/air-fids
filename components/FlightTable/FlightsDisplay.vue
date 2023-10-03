@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col items-center w-full px-0 pt-2 pb-4 overflow-scroll lg:w-1/2 lg:py-8"
+    class="flex-col items-center w-full px-0 pt-2 pb-4 lg:w-1/2 lg:py-8 overflow-visible"
   >
     <h2
       class="hidden mx-auto mb-4 text-4xl font-bold text-center lg:block dark:text-white"
@@ -141,9 +141,10 @@
                 class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
               >
                 {{
-                  `${flight.airline_iata || flight.airline_icao || ""}${
-                    flight.flight_number
-                  }`
+                  flight.flight_iata ||
+                  flight.flight_icao ||
+                  flight.flight_number ||
+                  ""
                 }}
               </td>
               <td
@@ -261,15 +262,25 @@ const field = ref<keyof Flight | "all">("all");
 const filteredFlights = () => {
   if (!search.value) return props.flights;
 
+  const fieldsToSearch: Array<keyof Flight> = [
+    "arr_time",
+    "dep_time",
+    "airline_iata",
+    "flight_iata",
+    "dep_iata",
+    "arr_iata",
+    "status",
+  ];
+
   return props.flights.filter((flight) => {
+    // If the selected field is 'all', check only the fieldsToSearch
     if (field.value === "all") {
-      return Object.values(flight).some((value) =>
-        String(value).toLowerCase().includes(search.value.toLowerCase())
+      return fieldsToSearch.some((field) =>
+        String(flight[field]).toLowerCase().includes(search.value)
       );
     } else {
-      return String(flight[field.value])
-        .toLowerCase()
-        .includes(search.value.toLowerCase());
+      // If a specific field is selected, filter by that
+      return String(flight[field.value]).toLowerCase().includes(search.value);
     }
   });
 };

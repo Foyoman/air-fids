@@ -33,8 +33,10 @@ export interface SearchOption {
 
 export interface Flight {
   aircraft_icao: string | null;
+  airline_country?: string | null;
   airline_iata: string | null;
   airline_icao: string | null;
+  airline_name?: string;
   arr_actual?: string;
   arr_actual_ts?: number;
   arr_actual_utc?: string;
