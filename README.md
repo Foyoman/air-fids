@@ -11,6 +11,6 @@ This web-app, made with Nuxt.js, is an online FIDS for arrivals and departures o
 
 ---
 
-Hi team @ Ovatu! This is my submission for the coding test you sent me. It was really fun to build! It fulfills all the requirements and a little more. I put lots of love into all the styling and features - my personal favourite is the cute lil plane you see when you open a flight modal! I hope this shows well how much I value this opportunity and how passionate I am about software development. I'm really hoping to move forward with ya'll, so if you like what you see please let me know! Either way, I had fun making this little app, and it's something nice to add to my portfolio. Thanks for giving me a shot,
+Hi team @ Ovatu! This is my submission for the coding test you sent me. It was really fun to build! It fulfills all the requirements and a little more. I put lots of love into all the styling and features - my personal favourite is the cute lil plane you see when you open a flight modal. I hope this shows well how much I value this opportunity and how passionate I am about software development. I'm really hoping to move forward with ya'll, so if you like what you see please let me know! Either way, I had fun making this little app, and it's something nice to add to my portfolio. Thanks for giving me a shot,
 
 Ed
