@@ -26,7 +26,7 @@
           )
         }}
       </p>
-      <div class="flex justify-between w-full">
+      <div class="flex justify-between w-full mt-1">
         <div>
           <p class="text-gray-500 dark:text-gray-400">
             {{ direction === "arr" ? "Arrival" : "Departure" }}
