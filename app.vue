@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { Flight, Direction, TableField, AirportCode } from "~/types";
-import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // remove after
+// import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
 import { airports } from "~/lib/airports";
 import { airlines } from "~/lib/airlines";
 
@@ -105,9 +105,8 @@ async function getFlights(city: string, dir: Direction) {
     api_key: runtimeConfig.public.API_KEY,
   });
 
+  // call to direction and city
   params.append(`${dir}_iata`, city);
-
-  // `https://airlabs.co/api/v9/schedules?${params}`
 
   await fetch(`https://airlabs.co/api/v9/schedules?${params}`)
     .then((res) => {
@@ -116,6 +115,7 @@ async function getFlights(city: string, dir: Direction) {
         return res.json();
       } else {
         console.error(res);
+        // error handling - sets error modal conditional and message
         error.value = `Response status: ${res.status}`;
       }
     })
@@ -125,12 +125,14 @@ async function getFlights(city: string, dir: Direction) {
       if (data.response) {
         const flights: Flight[] = data.response;
 
+        // append airline name and country of airline to each flight
         flights.map((flight) => {
           appendAirlineAndCountry(flight);
         });
 
         console.log(flights);
 
+        // set state variables depending on flight direction relative to city
         if (dir === "arr") {
           arrivals.value = sortFlights(flights, "arr", "time", false);
           arrivalsLoading.value = false;
@@ -141,6 +143,7 @@ async function getFlights(city: string, dir: Direction) {
           departuresLoading.value = false;
         }
       } else {
+        // potential errors - invalid api key, exhausted monthly requests, etc. response from airlabs 
         error.value = data.error.message;
       }
     })
@@ -150,29 +153,11 @@ async function getFlights(city: string, dir: Direction) {
     });
 }
 
-const findAirline = (flight: Flight) => {
-  return airlines.find((airline) => {
-    return (
-      airline.iata === flight.airline_iata ||
-      airline.icao === flight.airline_icao
-    );
-  });
-};
-
-const appendAirlineAndCountry = (flight: Flight) => {
-  const airline = findAirline(flight);
-  const toAssign = {
-    airline_name: airline?.name,
-    airline_country: airline?.country,
-  };
-  Object.assign(flight, toAssign);
-};
-
 onMounted(() => {
-  // getFlights(airportCode.value, "arr");
-  // getFlights(airportCode.value, "dep");
+  getFlights(airportCode.value, "arr");
+  getFlights(airportCode.value, "dep");
 
-  // reset all this
+  /* uncomment this and comment out all calls of getFlights to use static data, preserve api calls
   const sortedArrivals = sortFlights(dummyArrivals, "arr", "time", false);
   const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
 
@@ -187,22 +172,53 @@ onMounted(() => {
   console.log(sortedArrivals);
   arrivals.value = sortedArrivals;
   departures.value = sortedDepartures;
-  // down to here
+  */
 });
 
+// finds airline name and country from flight airline code
+const findAirline = (flight: Flight) => {
+  return airlines.find((airline) => {
+    return (
+      airline.iata === flight.airline_iata ||
+      airline.icao === flight.airline_icao
+    );
+  });
+};
+
+// appends name and country to flight from airline data
+const appendAirlineAndCountry = (flight: Flight) => {
+  const airline = findAirline(flight);
+  const toAssign = {
+    airline_name: airline?.name,
+    airline_country: airline?.country,
+  };
+  Object.assign(flight, toAssign);
+};
+
+// finds airport name from iata
+const findName = (iata: string) => {
+  const airport = airports.find((airport) => airport.iata === iata);
+  const name = airport?.name;
+
+  return name || iata;
+};
+
+// watch each change of airportCode to re-fetch data
 watch(airportCode, () => {
   departuresLoading.value = true;
   arrivalsLoading.value = true;
-  // getFlights(airportCode.value, "arr");
-  // getFlights(airportCode.value, "dep");
+  getFlights(airportCode.value, "arr");
+  getFlights(airportCode.value, "dep");
 });
 
+// refresh button for error modal
 const refresh = () => {
   error.value = null;
   getFlights(airportCode.value, "arr");
   getFlights(airportCode.value, "dep");
 };
 
+// sort flights by table head with option to reverse
 const sortFlights = (
   flights: Flight[],
   dir: Direction,
@@ -246,6 +262,7 @@ const sortFlights = (
   return sorted;
 };
 
+// formats date or time - format Tue, 3 Oct and 24hr 15:28
 const formatDate = (date: string, key: "date" | "time") => {
   const dateObject = new Date(date);
 
@@ -256,10 +273,8 @@ const formatDate = (date: string, key: "date" | "time") => {
   const [day, month, dayDate] = dateArr;
   const formattedDate = `${day}, ${dayDate} ${month}`;
 
-  // const month = String(dateObject.getMonth() + 1) // .padStart(2, "0"); // Month is zero-based
-  // const day = String(dateObject.getDate()) // .padStart(2, "0");
-  const hours = String(dateObject.getHours()).padStart(2, "0"); // Ensure two digits for hours
-  const minutes = String(dateObject.getMinutes()).padStart(2, "0"); // Ensure two digits for minutes
+  const hours = String(dateObject.getHours()).padStart(2, "0"); 
+  const minutes = String(dateObject.getMinutes()).padStart(2, "0"); 
 
   if (key === "date") {
     return formattedDate;
@@ -268,13 +283,12 @@ const formatDate = (date: string, key: "date" | "time") => {
   }
 };
 
-const findName = (iata: string) => {
-  const airport = airports.find((airport) => airport.iata === iata);
-  const name = airport?.name;
-
-  return name || iata;
+// selects arrivals or departure tab for mobile view
+const selectTable = (dir: Direction) => {
+  direction.value = dir;
 };
 
+// toggles flight modal 
 const toggleModal = (flight?: Flight) => {
   console.log(flight);
   if (!selectedFlight.value && flight) {
@@ -285,6 +299,7 @@ const toggleModal = (flight?: Flight) => {
   showModal.value = !showModal.value;
 };
 
+// prevents user from scrolling if modal is open
 watch(showModal, () => {
   const body = document.body;
   if (showModal.value) {
@@ -293,8 +308,4 @@ watch(showModal, () => {
     body.classList.remove("overflow-hidden");
   }
 });
-
-const selectTable = (dir: Direction) => {
-  direction.value = dir;
-};
 </script>

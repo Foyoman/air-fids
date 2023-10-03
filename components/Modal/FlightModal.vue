@@ -97,7 +97,6 @@
         {{ selectedFlight.airline_country }}
       </h4>
       <div class="flex flex-col sm:flex-row mt-2">
-        <!-- flex-col items-center sm:flex-row -->
         <FlightInfo
           :selectedFlight="selectedFlight"
           direction="dep"
@@ -146,11 +145,19 @@ const props = defineProps({
 
 const flightProgress = ref(0);
 
+/* 
+my favourite part of the whole project. calculates the progress of an active flight based 
+on how much time has elapsed since now and its departure time, and if it has landed
+*/
 const calculateFlightProgress = () => {
   const now = new Date().getTime();
   const depTime = new Date(props.selectedFlight.dep_actual!).getTime();
   const arrTime = new Date(props.selectedFlight.arr_estimated!).getTime();
 
+  /* 
+  handle errors first, then check if landed, then calculate percentage. an alternative would be 
+  to check if a flight status is active, but i guess i didn't do that 
+  */
   if (isNaN(depTime) || isNaN(arrTime) || now < depTime) {
     flightProgress.value = 0;
   } else if (props.selectedFlight.status === "landed" || now >= arrTime) {
@@ -161,12 +168,9 @@ const calculateFlightProgress = () => {
     flightProgress.value = Math.round(
       ((duration - timeElapsed) / duration) * 100
     );
-    console.log("percentage: ", flightProgress.value);
   } else {
     flightProgress.value = 0;
   }
-
-  console.log(flightProgress.value);
 };
 
 onMounted(() => {

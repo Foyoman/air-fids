@@ -160,6 +160,10 @@ const props = defineProps({
 
 const emit = defineEmits();
 
+/* 
+although previous and next buttons aren't shown when no further or less pages can be selected, 
+here for extra measure.
+*/
 const decrementPage = () => {
   if (props.currentPage > 1) {
     return props.currentPage - 1;
@@ -179,7 +183,6 @@ const incrementPage = () => {
 watch(
   () => props.flights,
   () => {
-    // emit("update:currentPage", 1);
     props.resetValues();
   }
 );

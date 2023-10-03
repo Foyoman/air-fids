@@ -7,7 +7,7 @@
         showDropdown ? 'block' : 'hidden'
       }`"
     />
-    <form @submit="(e) => handleSumbit(e)" class="mb-2">
+    <div>
       <div class="relative flex">
         <button
           id="dropdown-button"
@@ -16,22 +16,8 @@
           class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white dark:border-gray-600"
         >
           {{ selectedOption.label }}
-          <svg
-            class="w-2.5 h-2.5 ml-2.5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
+          <ExpandIcon />
+        </button>     
 
         <div
           id="dropdown"
@@ -71,12 +57,12 @@
           />
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Direction, Flight, SearchField, SearchOption } from "~/types";
+import { Direction, SearchOption } from "~/types";
 
 const props = defineProps({
   direction: {
@@ -93,8 +79,8 @@ const props = defineProps({
   }
 });
 
+// search options with labels for ui and values as keys of Flight type
 const searchOptions: SearchOption[] = [
-  // 'arr_time' 'dep_time' 'airline_iata' 'flight_iata' 'dep_iata' 'arr_iata' 'status'
   {
     label: "All",
     value: "all",
@@ -105,7 +91,7 @@ const searchOptions: SearchOption[] = [
   },
   {
     label: "Airline",
-    value: "airline_iata",
+    value: "airline_name",
   },
   {
     label: "Flight",
@@ -125,13 +111,7 @@ const showDropdown = ref(false);
 const selectedOption = ref<SearchOption>(searchOptions[0]);
 const searchTerm = ref<string>("");
 
-const handleSumbit = (e: Event) => {
-  e.preventDefault();
-  console.log("submitted");
-};
-
 const toggleDropdown = () => {
-  console.log("toggle dropdown");
   showDropdown.value = !showDropdown.value;
 };
 
@@ -142,6 +122,7 @@ const selectOption = (e: MouseEvent, option: SearchOption) => {
   showDropdown.value = false;
 };
 
+// clicking off the dropdown will close it
 const clickOff = () => {
   showDropdown.value = false;
 };
@@ -149,32 +130,4 @@ const clickOff = () => {
 const handleInput = (e: Event) => {
   props.updateSearchTerm(searchTerm.value);
 };
-
-/*
-<template>
-  <div>
-    <select v-model="selectedField">
-      <option v-for="option in searchOptions" :value="option.value" :key="option.value">
-        {{ option.label }}
-      </option>
-    </select>
-    <input v-model="searchTerm" placeholder="Search flights...">
-    <!-- ... rest of your table goes here -->
-  </div>
-</template>
-
-filteredFlights() {
-  if (!this.searchTerm) return this.flights;
-
-  return this.flights.filter(flight => {
-    if (this.selectedField === 'all') {
-      return Object.values(flight).some(value =>
-        String(value).toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    } else {
-      return String(flight[this.selectedField]).toLowerCase().includes(this.searchTerm.toLowerCase());
-    }
-  });
-}
-*/
 </script>

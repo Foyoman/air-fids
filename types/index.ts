@@ -17,7 +17,7 @@ export type AirportCode =
   | "DRW"
   | "CBR";
 
-export type SearchField =
+export type SearchLabel =
   | "All"
   | "Time"
   | "Airline"
@@ -27,7 +27,7 @@ export type SearchField =
   | "Status";
 
 export interface SearchOption {
-  label: SearchField;
+  label: SearchLabel;
   value: keyof Flight | "all";
 }
 

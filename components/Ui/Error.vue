@@ -31,7 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import { Flight } from "~/types";
 import { PropType } from "nuxt/dist/app/compat/capi";
 
 const props = defineProps({

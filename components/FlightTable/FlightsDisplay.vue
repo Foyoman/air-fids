@@ -235,6 +235,7 @@ const reverseState = ref(false);
 
 const emit = defineEmits();
 
+// sorts table from table head values and switches state values for ux
 const setSort = (sortKey: TableField, fromWatch?: boolean) => {
   const isSameSortKey = sortKey === sortState.value;
 
@@ -259,37 +260,44 @@ const setSort = (sortKey: TableField, fromWatch?: boolean) => {
 const search = ref<string>("");
 const field = ref<keyof Flight | "all">("all");
 
+// filters flights based on what's in the search input, and searches within all or within field
 const filteredFlights = () => {
   if (!search.value) return props.flights;
 
   const fieldsToSearch: Array<keyof Flight> = [
     "arr_time",
     "dep_time",
-    "airline_iata",
+    "airline_name",
     "flight_iata",
     "dep_iata",
     "arr_iata",
     "status",
   ];
+  
+  const lowerSearch = search.value.toLowerCase()
 
+  // if any part of the search string is found within the search fields
   return props.flights.filter((flight) => {
-    // If the selected field is 'all', check only the fieldsToSearch
     if (field.value === "all") {
       return fieldsToSearch.some((field) =>
-        String(flight[field]).toLowerCase().includes(search.value)
+        String(flight[field]).toLowerCase().includes(lowerSearch)
       );
     } else {
-      // If a specific field is selected, filter by that
-      return String(flight[field.value]).toLowerCase().includes(search.value);
+      return String(flight[field.value]).toLowerCase().includes(lowerSearch);
     }
   });
 };
 
+// updates search term, resets page to 1 on change to avoid bugs
 const updateSearchTerm = (searchTerm: string) => {
   currentPage.value = 1;
   search.value = searchTerm;
 };
 
+/* 
+prop function instead of emitting for consistency. guess I could change it to an emit, 
+but here in case it needs functionality
+*/
 const updateSearchField = (searchOption: SearchOption) => {
   field.value = searchOption.value;
 };
@@ -300,12 +308,13 @@ const indexOfLastFlight = ref(currentPage.value * props.flightsPerPage);
 const indexOfFirstFlight = ref(indexOfLastFlight.value - props.flightsPerPage);
 const lastPage = ref(Math.ceil(props.flights.length / props.flightsPerPage));
 
+// updated the number of flights displayed per page for both tables as ui looks sloppy if they are different
 const updateFlightsPerPage = (e: InputEvent) => {
   const selectElement = e.target as HTMLSelectElement;
-  console.log(selectElement.value);
   emit("update:flightsPerPage", Number(selectElement.value));
 };
 
+// resets values on certain changes to avoid bugs
 const resetValues = () => {
   const displayedFlights = search ? filteredFlights() : props.flights;
   indexOfLastFlight.value = currentPage.value * props.flightsPerPage;
@@ -314,6 +323,7 @@ const resetValues = () => {
   setSort(sortState.value, true);
 };
 
+// resets values and resets page to 1 in certain cases to avoid bugging the pagination
 watch(
   [() => props.flights, () => props.direction, () => props.flightsPerPage],
   () => {
