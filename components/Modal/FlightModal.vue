@@ -3,7 +3,7 @@
     <div
       id="flight-modal"
       @click="(e) => e.stopPropagation()"
-      class="fixed flex flex-col w-11/12 p-3 sm:p-6 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow top-1/2 left-1/2 max-w-2xl dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+      class="fixed flex flex-col w-11/12 max-w-2xl p-3 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow sm:p-6 top-1/2 left-1/2 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
       <button
         @click="(e) => closeButton(e)"
@@ -35,9 +35,9 @@
           {{ selectedFlight.status.toUpperCase() }}
         </p>
       </div>
-      <div class="flex items-center justify-between h-8">
+      <div class="flex items-center justify-between h-8 mb-2">
         <h3
-          class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
         >
           {{ selectedFlight.dep_iata }}
         </h3>
@@ -86,20 +86,23 @@
           </span>
         </div>
         <h3
-          class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
+          class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
         >
           {{ selectedFlight.arr_iata }}
         </h3>
       </div>
       <h4
+        v-if="selectedFlight.airline_name || selectedFlight.airline_country"
         id="airline-name-and-country"
-        class="sm:text-center mt-2 text-md sm:text-lg"
+        class="mt-2 sm:text-center text-md sm:text-lg"
       >
         {{ selectedFlight.airline_name }}
-        ·
+        <span v-if="selectedFlight.airline_name && selectedFlight.airline_country">
+          ·
+        </span>
         {{ selectedFlight.airline_country }}
       </h4>
-      <div class="flex flex-col sm:flex-row mt-2">
+      <div class="flex flex-col mt-2 sm:flex-row">
         <FlightInfo
           :selectedFlight="selectedFlight"
           direction="dep"
