@@ -157,7 +157,7 @@ onMounted(() => {
   getFlights(airportCode.value, "arr");
   getFlights(airportCode.value, "dep");
 
-  /* uncomment this and comment out all calls of getFlights to use static data, preserve api calls
+  /* uncomment this and comment out all calls of getFlights to use static data and preserve api calls
   const sortedArrivals = sortFlights(dummyArrivals, "arr", "time", false);
   const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
 
