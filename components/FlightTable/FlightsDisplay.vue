@@ -156,7 +156,7 @@
               <td
                 id="flight-status"
                 :class="`${
-                  flight.status === 'cancelled' ? 'text-red-500' : ''
+                  flight.status === 'cancelled' ? 'text-red-500 dark:text-red-600' : ''
                 } ${flight.status === 'scheduled' ? 'text-sky-500' : ''} ${
                   flight.status === 'active' ? 'text-emerald-500' : ''
                 } ${

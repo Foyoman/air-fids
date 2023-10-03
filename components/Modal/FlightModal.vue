@@ -16,7 +16,7 @@
         <p
           :class="`${
             selectedFlight.status === 'cancelled'
-              ? 'text-red-500 border-red-500'
+              ? 'text-red-500 border-red-500 dark:text-red-600 dark:border-red-600'
               : ''
           } ${
             selectedFlight.status === 'scheduled'
@@ -77,7 +77,7 @@
             :class="`pb-px absolute text-emerald-500 -translate-x-1/2 -translate-y-1/2 top-1/2
             ${
               selectedFlight.status === 'cancelled' || selectedFlight.delayed
-                ? 'text-red-500'
+                ? 'text-red-500 dark:text-red-600'
                 : 'text-emerald-500'
             }
             `"
