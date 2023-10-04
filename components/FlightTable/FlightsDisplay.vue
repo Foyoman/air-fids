@@ -15,7 +15,7 @@
         class="mb-3"
       />
       <div
-        class="relative w-full overflow-x-scroll shadow-md lg:block xs:rounded-lg"
+        class="relative w-full overflow-x-auto shadow-md lg:block xs:rounded-lg"
       >
         <table
           class="w-full text-sm text-left text-slate-500 dark:text-slate-400"
@@ -309,6 +309,14 @@ const filteredFlights = () => {
     }
   });
 };
+
+// resets search when flights change - flights change on airport change
+watch(
+  () => props.flights,
+  () => {
+    search.value = "";
+  }
+);
 
 // updates search term, resets page to 1 on change to avoid bugs
 const updateSearchTerm = (searchTerm: string) => {

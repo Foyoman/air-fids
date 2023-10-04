@@ -48,7 +48,7 @@
 
         <div class="relative w-full">
           <input
-            @input="(e) => handleInput(e)"
+            @input="handleInput"
             v-model="searchTerm"
             type="search"
             id="search-dropdown"
@@ -128,7 +128,15 @@ const clickOff = () => {
   showDropdown.value = false;
 };
 
-const handleInput = (e: Event) => {
+const handleInput = () => {
   props.updateSearchTerm(searchTerm.value);
 };
+
+// resets search when flights change - flights change on airport change
+watch(
+  () => props.direction,
+  () => {
+    props.updateSearchTerm(searchTerm.value);
+  }
+);
 </script>
