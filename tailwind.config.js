@@ -9,6 +9,15 @@ export default {
     "./app.vue",
   ],
   theme: {
+    screens: {
+      'xs': '425px',
+      'sm': '640px', // default value
+      'md': '768px', // default value
+      'lg': '1024px', // default value
+      'xl': '1280px', // default value
+      '2xl': '1536px',
+      // ... any other breakpoints you want to define or modify
+    },
     extend: {
       container: {
         screens: {

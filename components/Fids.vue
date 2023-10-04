@@ -6,7 +6,7 @@
     :formatDate="formatDate"
   />
   <Error v-if="error" :message="error" :refresh="refresh" />
-  <div class="container flex flex-col items-center px-2 py-8 mx-auto sm:px-0 lg:px-4">
+  <div class="container flex flex-col items-center px-2 xs:px-4 py-8 mx-auto lg:px-4">
     <DarkModeToggle class="absolute top-4 right-4" />
     <select
       id="cities"
