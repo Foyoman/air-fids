@@ -22,6 +22,9 @@ export default {
           "sans-serif",
         ],
       },
+      colors: {
+        'slate-850': '#121D2F',
+      }
     },
   },
   plugins: [],
