@@ -146,19 +146,15 @@ const props = defineProps({
 
 const flightProgress = ref(0);
 
-/* 
-my favourite part of the whole project. calculates the progress of an active flight based 
-on how much time has elapsed since now and its departure time, and if it has landed
-*/
+/* my favourite part of the whole project. calculates the progress of an active flight based 
+on how much time has elapsed since now and its departure time, and if it has landed */
 const calculateFlightProgress = () => {
   const now = new Date().getTime();
   const depTime = new Date(props.selectedFlight.dep_actual!).getTime();
   const arrTime = new Date(props.selectedFlight.arr_estimated!).getTime();
 
-  /* 
-  handle errors first, then check if landed, then calculate percentage. an alternative would be 
-  to check if a flight status is active, but i guess i didn't do that 
-  */
+  /* handle errors first, then check if landed, then calculate percentage. an alternative would be 
+  to check if a flight status is active, but i guess i didn't do that */
   if (isNaN(depTime) || isNaN(arrTime) || now < depTime) {
     flightProgress.value = 0;
   } else if (props.selectedFlight.status === "landed" || now >= arrTime) {

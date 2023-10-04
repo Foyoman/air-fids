@@ -67,7 +67,11 @@
 <script setup lang="ts">
 import { Flight, Direction, AirportCode, SortTerm } from "~/types";
 // import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
+
+// used a node script to combine two JSONs found online to get airport name and full city name
 import { airports } from "~/lib/airports";
+
+// credit: https://github.com/npow/airline-codes/blob/master/airlines.json
 import { airlines } from "~/lib/airlines";
 
 // api request
@@ -126,7 +130,8 @@ async function getFlights(city: string, dir: Direction) {
       if (data.response) {
         const flights: Flight[] = data.response;
 
-        // append airline name and country of airline to each flight
+        /* append airline name, airline country, arrival and departure cities and airport names of 
+        airline to each flight */
         flights.map((flight) => {
           appendAirlineCountryCitiesAirports(flight);
         });

@@ -1,3 +1,5 @@
+// credit: https://github.com/npow/airline-codes/blob/master/airlines.json
+
 interface Airline {
   name: string;
   iata: string;

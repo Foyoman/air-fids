@@ -324,10 +324,8 @@ const updateSearchTerm = (searchTerm: string) => {
   search.value = searchTerm;
 };
 
-/* 
-prop function instead of emitting for consistency. guess I could change it to an emit, 
-but here in case it needs functionality
-*/
+/* prop function instead of emitting for consistency. guess I could change it to an emit, 
+but here in case it needs functionality */
 const updateSearchField = (searchOption: SearchOption) => {
   field.value = searchOption.value;
 };

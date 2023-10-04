@@ -1,4 +1,4 @@
-// I imported these responses to be able to develop the app without exhausting api requests
+// I imported these responses from postman to be able to develop the app without exhausting api requests
 
 import { Flight } from "../types/index";
 

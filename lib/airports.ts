@@ -1,3 +1,5 @@
+// credit: https://github.com/jbrooksuk/JSON-Airports & https://github.com/mwgg/Airports
+
 interface Airport {
   iata: string;
   name: string | null;
