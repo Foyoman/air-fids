@@ -71,7 +71,7 @@ import { Flight, Direction, AirportCode, SortTerm } from "~/types";
 // used a node script to combine two JSONs found online to get airport name and full city name
 import { airports } from "~/lib/airports";
 
-// credit: https://github.com/npow/airline-codes/blob/master/airlines.json
+// a JSON of airlines with name and country
 import { airlines } from "~/lib/airlines";
 
 // api request
