@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col items-center w-full px-0 py-3 overflow-visible lg:mt-0 sm:py-4 lg:w-1/2"
+    class="flex-col items-center w-full px-0 pt-3 overflow-visible sm:pt-4 lg:w-1/2"
   >
     <h2
       class="hidden mx-auto mb-4 text-4xl font-bold text-center lg:block dark:text-white"
