@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col items-center w-full px-0 pt-2 pb-4 lg:w-1/2 lg:py-8 overflow-visible"
+    class="flex-col items-center w-full px-0 mt-3 lg:mt-0 pb-4 lg:w-1/2 lg:py-8 overflow-visible"
   >
     <h2
       class="hidden mx-auto mb-4 text-4xl font-bold text-center lg:block dark:text-white"
@@ -15,7 +15,7 @@
         class="mb-3"
       />
       <div
-        class="relative w-full overflow-x-scroll shadow-md lg:block sm:rounded-lg"
+        class="relative w-full overflow-x-scroll shadow-md lg:block xs:rounded-lg"
       >
         <table
           class="w-full text-sm text-left text-slate-500 dark:text-slate-400"

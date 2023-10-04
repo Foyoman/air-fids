@@ -4,10 +4,6 @@
 
 @layer base {
   body {
-    @apply font-sans dark:bg-slate-850 bg-slate-100 w-screen transition-all duration-200;
-  }
-
-  * {
-    @apply transition-all duration-100;
+    @apply transition-all duration-100 font-sans dark:bg-slate-850 bg-slate-100 w-screen;
   }
 }

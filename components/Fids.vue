@@ -6,7 +6,9 @@
     :formatDate="formatDate"
   />
   <Error v-if="error" :message="error" :refresh="refresh" />
-  <div class="container flex flex-col items-center px-2 xs:px-4 py-8 mx-auto lg:px-4">
+  <div
+    class="container flex flex-col items-center px-2 xs:px-4 py-8 mx-auto lg:px-4"
+  >
     <DarkModeToggle class="absolute top-4 right-4" />
     <select
       id="cities"
@@ -39,24 +41,24 @@
       />
 
       <FlightsDisplay
-      direction="arr"
-      :flights="arrivals"
-      :loading="arrivalsLoading"
-      :openModal="toggleModal"
-      :formatDate="formatDate"
-      v-model:flightsPerPage="flightsPerPage"
-      :sortFlights="sortFlights"
-      class="hidden lg:flex lg:pl-0 lg:pr-4 xl:pr-2 2xl:pr-4"
+        direction="arr"
+        :flights="arrivals"
+        :loading="arrivalsLoading"
+        :openModal="toggleModal"
+        :formatDate="formatDate"
+        v-model:flightsPerPage="flightsPerPage"
+        :sortFlights="sortFlights"
+        class="hidden lg:flex lg:pl-0 lg:pr-4 xl:pr-2 2xl:pr-4"
       />
       <FlightsDisplay
-      direction="dep"
-      :flights="departures"
-      :loading="departuresLoading"
-      :openModal="toggleModal"
-      :formatDate="formatDate"
-      v-model:flightsPerPage="flightsPerPage"
-      :sortFlights="sortFlights"
-      class="hidden lg:flex lg:pr-0 lg:pl-4 xl:pl-2 2xl:pl-4"
+        direction="dep"
+        :flights="departures"
+        :loading="departuresLoading"
+        :openModal="toggleModal"
+        :formatDate="formatDate"
+        v-model:flightsPerPage="flightsPerPage"
+        :sortFlights="sortFlights"
+        class="hidden lg:flex lg:pr-0 lg:pl-4 xl:pl-2 2xl:pl-4"
       />
     </div>
   </div>
