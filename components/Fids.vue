@@ -48,7 +48,7 @@
         :formatDate="formatDate"
         v-model:flightsPerPage="flightsPerPage"
         :sortFlights="sortFlights"
-        class="hidden lg:flex lg:pl-0 lg:pr-4 xl:pr-2 2xl:pr-4"
+        class="hidden lg:flex lg:pl-0 lg:pr-2 2xl:pr-4"
       />
       <FlightsDisplay
         direction="dep"
@@ -58,7 +58,7 @@
         :formatDate="formatDate"
         v-model:flightsPerPage="flightsPerPage"
         :sortFlights="sortFlights"
-        class="hidden lg:flex lg:pr-0 lg:pl-4 xl:pl-2 2xl:pl-4"
+        class="hidden lg:flex lg:pr-0 lg:pl-2 2xl:pl-4"
       />
     </div>
   </div>
