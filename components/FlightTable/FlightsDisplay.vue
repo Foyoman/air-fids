@@ -137,7 +137,7 @@
                   }}
                 </span>
                 {{ " " }}
-                <span>
+                <span v-if="flight.status !== 'cancelled'">
                   {{
                     direction === "arr"
                       ? flight.delayed && flight.arr_estimated
@@ -149,11 +149,6 @@
                   }}
                 </span>
               </td>
-              <!-- 
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                max-width: 6rem;
-              -->
               <td
                 :class="`hidden text-ellipsis max-w-xs xl:table-cell px-2 py-4 text-xs text-center sm:px-2 sm:text-sm ${
                   flight.airline_name

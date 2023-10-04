@@ -75,5 +75,5 @@ export interface Flight {
   flight_iata: string | null;
   flight_icao: string | null;
   flight_number: string;
-  status: string;
+  status: 'scheduled' | 'cancelled' | 'active' | 'landed';
 }
