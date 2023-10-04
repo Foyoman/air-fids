@@ -27,7 +27,7 @@
               <th
                 scope="col"
                 @click="setSort('time')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Time</p>
@@ -41,7 +41,7 @@
               <th
                 scope="col"
                 @click="setSort('flight')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Flight</p>
@@ -59,7 +59,7 @@
                     ? setSort('origin')
                     : setSort('destination')
                 "
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>{{ direction === "arr" ? "Origin" : "Dest." }}</p>
@@ -77,7 +77,7 @@
               <th
                 scope="col"
                 @click="setSort('status')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Status</p>
