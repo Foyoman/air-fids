@@ -3,12 +3,12 @@
     <div
       id="flight-modal"
       @click="(e) => e.stopPropagation()"
-      class="fixed flex flex-col w-11/12 max-w-2xl p-3 text-gray-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-lg shadow sm:p-6 top-1/2 left-1/2 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+      class="fixed flex flex-col w-11/12 max-w-2xl p-3 text-slate-900 -translate-x-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-lg shadow sm:p-6 top-1/2 left-1/2 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
     >
       <button
         @click="(e) => closeButton(e)"
         type="button"
-        class="absolute inline-flex items-center justify-center w-6 h-6 ml-auto text-sm text-gray-400 bg-transparent rounded-lg right-1 top-1 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        class="absolute inline-flex items-center justify-center w-6 h-6 ml-auto text-sm text-slate-400 bg-transparent rounded-lg right-1 top-1 hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-600 dark:hover:text-white"
       >
         <CloseButton />
       </button>
@@ -37,14 +37,14 @@
       </div>
       <div class="flex items-center justify-between h-8 mb-2">
         <h3
-          class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
+          class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white"
         >
           {{ selectedFlight.dep_iata }}
         </h3>
         <div class="relative w-full h-full mx-4">
           <p
             id="flight-duration"
-            class="absolute text-xs text-gray-500 -translate-x-1/2 -translate-y-full dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
+            class="absolute text-xs text-slate-500 -translate-x-1/2 -translate-y-full dark:text-slate-400 top-1/2 left-1/2 whitespace-nowrap"
           >
             {{
               `${Math.floor(selectedFlight.duration / 60)}h ${
@@ -54,7 +54,7 @@
           </p>
           <p
             id="flight-number"
-            class="absolute text-xs text-gray-500 -translate-x-1/2 dark:text-gray-400 top-1/2 left-1/2 whitespace-nowrap"
+            class="absolute text-xs text-slate-500 -translate-x-1/2 dark:text-slate-400 top-1/2 left-1/2 whitespace-nowrap"
           >
             {{
               selectedFlight.flight_iata ||
@@ -85,7 +85,7 @@
           </span>
         </div>
         <h3
-          class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white"
+          class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white"
         >
           {{ selectedFlight.arr_iata }}
         </h3>
@@ -96,7 +96,9 @@
         class="mt-2 sm:text-center text-md sm:text-lg"
       >
         {{ selectedFlight.airline_name }}
-        <span v-if="selectedFlight.airline_name && selectedFlight.airline_country">
+        <span
+          v-if="selectedFlight.airline_name && selectedFlight.airline_country"
+        >
           ·
         </span>
         {{ selectedFlight.airline_country }}

@@ -18,10 +18,10 @@
         class="relative w-full overflow-x-auto shadow-md lg:block sm:rounded-lg"
       >
         <table
-          class="w-full overflow-x-scroll text-sm text-left text-gray-500 dark:text-gray-400"
+          class="w-full overflow-x-scroll text-sm text-left text-slate-500 dark:text-slate-400"
         >
           <thead
-            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400"
           >
             <tr>
               <th
@@ -98,19 +98,19 @@
               )"
               :key="index"
               @click="openModal(flight)"
-              class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+              class="bg-white border-b cursor-pointer dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
             >
               <td
-                class="px-2 py-4 text-xs font-medium text-center text-gray-900 sm:px-4 sm:text-sm lg:px-4 whitespace-nowrap dark:text-white"
+                class="px-2 py-4 text-xs font-medium text-center text-slate-900 sm:px-4 sm:text-sm lg:px-4 whitespace-nowrap dark:text-white"
               >
                 <span
                   :class="`${
                     direction === 'arr'
                       ? flight.delayed && flight.arr_estimated
-                        ? 'text-gray-500 dark:text-gray-400 line-through font-normal`'
+                        ? 'text-slate-500 dark:text-slate-400 line-through font-normal`'
                         : ''
                       : flight.delayed && flight.dep_estimated
-                      ? 'text-gray-500 dark:text-gray-400 line-through font-normal`'
+                      ? 'text-slate-500 dark:text-slate-400 line-through font-normal`'
                       : ''
                   }`"
                 >
@@ -156,7 +156,9 @@
               <td
                 id="flight-status"
                 :class="`${
-                  flight.status === 'cancelled' ? 'text-red-500 dark:text-red-600' : ''
+                  flight.status === 'cancelled'
+                    ? 'text-red-500 dark:text-red-600'
+                    : ''
                 } ${flight.status === 'scheduled' ? 'text-sky-500' : ''} ${
                   flight.status === 'active' ? 'text-emerald-500' : ''
                 } ${

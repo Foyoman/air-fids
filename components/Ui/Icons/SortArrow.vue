@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="w-2 h-2 ml-0.5 sm:ml-1 inline my-auto text-gray-500 dark:text-gray-400"
+    class="w-2 h-2 ml-0.5 sm:ml-1 inline my-auto text-slate-500 dark:text-slate-400"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"

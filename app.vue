@@ -11,14 +11,14 @@
     <select
       id="cities"
       v-model="airportCode"
-      class="bg-gray-50 focus:outline-none hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer tracking-tight font-bold border border-gray-300 text-gray-900 text-2xl rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+      class="bg-slate-50 focus:outline-none hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer tracking-tight font-bold border border-slate-300 text-slate-900 text-2xl rounded-lg block p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
     >
       <option v-for="airport in airportCodes" :value="airport" :key="airport">
         {{ airport }}
       </option>
     </select>
     <h4
-      class="mt-2 text-lg font-light tracking-tight text-center text-gray-900 dark:text-gray-300"
+      class="mt-2 text-lg font-light tracking-tight text-center text-slate-900 dark:text-slate-300"
     >
       {{ findName(airportCode) }}
     </h4>
@@ -209,15 +209,15 @@ const getFlightCitiesAndAirports = (flight: Flight) => {
   });
   const depAirport = airports.find((airport) => {
     return airport.iata === flight.dep_iata;
-  })
+  });
 
   return {
     arr_city: arrAirport?.city,
     arr_name: arrAirport?.name,
     dep_city: depAirport?.city,
     dep_name: depAirport?.name,
-  }
-}
+  };
+};
 
 // appends name and country to flight from airline data
 const appendAirlineCountryCitiesAirports = (flight: Flight) => {
@@ -320,12 +320,15 @@ const toggleModal = (flight?: Flight) => {
 };
 
 // prevents user from scrolling if modal is open
-watch(() => showModal.value, () => {
-  const body = document.body;
-  if (showModal.value) {
-    body.classList.add("overflow-hidden");
-  } else {
-    body.classList.remove("overflow-hidden");
+watch(
+  () => showModal.value,
+  () => {
+    const body = document.body;
+    if (showModal.value) {
+      body.classList.add("overflow-hidden");
+    } else {
+      body.classList.remove("overflow-hidden");
+    }
   }
-});
+);
 </script>

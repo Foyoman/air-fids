@@ -1,16 +1,14 @@
 <template>
   <div class="flex flex-col justify-between sm:w-1/2">
     <p
-      class="text-xs sm:text-sm tracking-tight text-gray-500 dark:text-gray-400"
+      class="text-xs sm:text-sm tracking-tight text-slate-500 dark:text-slate-400"
     >
       {{
-        direction === "arr"
-          ? selectedFlight.arr_name
-          : selectedFlight.dep_name
+        direction === "arr" ? selectedFlight.arr_name : selectedFlight.dep_name
       }}
     </p>
     <div>
-      <p class="text-lg text-gray-800 dark:text-gray-100">
+      <p class="text-lg text-slate-800 dark:text-slate-100">
         <span v-if="direction === 'arr' && selectedFlight.arr_city">
           {{ selectedFlight.arr_city }} ·
         </span>
@@ -28,7 +26,7 @@
       </p>
       <div class="flex justify-between w-full mt-1">
         <div>
-          <p class="text-gray-500 dark:text-gray-400">
+          <p class="text-slate-500 dark:text-slate-400">
             {{ direction === "arr" ? "Arrival" : "Departure" }}
           </p>
 
@@ -48,8 +46,8 @@
                         ? selectedFlight.arr_estimated
                         : selectedFlight.dep_estimated
                     ))
-                  ? 'line-through text-gray-500 dark:text-gray-400'
-                  : 'text-gray-900 dark:text-white sm:text-2xl'
+                  ? 'line-through text-slate-500 dark:text-slate-400'
+                  : 'text-slate-900 dark:text-white sm:text-2xl'
               }`"
             >
               {{
@@ -112,8 +110,8 @@
         </div>
         <div class="flex gap-4">
           <div>
-            <p class="text-gray-500 dark:text-gray-400">Terminal</p>
-            <p class="text-gray-900 dark:text-white sm:text-2xl">
+            <p class="text-slate-500 dark:text-slate-400">Terminal</p>
+            <p class="text-slate-900 dark:text-white sm:text-2xl">
               {{
                 direction === "arr"
                   ? selectedFlight.arr_terminal || "-"
@@ -122,8 +120,8 @@
             </p>
           </div>
           <div>
-            <p class="text-gray-500 dark:text-gray-400">Gate</p>
-            <p class="text-gray-900 dark:text-white sm:text-2xl">
+            <p class="text-slate-500 dark:text-slate-400">Gate</p>
+            <p class="text-slate-900 dark:text-white sm:text-2xl">
               {{
                 direction === "arr"
                   ? selectedFlight.arr_gate || "-"

@@ -13,7 +13,7 @@
           id="dropdown-button"
           type="button"
           @click="toggleDropdown"
-          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white dark:border-gray-600"
+          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-slate-900 bg-slate-100 border border-slate-300 rounded-l-lg hover:bg-slate-200 focus:outline-none dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white dark:border-slate-600"
         >
           {{ selectedOption.label }}
           <ExpandIcon />
@@ -23,10 +23,10 @@
           id="dropdown"
           :class="`${
             showDropdown ? '' : 'hidden'
-          } z-50 absolute top-12 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`"
+          } z-50 absolute top-12 bg-white divide-y divide-slate-100 rounded-lg shadow w-44 dark:bg-slate-700`"
         >
           <ul
-            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            class="py-2 text-sm text-slate-700 dark:text-slate-200"
             aria-labelledby="dropdown-button"
           >
             <li
@@ -38,7 +38,7 @@
             >
               <button
                 type="button"
-                class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                class="inline-flex w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white"
               >
                 {{ option.label }}
               </button>
@@ -54,7 +54,7 @@
             id="search-dropdown"
             autocomplete="off"
             placeholder="Search flights"
-            class="block focus:outline-1 focus:outline-gray-500 p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 dark:text-white dark:bg-gray-700 dark:border-l-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            class="block focus:outline-1 focus:outline-slate-500 p-2.5 w-full z-20 text-sm text-slate-900 bg-slate-50 rounded-r-lg border-l-slate-50 border-l-2 border border-slate-300 dark:text-white dark:bg-slate-700 dark:border-l-slate-700 dark:border-slate-600 dark:placeholder-slate-400"
           />
         </div>
       </div>
