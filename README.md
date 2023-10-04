@@ -1,4 +1,4 @@
-# fids
+# air-fids
 > A flight information display system (FIDS) is a computer system used in airports to display flight information to passengers, in which a computer system controls mechanical or electronic display boards or monitors in order to display arriving and departing flight information in real-time. The displays are located inside or around an airport terminal. A virtual version of a FIDS can also be found on most airport websites and teletext systems. In large airports, there are different sets of FIDS for each terminal or even each major airline. FIDS are used to inform passengers of boarding gates, departure/arrival times, destinations, notifications of flight delays/flight cancellations, and partner airlines, et al.
 
 ## [https://air-fids.vercel.app/](https://air-fids.vercel.app/)
