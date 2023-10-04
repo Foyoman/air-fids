@@ -1,13 +1,5 @@
 export type Direction = "arr" | "dep";
 
-export type TableField =
-  | "time"
-  | "airline"
-  | "flight"
-  | "origin"
-  | "destination"
-  | "status";
-
 export type AirportCode =
   | "SYD"
   | "MEL"
@@ -31,6 +23,8 @@ export interface SearchOption {
   label: SearchLabel;
   value: keyof Flight | "all";
 }
+
+export type SortTerm = keyof Flight;
 
 export interface Flight {
   // appended

@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { Flight, Direction, TableField, AirportCode } from "~/types";
+import { Flight, Direction, AirportCode, SortTerm } from "~/types";
 // import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
 import { airports } from "~/lib/airports";
 import { airlines } from "~/lib/airlines";
@@ -135,12 +135,12 @@ async function getFlights(city: string, dir: Direction) {
 
         // set state variables depending on flight direction relative to city
         if (dir === "arr") {
-          arrivals.value = sortFlights(flights, "arr", "time", false);
+          arrivals.value = sortFlights(flights, "arr", "arr_time", false);
           arrivalsLoading.value = false;
         }
 
         if (dir === "dep") {
-          departures.value = sortFlights(flights, "dep", "time", false);
+          departures.value = sortFlights(flights, "dep", "dep_time", false);
           departuresLoading.value = false;
         }
       } else {
@@ -159,8 +159,8 @@ onMounted(() => {
   getFlights(airportCode.value, "dep");
 
   /* uncomment this and comment out all calls of getFlights to use static data and preserve api calls
-  const sortedArrivals = sortFlights(dummyArrivals, "arr", "time", false);
-  const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
+  const sortedArrivals = sortFlights(dummyArrivals, "arr", "arr_time", false);
+  const sortedDepartures = sortFlights(dummyDepartures, "dep", "dep_time", false);
 
   sortedArrivals.map((flight) => {
     appendAirlineCountryCitiesAirports(flight);
@@ -244,31 +244,22 @@ const findName = (iata: string) => {
 const sortFlights = (
   flights: Flight[],
   dir: Direction,
-  key: TableField,
+  key: SortTerm,
   reverse: boolean
 ) => {
   const sorted = flights.sort((a: Flight, b: Flight) => {
     let sortA: Flight | Date | string = a;
     let sortB: Flight | Date | string = b;
 
-    if (key === "time") {
-      sortA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
-      sortB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
-    } else if (key === "airline") {
-      sortA = a.airline_name || a.airline_name || "";
-      sortB = b.airline_name || b.airline_name || "";
-    } else if (key === "flight") {
-      sortA = a.flight_iata || a.flight_icao || "";
-      sortB = b.flight_iata || b.flight_icao || "";
-    } else if (key === "origin") {
-      sortA = a.dep_iata || "";
-      sortB = b.dep_iata || "";
-    } else if (key === "destination") {
-      sortA = a.arr_iata || "";
-      sortB = b.arr_iata || "";
-    } else if (key === "status") {
-      sortA = a.status || "";
-      sortB = b.status || "";
+    if (key === "dep_time" || key === "arr_time") {
+      sortA = new Date(a[key]);
+      sortB = new Date(b[key]);
+    } else if (key === "flight_iata") {
+      sortA = a[key] || a.flight_icao || "";
+      sortB = b[key] || b.flight_icao || "";
+    } else {
+      sortA = String(a[key]) || "";
+      sortB = String(b[key]) || "";
     }
 
     // Check for null, undefined or falsy values
@@ -277,7 +268,7 @@ const sortFlights = (
     if (!sortA && !sortB) return 0;
 
     // Check for time equality, if not time key
-    if (sortA === sortB && key !== "time") {
+    if (sortA === sortB && key !== "dep_iata" && key !== "arr_iata") {
       const timeA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
       const timeB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
       return timeA.getTime() - timeB.getTime();

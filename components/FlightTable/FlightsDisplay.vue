@@ -26,13 +26,13 @@
             <tr>
               <th
                 scope="col"
-                @click="setSort('time')"
+                @click="setSort(direction === 'arr' ? 'arr_time' : 'dep_time')"
                 class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Time</p>
                   <SortArrow
-                    v-if="sortState === 'time'"
+                    v-if="sortState === 'arr_time' || sortState === 'dep_time'"
                     :class="reverseState ? 'rotate-180' : ''"
                   />
                   <SortIcon v-else />
@@ -40,7 +40,7 @@
               </th>
               <th
                 scope="col"
-                @click="setSort('airline')"
+                @click="setSort('airline_name')"
                 class="hidden xl:table-cell px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span
@@ -48,7 +48,7 @@
                 >
                   <p>Airline</p>
                   <SortArrow
-                    v-if="sortState === 'airline'"
+                    v-if="sortState === 'airline_name'"
                     :class="reverseState ? 'rotate-180' : ''"
                   />
                   <SortIcon v-else />
@@ -56,13 +56,13 @@
               </th>
               <th
                 scope="col"
-                @click="setSort('flight')"
+                @click="setSort('flight_iata')"
                 class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Flight</p>
                   <SortArrow
-                    v-if="sortState === 'flight'"
+                    v-if="sortState === 'flight_iata'"
                     :class="reverseState ? 'rotate-180' : ''"
                   />
                   <SortIcon v-else />
@@ -72,8 +72,8 @@
                 scope="col"
                 @click="
                   direction === 'arr'
-                    ? setSort('origin')
-                    : setSort('destination')
+                    ? setSort('dep_iata')
+                    : setSort('arr_iata')
                 "
                 class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
@@ -82,8 +82,8 @@
                   <SortArrow
                     v-if="
                       direction === 'arr'
-                        ? sortState === 'origin'
-                        : sortState === 'destination'
+                        ? sortState === 'dep_iata'
+                        : sortState === 'arr_iata'
                     "
                     :class="reverseState ? 'rotate-180' : ''"
                   />
@@ -212,7 +212,7 @@
 </template>
 
 <script setup lang="ts">
-import { Flight, Direction, TableField, SearchOption } from "~/types";
+import { Flight, Direction, SearchOption, SortTerm } from "~/types";
 
 const props = defineProps({
   direction: {
@@ -248,7 +248,7 @@ const props = defineProps({
       (
         flights: Flight[],
         dir: Direction,
-        key: TableField,
+        key: SortTerm,
         reverse: boolean
       ) => Flight[]
     >,
@@ -259,11 +259,11 @@ const props = defineProps({
 const emit = defineEmits();
 
 // for sort
-const sortState = ref<TableField>("time");
+const sortState = ref<SortTerm>(props.direction === "arr" ? "arr_time" : "dep_time");
 const reverseState = ref(false);
 
 // sorts table from table head values and switches state values for ux
-const setSort = (sortKey: TableField, fromWatch?: boolean) => {
+const setSort = (sortKey: SortTerm, fromWatch?: boolean) => {
   const isSameSortKey = sortKey === sortState.value;
 
   if (!fromWatch) {
