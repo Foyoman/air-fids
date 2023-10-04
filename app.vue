@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { Flight, Direction, TableField, AirportCode } from "~/types";
-// import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
+import { dummyArrivals, dummyDepartures } from "~/lib/flights"; // uncomment to use static data
 import { airports } from "~/lib/airports";
 import { airlines } from "~/lib/airlines";
 
@@ -153,10 +153,10 @@ async function getFlights(city: string, dir: Direction) {
 }
 
 onMounted(() => {
-  getFlights(airportCode.value, "arr");
-  getFlights(airportCode.value, "dep");
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
 
-  /* uncomment this and comment out all calls of getFlights to use static data and preserve api calls
+  // /* uncomment this and comment out all calls of getFlights to use static data and preserve api calls
   const sortedArrivals = sortFlights(dummyArrivals, "arr", "time", false);
   const sortedDepartures = sortFlights(dummyDepartures, "dep", "time", false);
 
@@ -175,15 +175,15 @@ onMounted(() => {
   console.log(sortedArrivals);
   arrivals.value = sortedArrivals;
   departures.value = sortedDepartures;
-  */
+  // */
 });
 
 // watch each change of airportCode to re-fetch data
 watch(airportCode, () => {
   departuresLoading.value = true;
   arrivalsLoading.value = true;
-  getFlights(airportCode.value, "arr");
-  getFlights(airportCode.value, "dep");
+  // getFlights(airportCode.value, "arr");
+  // getFlights(airportCode.value, "dep");
 });
 
 // refresh button for error modal

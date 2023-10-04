@@ -9,7 +9,20 @@ export default {
     "./app.vue",
   ],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        sans: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Inter",
+          "Roboto",
+          "Segoe UI",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
+      },
+    },
   },
   plugins: [],
   darkMode: "class",
