@@ -15,10 +15,10 @@
         class="mb-3"
       />
       <div
-        class="relative w-full overflow-x-auto shadow-md lg:block sm:rounded-lg"
+        class="relative w-full overflow-x-scroll shadow-md lg:block sm:rounded-lg"
       >
         <table
-          class="w-full overflow-x-scroll text-sm text-left text-slate-500 dark:text-slate-400"
+          class="w-full text-sm text-left text-slate-500 dark:text-slate-400"
         >
           <thead
             class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400"
@@ -27,7 +27,7 @@
               <th
                 scope="col"
                 @click="setSort('time')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Time</p>
@@ -40,8 +40,24 @@
               </th>
               <th
                 scope="col"
+                @click="setSort('airline')"
+                class="hidden xl:table-cell px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+              >
+                <span
+                  class="flex items-center justify-center"
+                >
+                  <p>Airline</p>
+                  <SortArrow
+                    v-if="sortState === 'airline'"
+                    :class="reverseState ? 'rotate-180' : ''"
+                  />
+                  <SortIcon v-else />
+                </span>
+              </th>
+              <th
+                scope="col"
                 @click="setSort('flight')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Flight</p>
@@ -59,7 +75,7 @@
                     ? setSort('origin')
                     : setSort('destination')
                 "
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>{{ direction === "arr" ? "Origin" : "Dest." }}</p>
@@ -77,7 +93,7 @@
               <th
                 scope="col"
                 @click="setSort('status')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-4 sm:text-sm lg:px-4 hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Status</p>
@@ -101,7 +117,7 @@
               class="bg-white border-b cursor-pointer dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
             >
               <td
-                class="px-2 py-4 text-xs font-medium text-center text-slate-900 sm:px-4 sm:text-sm lg:px-4 whitespace-nowrap dark:text-white"
+                class="px-2 py-4 text-xs font-medium text-center text-slate-900 sm:px-2 sm:text-sm whitespace-nowrap dark:text-white"
               >
                 <span
                   :class="`${
@@ -133,12 +149,23 @@
                   }}
                 </span>
               </td>
-              <!-- <td class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4">
-                {{ flight.airline_iata }}
-              </td> -->
+              <!-- 
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 6rem;
+              -->
+              <td
+                :class="`hidden text-ellipsis max-w-xs xl:table-cell px-2 py-4 text-xs text-center sm:px-2 sm:text-sm ${
+                  flight.airline_name
+                    ? 'text-slate-900 dark:text-slate-200'
+                    : 'text-slate-500 dark:text-slate-400'
+                }`"
+              >
+                {{ flight.airline_name || "Unknown" }}
+              </td>
               <td
                 id="flight-number"
-                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
+                class="px-2 py-4 text-xs text-center sm:px-2 sm:text-sm"
               >
                 {{
                   flight.flight_iata ||
@@ -149,21 +176,19 @@
               </td>
               <td
                 id="origin/destination"
-                class="px-2 py-4 text-xs text-center sm:px-4 sm:text-sm lg:px-4"
+                class="px-2 py-4 text-xs text-center sm:px-2 sm:text-sm"
               >
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
               </td>
               <td
                 id="flight-status"
                 :class="`${
-                  flight.status === 'cancelled'
-                    ? 'text-red-500 dark:text-red-600'
-                    : ''
+                  flight.status === 'cancelled' ? 'text-red-500' : ''
                 } ${flight.status === 'scheduled' ? 'text-sky-500' : ''} ${
                   flight.status === 'active' ? 'text-emerald-500' : ''
                 } ${
                   flight.status === 'landed' ? 'text-green-500' : ''
-                } text-center text-xs sm:text-sm px-2 sm:px-4 py-4 lg:px-4`"
+                } text-center text-xs sm:text-sm px-2 sm:px-2 py-4`"
               >
                 {{ flight.status.toUpperCase() }}
               </td>
@@ -231,11 +256,11 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits();
+
 // for sort
 const sortState = ref<TableField>("time");
 const reverseState = ref(false);
-
-const emit = defineEmits();
 
 // sorts table from table head values and switches state values for ux
 const setSort = (sortKey: TableField, fromWatch?: boolean) => {

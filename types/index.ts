@@ -2,6 +2,7 @@ export type Direction = "arr" | "dep";
 
 export type TableField =
   | "time"
+  | "airline"
   | "flight"
   | "origin"
   | "destination"

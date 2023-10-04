@@ -90,7 +90,7 @@
                       : selectedFlight.dep_time
                   )
                   ? 'text-emerald-500'
-                  : 'text-red-500 dark:text-red-600'
+                  : 'text-red-500'
               } sm:text-2xl`"
             >
               {{

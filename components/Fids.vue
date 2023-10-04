@@ -6,7 +6,7 @@
     :formatDate="formatDate"
   />
   <Error v-if="error" :message="error" :refresh="refresh" />
-  <div class="container flex flex-col items-center px-2 py-8 mx-auto sm:px-4">
+  <div class="container flex flex-col items-center px-2 py-8 mx-auto sm:px-0 lg:px-4">
     <DarkModeToggle class="absolute top-4 right-4" />
     <select
       id="cities"
@@ -39,24 +39,24 @@
       />
 
       <FlightsDisplay
-        class="hidden lg:flex lg:pl-0 lg:pr-4"
-        direction="arr"
-        :flights="arrivals"
-        :loading="arrivalsLoading"
-        :openModal="toggleModal"
-        :formatDate="formatDate"
-        v-model:flightsPerPage="flightsPerPage"
-        :sortFlights="sortFlights"
+      direction="arr"
+      :flights="arrivals"
+      :loading="arrivalsLoading"
+      :openModal="toggleModal"
+      :formatDate="formatDate"
+      v-model:flightsPerPage="flightsPerPage"
+      :sortFlights="sortFlights"
+      class="hidden lg:flex lg:pl-0 lg:pr-4 xl:pr-2 2xl:pr-4"
       />
       <FlightsDisplay
-        class="hidden lg:flex lg:pr-0 lg:pl-4"
-        direction="dep"
-        :flights="departures"
-        :loading="departuresLoading"
-        :openModal="toggleModal"
-        :formatDate="formatDate"
-        v-model:flightsPerPage="flightsPerPage"
-        :sortFlights="sortFlights"
+      direction="dep"
+      :flights="departures"
+      :loading="departuresLoading"
+      :openModal="toggleModal"
+      :formatDate="formatDate"
+      v-model:flightsPerPage="flightsPerPage"
+      :sortFlights="sortFlights"
+      class="hidden lg:flex lg:pr-0 lg:pl-4 xl:pl-2 2xl:pl-4"
       />
     </div>
   </div>
@@ -252,9 +252,12 @@ const sortFlights = (
     if (key === "time") {
       sortA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
       sortB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
+    } else if (key === "airline") {
+      sortA = a.airline_name || a.airline_name || "";
+      sortB = b.airline_name || b.airline_name || "";
     } else if (key === "flight") {
-      sortA = a.airline_iata || a.airline_icao || "";
-      sortB = b.airline_iata || b.airline_icao || "";
+      sortA = a.flight_iata || a.flight_icao || "";
+      sortB = b.flight_iata || b.flight_icao || "";
     } else if (key === "origin") {
       sortA = a.dep_iata || "";
       sortB = b.dep_iata || "";
@@ -266,6 +269,12 @@ const sortFlights = (
       sortB = b.status || "";
     }
 
+    // Check for null, undefined or falsy values
+    if (!sortA && sortB) return reverse ? -1 : 1;
+    if (sortA && !sortB) return reverse ? 1 : -1;
+    if (!sortA && !sortB) return 0;
+
+    // Check for time equality, if not time key
     if (sortA === sortB && key !== "time") {
       const timeA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
       const timeB = new Date(dir === "arr" ? b.arr_time : b.dep_time);

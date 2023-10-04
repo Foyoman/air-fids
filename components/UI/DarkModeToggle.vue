@@ -9,7 +9,7 @@
     >
       <svg
         data-toggle-icon="moon"
-        :class="`w-3.5 h-3.5 ${isDarkMode ? 'hidden' : ''}`"
+        :class="`w-3.5 h-3.5 ${isDarkMode ? '' : 'hidden'}`"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"
@@ -23,7 +23,7 @@
       </svg>
       <svg
         data-toggle-icon="sun"
-        :class="`w-3.5 h-3.5 ${isDarkMode ? '' : 'hidden'}`"
+        :class="`w-3.5 h-3.5 ${isDarkMode ? 'hidden' : ''}`"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"

@@ -10,6 +10,11 @@ export default {
   ],
   theme: {
     extend: {
+      container: {
+        screens: {
+          xl: '1440px',
+        }
+      },
       fontFamily: {
         sans: [
           "-apple-system",
