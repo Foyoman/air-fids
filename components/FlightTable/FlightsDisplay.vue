@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col items-center w-full px-0 mt-3 lg:mt-0 pb-4 lg:w-1/2 lg:py-8 overflow-visible"
+    class="flex-col items-center w-full px-0 py-3 overflow-visible lg:mt-0 sm:py-4 lg:w-1/2"
   >
     <h2
       class="hidden mx-auto mb-4 text-4xl font-bold text-center lg:block dark:text-white"
@@ -21,7 +21,7 @@
           class="w-full text-sm text-left text-slate-500 dark:text-slate-400"
         >
           <thead
-            class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400"
+            class="text-xs uppercase text-slate-700 bg-slate-50 dark:bg-slate-700 dark:text-slate-400"
           >
             <tr>
               <th
@@ -41,7 +41,7 @@
               <th
                 scope="col"
                 @click="setSort('airline_name')"
-                class="hidden xl:table-cell px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="hidden px-0 py-3 text-xs text-center cursor-pointer xl:table-cell sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
               >
                 <span
                   class="flex items-center justify-center"
@@ -117,7 +117,7 @@
               class="bg-white border-b cursor-pointer dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
             >
               <td
-                class="px-2 py-4 text-xs font-medium text-center text-slate-900 sm:px-2 sm:text-sm whitespace-nowrap dark:text-white"
+                class="px-2 py-3 text-xs font-medium text-center text-slate-900 sm:px-2 sm:text-sm whitespace-nowrap dark:text-white"
               >
                 <span
                   :class="`${
@@ -150,7 +150,7 @@
                 </span>
               </td>
               <td
-                :class="`hidden text-ellipsis max-w-xs xl:table-cell px-2 py-4 text-xs text-center sm:px-2 sm:text-sm ${
+                :class="`hidden text-ellipsis max-w-xs xl:table-cell px-2 py-3 text-xs text-center sm:px-2 sm:text-sm ${
                   flight.airline_name
                     ? 'text-slate-900 dark:text-slate-200'
                     : 'text-slate-500 dark:text-slate-400'
@@ -160,7 +160,7 @@
               </td>
               <td
                 id="flight-number"
-                class="px-2 py-4 text-xs text-center sm:px-2 sm:text-sm"
+                class="px-2 py-3 text-xs text-center sm:px-2 sm:text-sm"
               >
                 {{
                   flight.flight_iata ||
@@ -171,7 +171,7 @@
               </td>
               <td
                 id="origin/destination"
-                class="px-2 py-4 text-xs text-center sm:px-2 sm:text-sm"
+                class="px-2 py-3 text-xs text-center sm:px-2 sm:text-sm"
               >
                 {{ direction === "arr" ? flight.dep_iata : flight.arr_iata }}
               </td>
@@ -183,7 +183,7 @@
                   flight.status === 'active' ? 'text-emerald-500' : ''
                 } ${
                   flight.status === 'landed' ? 'text-green-500' : ''
-                } text-center text-xs sm:text-sm px-2 sm:px-2 py-4`"
+                } text-center text-xs sm:text-sm px-2 sm:px-2 py-3`"
               >
                 {{ flight.status.toUpperCase() }}
               </td>
