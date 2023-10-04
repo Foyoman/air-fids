@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   ],
   app: {
     head: {
-      title: "fids",
+      title: "air-fids",
       htmlAttrs: {
         lang: 'en',
       },
