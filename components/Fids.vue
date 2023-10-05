@@ -267,12 +267,12 @@ const sortFlights = (
       sortB = String(b[key]) || "";
     }
 
-    // Check for null, undefined or falsy values
+    // puts falsy values at the end of sort
     if (!sortA && sortB) return reverse ? -1 : 1;
     if (sortA && !sortB) return reverse ? 1 : -1;
     if (!sortA && !sortB) return 0;
 
-    // Check for time equality, if not time key
+    // if sort key isn't time, still sort by time secondarily
     if (sortA === sortB && key !== "dep_iata" && key !== "arr_iata") {
       const timeA = new Date(dir === "arr" ? a.arr_time : a.dep_time);
       const timeB = new Date(dir === "arr" ? b.arr_time : b.dep_time);
@@ -289,7 +289,7 @@ const sortFlights = (
   return sorted;
 };
 
-// formats date or time - format Tue, 3 Oct and 24hr 15:28
+// formats date or time - format: Tue, 3 Oct and 24hr 15:28
 const formatDate = (date: string, key: "date" | "time") => {
   const dateObject = new Date(date);
 
