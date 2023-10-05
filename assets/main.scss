@@ -6,4 +6,8 @@
   body {
     @apply transition-all duration-100 font-sans overflow-x-hidden dark:bg-slate-850 bg-slate-100 w-screen;
   }
+
+  input {
+    @apply appearance-none;
+  }
 }
