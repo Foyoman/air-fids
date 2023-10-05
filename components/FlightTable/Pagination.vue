@@ -1,5 +1,5 @@
 <template>
-  <div id="pagination" class="flex flex-col items-center w-full">
+  <div id="pagination" class="overflow-x-auto flex flex-col items-center w-full">
     <div class="flex items-center justify-between w-full px-2 mt-2 mb-2">
       <p class="text-xs text-slate-700 sm:text-sm dark:text-slate-400">
         Showing
@@ -42,6 +42,7 @@
     </div>
     <nav class="mt-1">
       <ul class="inline-flex -space-x-px text-sm">
+
         <li v-if="currentPage > 2">
           <p
             @click="emit('update:currentPage', 1)"
@@ -50,6 +51,7 @@
             {{ `<<` }}
           </p>
         </li>
+
         <li v-if="currentPage > 1">
           <p
             @click="emit('update:currentPage', decrementPage())"
@@ -86,7 +88,7 @@
           </p>
         </li>
 
-        <template v-if="currentPage < 98" v-for="i in 2">
+        <template v-if="currentPage < 98" v-for="i in currentPage > 2 ? 2 : currentPage === 1 ? 4 : 3">
           <li v-if="currentPage + i <= lastPage" :key="i">
             <p
               @click="emit('update:currentPage', currentPage + i)"
@@ -96,6 +98,7 @@
             </p>
           </li>
         </template>
+
         <li v-if="lastPage > 1 && currentPage !== lastPage">
           <p
             @click="emit('update:currentPage', incrementPage())"
@@ -106,6 +109,7 @@
             {{ `>` }}
           </p>
         </li>
+
         <li v-if="lastPage > 1 && currentPage < lastPage - 1">
           <p
             @click="emit('update:currentPage', lastPage)"
@@ -114,6 +118,7 @@
             {{ `>>` }}
           </p>
         </li>
+        
       </ul>
     </nav>
   </div>
