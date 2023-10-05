@@ -311,6 +311,7 @@ const filteredFlights = () => {
         finder(flight[field])
       );
     } else if (field.value === "arr_city") {
+      // include both city name and iata when searching for origin/destination
       return (
         finder(flight["arr_city"]) ||
         finder(flight["arr_iata"])
