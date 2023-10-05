@@ -2,7 +2,7 @@
   <button
     disabled
     type="button"
-    class="py-2.5 px-5 mr-2 text-sm font-medium text-slate-900 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-600 dark:hover:text-white dark:hover:bg-slate-700 inline-flex items-center"
+    class="py-2.5 px-5 mr-2 text-sm font-medium text-slate-900 bg-white rounded-lg border border-slate-200 sm:hover:bg-slate-100 sm:hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-600 sm:dark:hover:text-white sm:dark:hover:bg-slate-700 inline-flex items-center"
   >
     <svg
       aria-hidden="true"

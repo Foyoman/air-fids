@@ -13,7 +13,7 @@
           id="dropdown-button"
           type="button"
           @click="toggleDropdown"
-          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-slate-900 bg-slate-100 border border-slate-300 rounded-l-lg hover:bg-slate-200 focus:outline-none dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white dark:border-slate-600"
+          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-slate-900 bg-slate-100 border border-slate-300 rounded-l-lg sm:hover:bg-slate-200 focus:outline-none dark:bg-slate-700 sm:dark:hover:bg-slate-600 dark:text-white dark:border-slate-600"
         >
           {{ selectedOption.label }}
           <ExpandIcon />
@@ -38,7 +38,7 @@
             >
               <button
                 type="button"
-                class="inline-flex w-full px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white"
+                class="inline-flex w-full px-4 py-2 sm:hover:bg-slate-100 sm:dark:hover:bg-slate-600 sm:dark:hover:text-white"
               >
                 {{ option.label }}
               </button>

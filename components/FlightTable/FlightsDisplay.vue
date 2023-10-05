@@ -27,7 +27,7 @@
               <th
                 scope="col"
                 @click="setSort(direction === 'arr' ? 'arr_time' : 'dep_time')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm sm:hover:bg-slate-100 sm:dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Time</p>
@@ -41,11 +41,9 @@
               <th
                 scope="col"
                 @click="setSort('airline_name')"
-                class="hidden px-0 py-3 text-xs text-center cursor-pointer xl:table-cell sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="hidden px-0 py-3 text-xs text-center cursor-pointer xl:table-cell sm:px-2 sm:text-sm sm:hover:bg-slate-100 sm:dark:hover:bg-slate-600"
               >
-                <span
-                  class="flex items-center justify-center"
-                >
+                <span class="flex items-center justify-center">
                   <p>Airline</p>
                   <SortArrow
                     v-if="sortState === 'airline_name'"
@@ -57,7 +55,7 @@
               <th
                 scope="col"
                 @click="setSort('flight_iata')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm sm:hover:bg-slate-100 sm:dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Flight</p>
@@ -75,7 +73,7 @@
                     ? setSort('dep_iata')
                     : setSort('arr_iata')
                 "
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm sm:hover:bg-slate-100 sm:dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>{{ direction === "arr" ? "Origin" : "Dest." }}</p>
@@ -93,7 +91,7 @@
               <th
                 scope="col"
                 @click="setSort('status')"
-                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm hover:bg-slate-100 dark:hover:bg-slate-600"
+                class="px-0 py-3 text-xs text-center cursor-pointer sm:px-2 sm:text-sm sm:hover:bg-slate-100 sm:dark:hover:bg-slate-600"
               >
                 <span class="flex items-center justify-center">
                   <p>Status</p>
@@ -114,7 +112,7 @@
               )"
               :key="index"
               @click="openModal(flight)"
-              class="bg-white border-b cursor-pointer dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
+              class="bg-white border-b cursor-pointer dark:bg-slate-800 dark:border-slate-700 sm:hover:bg-slate-50 sm:dark:hover:bg-slate-600"
             >
               <td
                 class="px-2 py-3 text-xs font-medium text-center text-slate-900 sm:px-2 sm:text-sm whitespace-nowrap dark:text-white"
@@ -254,7 +252,9 @@ const props = defineProps({
 const emit = defineEmits();
 
 // for sort
-const sortState = ref<SortTerm>(props.direction === "arr" ? "arr_time" : "dep_time");
+const sortState = ref<SortTerm>(
+  props.direction === "arr" ? "arr_time" : "dep_time"
+);
 const reverseState = ref(false);
 
 // sorts table from table head values and switches state values for ux
@@ -302,25 +302,17 @@ const filteredFlights = () => {
 
   const finder = (value: ValueOf<Flight>) => {
     return String(value).toLowerCase().includes(lowerSearch);
-  }
+  };
 
   // if any part of the search string is found within the search fields
   return props.flights.filter((flight) => {
     if (field.value === "all") {
-      return fieldsToSearch.some((field) =>
-        finder(flight[field])
-      );
+      return fieldsToSearch.some((field) => finder(flight[field]));
     } else if (field.value === "arr_city") {
       // include both city name and iata when searching for origin/destination
-      return (
-        finder(flight["arr_city"]) ||
-        finder(flight["arr_iata"])
-      );
+      return finder(flight["arr_city"]) || finder(flight["arr_iata"]);
     } else if (field.value === "dep_city") {
-      return (
-        finder(flight["dep_city"]) ||
-        finder(flight["dep_iata"])
-      );
+      return finder(flight["dep_city"]) || finder(flight["dep_iata"]);
     } else {
       return finder(flight[field.value]);
     }

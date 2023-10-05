@@ -20,7 +20,7 @@
         <button
           @click="refresh"
           type="button"
-          class="ml-auto text-white bg-slate-700 hover:bg-slate-800 focus:outline-none font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-slate-600 dark:hover:bg-slate-500"
+          class="ml-auto text-white bg-slate-700 sm:hover:bg-slate-800 focus:outline-none font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-slate-600 sm:dark:hover:bg-slate-500"
         >
           <RefreshIcon class="-ml-0.5 mr-2 h-3 w-3" />
           Refresh

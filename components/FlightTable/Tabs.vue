@@ -40,5 +40,5 @@ const props = defineProps({
 const selectedStyles =
   "cursor-pointer text-lg inline-block p-3 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500";
 const unselectedStyles =
-  "cursor-pointer text-lg inline-block p-3 border-b-2 border-transparent rounded-t-lg hover:text-slate-600 hover:border-slate-300 dark:hover:text-slate-300";
+  "cursor-pointer text-lg inline-block p-3 border-b-2 border-transparent rounded-t-lg sm:hover:text-slate-600 sm:hover:border-slate-300 sm:dark:hover:text-slate-300";
 </script>

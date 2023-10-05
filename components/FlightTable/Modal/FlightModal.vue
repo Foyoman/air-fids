@@ -8,7 +8,7 @@
       <button
         @click="(e) => closeButton(e)"
         type="button"
-        class="absolute inline-flex items-center justify-center w-6 h-6 ml-auto text-sm text-slate-400 bg-transparent rounded-lg right-1 top-1 hover:bg-slate-200 hover:text-slate-900 dark:hover:bg-slate-600 dark:hover:text-white"
+        class="absolute inline-flex items-center justify-center w-6 h-6 ml-auto text-sm text-slate-400 bg-transparent rounded-lg right-1 top-1 sm:hover:bg-slate-200 sm:hover:text-slate-900 sm:dark:hover:bg-slate-600 sm:dark:hover:text-white"
       >
         <CloseButton />
       </button>

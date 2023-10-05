@@ -13,7 +13,7 @@
     <select
       id="cities"
       v-model="airportCode"
-      class="bg-slate-50 focus:outline-none hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer tracking-tight font-bold border border-slate-300 text-slate-900 text-2xl rounded-lg block p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
+      class="bg-slate-50 focus:outline-none sm:hover:bg-slate-200 sm:dark:hover:bg-slate-600 cursor-pointer tracking-tight font-bold border border-slate-300 text-slate-900 text-2xl rounded-lg block p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
     >
       <option v-for="airport in airportCodes" :value="airport" :key="airport">
         {{ airport }}
@@ -205,8 +205,8 @@ const getAirline = (flight: Flight) => {
 
   return {
     airline_name: airline?.name,
-    airline_country: airline?.country
-  }
+    airline_country: airline?.country,
+  };
 };
 
 const getCitiesAndAirports = (flight: Flight) => {
