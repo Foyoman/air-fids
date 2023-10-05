@@ -7,13 +7,14 @@
   />
   <Error v-if="error" :message="error" :refresh="refresh" />
   <div
-    class="container flex flex-col items-center px-2 xs:px-4 pt-4 pb-8 sm:pt-6 mx-auto lg:px-4"
+    class="container flex flex-col items-center px-2 pt-4 pb-8 mx-auto xs:px-4 sm:pt-6 lg:px-4"
   >
     <DarkModeToggle class="absolute top-4 right-4" />
     <select
       id="cities"
       v-model="airportCode"
-      class="bg-slate-50 focus:outline-none sm:hover:bg-slate-200 sm:dark:hover:bg-slate-600 cursor-pointer tracking-tight font-bold border border-slate-300 text-slate-900 text-2xl rounded-lg block p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
+      style="background-size: 0.75rem; background-position: right 0.5rem center;"
+      class="bg-slate-50 pr-4 bg-chevron bg-no-repeat focus:outline-none sm:hover:bg-slate-200 sm:dark:hover:bg-slate-600 cursor-pointer tracking-tight font-bold border border-slate-300 text-slate-900 text-3xl rounded-lg block px-2 pt-1 pb-1.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
     >
       <option v-for="airport in airportCodes" :value="airport" :key="airport">
         {{ airport }}

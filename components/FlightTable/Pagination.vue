@@ -31,7 +31,11 @@
           id="per-page"
           :value="flightsPerPage"
           @input="(e) => updateFlightsPerPage(e as InputEvent)"
-          class="block px-0 py-1 text-xs text-slate-900 border border-slate-300 rounded-lg cursor-pointer sm:dark:hover:bg-slate-600 focus:outline-none sm:hover:bg-slate-200 bg-slate-50 lg:px-1 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
+          style="
+            background-size: 0.5rem;
+            background-position: right 0.2rem center;
+          "
+          class="block text-center bg-chevron bg-no-repeat pl-1 py-1 pr-3 text-xs text-slate-900 border border-slate-300 rounded-lg cursor-pointer sm:dark:hover:bg-slate-600 focus:outline-none sm:hover:bg-slate-200 bg-slate-50 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
         >
           <option
             v-for="option in [5, 10, 25, 50, 100]"

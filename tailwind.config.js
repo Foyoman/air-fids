@@ -38,7 +38,10 @@ export default {
       },
       colors: {
         'slate-850': '#121D2F',
-      }
+      },
+      backgroundImage: {
+        'chevron': "url('./assets/svg/select-chevron.svg')",
+      },
     },
   },
   plugins: [],
