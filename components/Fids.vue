@@ -176,7 +176,7 @@ onMounted(() => {
   });
 
   const test = sortedArrivals[0];
-  // const flightCities = getFlightCitiesAndAirports(test);
+  // const flightCities = getCitiesAndAirports(test);
   console.log(test);
 
   console.log(sortedArrivals);
@@ -200,17 +200,22 @@ const refresh = () => {
   getFlights(airportCode.value, "dep");
 };
 
-// finds airline name and country from flight airline code
-const findAirline = (flight: Flight) => {
-  return airlines.find((airline) => {
+// gets airline name and country from flight airline code
+const getAirline = (flight: Flight) => {
+  const airline = airlines.find((airline) => {
     return (
       airline.iata === flight.airline_iata ||
       airline.icao === flight.airline_icao
     );
   });
+
+  return {
+    airline_name: airline?.name,
+    airline_country: airline?.country
+  }
 };
 
-const getFlightCitiesAndAirports = (flight: Flight) => {
+const getCitiesAndAirports = (flight: Flight) => {
   const arrAirport = airports.find((airport) => {
     return airport.iata === flight.arr_iata;
   });
@@ -228,13 +233,9 @@ const getFlightCitiesAndAirports = (flight: Flight) => {
 
 // appends name and country to flight from airline data
 const appendAirlineCountryCitiesAirports = (flight: Flight) => {
-  const airline = findAirline(flight);
-  const citiesAndAirports = getFlightCitiesAndAirports(flight);
-  const airlineNameAndCountry = {
-    airline_name: airline?.name,
-    airline_country: airline?.country,
-  };
-  Object.assign(flight, airlineNameAndCountry, citiesAndAirports);
+  const airline = getAirline(flight);
+  const citiesAndAirports = getCitiesAndAirports(flight);
+  Object.assign(flight, airline, citiesAndAirports);
 };
 
 // finds airport name from iata
