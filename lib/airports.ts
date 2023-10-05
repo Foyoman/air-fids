@@ -22798,7 +22798,7 @@ export const airports: Airport[] = [
   },
   {
     iata: "SCL",
-    name: null,
+    name: "Arturo Merino Benitez International Airport",
     city: "Santiago",
   },
   {

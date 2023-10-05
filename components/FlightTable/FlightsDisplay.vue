@@ -292,20 +292,36 @@ const filteredFlights = () => {
     "airline_name",
     "flight_iata",
     "dep_city",
+    "dep_iata",
     "arr_city",
+    "arr_iata",
     "status",
   ];
 
   const lowerSearch = search.value.toLowerCase();
 
+  const finder = (value: string | number | null | undefined) => {
+    return String(value).toLowerCase().includes(lowerSearch);
+  }
+
   // if any part of the search string is found within the search fields
   return props.flights.filter((flight) => {
     if (field.value === "all") {
       return fieldsToSearch.some((field) =>
-        String(flight[field]).toLowerCase().includes(lowerSearch)
+        finder(flight[field])
+      );
+    } else if (field.value === "arr_city") {
+      return (
+        finder(flight["arr_city"]) ||
+        finder(flight["arr_iata"])
+      );
+    } else if (field.value === "dep_city") {
+      return (
+        finder(flight["dep_city"]) ||
+        finder(flight["dep_iata"])
       );
     } else {
-      return String(flight[field.value]).toLowerCase().includes(lowerSearch);
+      return finder(flight[field.value]);
     }
   });
 };
