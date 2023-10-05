@@ -116,7 +116,6 @@ async function getFlights(city: string, dir: Direction) {
   await fetch(`https://airlabs.co/api/v9/schedules?${params}`)
     .then((res) => {
       if (res.status === 200) {
-        console.log(res);
         return res.json();
       } else {
         console.error(res);
@@ -125,8 +124,6 @@ async function getFlights(city: string, dir: Direction) {
       }
     })
     .then((data) => {
-      console.log(data);
-
       if (data.response) {
         const flights: Flight[] = data.response;
 
@@ -175,11 +172,8 @@ onMounted(() => {
     appendAirlineCountryCitiesAirports(flight);
   });
 
-  const test = sortedArrivals[0];
-  // const flightCities = getCitiesAndAirports(test);
-  console.log(test);
-
   console.log(sortedArrivals);
+  console.log(sortedDepartures);
   arrivals.value = sortedArrivals;
   departures.value = sortedDepartures;
   */

@@ -26,6 +26,8 @@ export interface SearchOption {
 
 export type SortTerm = keyof Flight;
 
+export type ValueOf<T> = T[keyof T]; // to get type of values of an object like keyof
+
 export interface Flight {
   // appended
   airline_country?: string | null;

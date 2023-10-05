@@ -207,7 +207,7 @@
 </template>
 
 <script setup lang="ts">
-import { Flight, Direction, SearchOption, SortTerm } from "~/types";
+import { Flight, Direction, SearchOption, SortTerm, ValueOf } from "~/types";
 
 const props = defineProps({
   direction: {
@@ -300,7 +300,7 @@ const filteredFlights = () => {
 
   const lowerSearch = search.value.toLowerCase();
 
-  const finder = (value: string | number | null | undefined) => {
+  const finder = (value: ValueOf<Flight>) => {
     return String(value).toLowerCase().includes(lowerSearch);
   }
 
