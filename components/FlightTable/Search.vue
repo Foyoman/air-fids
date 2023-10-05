@@ -54,7 +54,7 @@
             id="search-dropdown"
             autocomplete="off"
             placeholder="Search flights"
-            class="block focus:outline-1 focus:outline-slate-500 p-2.5 w-full z-20 text-sm text-slate-900 bg-slate-50 rounded-r-lg border-l-slate-50 border-l-2 border border-slate-300 dark:text-white dark:bg-slate-700 dark:border-l-slate-700 dark:border-slate-600 dark:placeholder-slate-400"
+            class="block appearance-none focus:outline-1 focus:outline-slate-500 p-2.5 w-full z-20 text-sm text-slate-900 bg-slate-50 rounded-r-lg border-l-slate-50 border-l-2 border border-slate-300 dark:text-white dark:bg-slate-700 dark:border-l-slate-700 dark:border-slate-600 dark:placeholder-slate-400"
           />
         </div>
       </div>
