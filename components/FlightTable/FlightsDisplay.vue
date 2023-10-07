@@ -259,6 +259,7 @@ const reverseState = ref(false);
 
 // sorts table from table head values and switches state values for ux
 const setSort = (sortKey: SortTerm, fromWatch?: boolean) => {
+  // check if same sort key so when a different key is selected, it sorts unreversed
   const isSameSortKey = sortKey === sortState.value;
 
   if (!fromWatch) {
@@ -362,7 +363,12 @@ const resetValues = () => {
 
 // resets values and resets page to 1 in certain cases to avoid bugging the pagination
 watch(
-  [() => props.flights, () => props.direction, () => props.flightsPerPage],
+  [
+    () => props.flights,
+    () => props.direction,
+    () => props.flightsPerPage,
+    () => sortState.value,
+  ],
   () => {
     currentPage.value = 1;
     resetValues();

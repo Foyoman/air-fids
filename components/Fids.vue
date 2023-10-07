@@ -152,7 +152,7 @@ async function getFlights(city: string, dir: Direction) {
       }
     })
     .catch((error) => {
-      error.value = "Invalid endpoint url";
+      error.value = "Network error";
       console.error(error);
     });
 }
@@ -191,8 +191,11 @@ watch(airportCode, () => {
 // refresh button for error modal
 const refresh = () => {
   error.value = null;
+
+  // to refetch flights or to reload page?
   getFlights(airportCode.value, "arr");
   getFlights(airportCode.value, "dep");
+  // window.location.reload();
 };
 
 // gets airline name and country from flight airline code
