@@ -1,3 +1,3 @@
 <template>
-  <Fids />
+  <AirFids />
 </template>
