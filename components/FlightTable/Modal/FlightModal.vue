@@ -153,12 +153,12 @@ const calculateFlightProgress = () => {
   const depTime = new Date(props.selectedFlight.dep_actual!).getTime();
   const arrTime = new Date(props.selectedFlight.arr_estimated!).getTime();
 
-  /* handle errors first, then check if landed, then calculate percentage. an alternative would be 
+  /* check if landed or if now >= arrTime, then handle errors, then calculate percentage. an alternative would be 
   to check if a flight status is active, but i guess i didn't do that */
-  if (isNaN(depTime) || isNaN(arrTime) || now < depTime) {
-    flightProgress.value = 0;
-  } else if (props.selectedFlight.status === "landed" || now >= arrTime) {
+  if (props.selectedFlight.status === "landed" || now >= arrTime) {
     flightProgress.value = 100;
+  } else if (isNaN(depTime) || isNaN(arrTime) || now < depTime) {
+    flightProgress.value = 0;
   } else if (now > depTime) {
     const timeElapsed = arrTime - now;
     const duration = arrTime - depTime;
