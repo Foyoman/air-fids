@@ -93,7 +93,7 @@
       <h4
         v-if="selectedFlight.airline_name || selectedFlight.airline_country"
         id="airline-name-and-country"
-        class="mt-2 sm:text-center text-md sm:text-lg"
+        class="mt-2 text-center text-md sm:text-lg"
       >
         {{ selectedFlight.airline_name }}
         <span
