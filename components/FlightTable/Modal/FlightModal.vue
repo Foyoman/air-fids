@@ -132,7 +132,6 @@ const props = defineProps({
   closeModal: {
     type: Function as PropType<(flight?: Flight) => void>,
     required: true,
-    default: null,
   },
   selectedFlight: {
     type: Object as () => Flight,

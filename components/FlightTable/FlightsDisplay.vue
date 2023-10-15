@@ -211,17 +211,14 @@ const props = defineProps({
   direction: {
     type: String as () => Direction,
     required: true,
-    default: null,
   },
   flights: {
     type: Array<Flight>,
-    required: false,
-    default: null,
+    required: true,
   },
   loading: {
     type: Boolean,
-    required: false,
-    default: false,
+    required: true,
   },
   openModal: {
     type: Function as PropType<(flight?: Flight) => void>,
